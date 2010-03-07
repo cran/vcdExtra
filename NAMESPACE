@@ -1,13 +1,17 @@
-# last modified 23 Feb 2009 by M. Friendly
+# last modified 3 Mar 2010 by M. Friendly
 import(vcd)
 export(
 	expand.dft,expand.table,collapse.table,
-	mosaic.glm,
+	mosaic.glm, sieve.glm, assoc.glm,
+	modFit, modFit.glm, modFit.loglm,
 	GKgamma,print.GKgamma,
 	print.Kappa)
 
 S3method(mosaic, glm)
+S3method(sieve, glm)
+S3method(assoc, glm)
+S3method(modFit, glm)
+S3method(modFit, loglm)
 S3method(print, GKgamma)
-
-S3method("print", "Kappa")
+S3method(print, Kappa)
 

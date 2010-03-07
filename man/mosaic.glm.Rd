@@ -1,5 +1,8 @@
 \name{mosaic.glm}
 \alias{mosaic.glm}
+\alias{sieve.glm}
+\alias{assoc.glm}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Mosaic plots for fitted generalized linear and generalized nonlinear models }
 \description{
@@ -17,18 +20,20 @@ predictors visualized in the \code{strucplot} are discrete factors.
 \usage{
 \method{mosaic}{glm}(x, formula = NULL, panel = mosaic, type = c("observed", "expected"), residuals = NULL, 
      residuals_type = c("pearson", "deviance", "rstandard"), gp = shading_hcl, gp_args = list(), ...)
+\method{sieve}{glm}(x,  ...)
+\method{assoc}{glm}(x,  ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{ A \code{glm} or \code{gnm} object. The response variable, typically a 
     cell frequency, should be non-negative. }
-  \item{formula}{ A formula object with the indexing factors of the plot
-    separated by '+' on the right hand side. A formula must be provided
-    unless \code{x$data} inherits from class \code{"table"} -- in which case the
-    indexing factors of this table are used, or \code{x$data} is a data frame
-    containing \emph{only} the response and a set of factors that exactly
-    cross-classify the data -- in which case the set of cross-classifying
-    factors are used. }
+  \item{formula}{ A one-sided formula with the indexing factors of the plot
+    separated by '+'. A formula must be provided unless \code{x$data}
+    inherits from class \code{"table"} -- in which case the indexing
+    factors of this table are used, or the factors in \code{x$data}
+    (or model.frame(x) if \code{x$data} is an environment) exactly
+    cross-classify the data -- in which case this set of
+    cross-classifying factors are used. } 
    \item{panel}{Panel function used to draw the plot for visualizing the observed values, residuals 
    and expected values. Currently, one of \code{"mosaic"}, \code{"assoc"}, or \code{"sieve"}
    in \code{vcd}.}
@@ -54,13 +59,22 @@ For both poisson family generalized linear models and loglinear models, standard
 provided by \code{rstandard}
 (sometimes called adjusted residuals) are often preferred because they have 
 constant unit asymptotic variance.
+
+The \code{sieve} and \code{assoc} methods are simple convenience interfaces to this plot method, setting the panel argument accordingly. 
+
 }
+%\note{
+%In the current version, the \code{glm} or \code{gnm} object \emph{must} have been fit using
+%the \code{data} argument to supply a data.frame or table, rather than with variables
+%in the global environment.
+%}
+
 \value{
 The \code{structable} visualized by \code{\link[vcd]{strucplot}} is returned invisibly.
 
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Michael Friendly, with help from Achim Zeileis}
+\author{Heather Turner, Michael Friendly, with help from Achim Zeileis}
 %\note{
 %}
 \seealso{\code{\link[stats]{glm}}, \code{\link[gnm]{gnm}}, \code{\link[vcd]{plot.loglm}}, \code{\link[vcd]{mosaic}}}

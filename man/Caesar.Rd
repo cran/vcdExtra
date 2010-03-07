@@ -21,7 +21,12 @@ data(Caesar)
   }
 }
 
-%\details { }
+\details{
+\code{Infection} is regarded as the response variable here. 
+There are quite a few 0 cells here, particularly when  \code{Risk}
+is absent and the Caesarian section was unplanned.
+Should these be treated as structural or sampling zeros?
+}
 \source{
 
 %  \cite{Fahrmeir:94}
@@ -34,12 +39,44 @@ New York: Springer Verlag.
 %\references{
 %}
 
-\seealso{\code{link[Fahrmeir]{caesar}} for the same data recorded as a frequency data frame
+\seealso{\code{\link[Fahrmeir]{caesar}} for the same data recorded as a frequency data frame
 with other variables.}
 \examples{
 data(Caesar)
+#display table;  note that there are quite a few 0 cells
+structable(Caesar)
 
-# example goes here
+# baseline model, Infection as response
+Caesar.mod0 <- loglm(~Infection + (Risk*Antibiotics*Planned), data=Caesar)
+Caesar.mod0
+
+mosaic(Caesar.mod0, main="Baseline model")
+
+# Illustrate handling structural zeros
+zeros <- 0+ (Caesar >0)
+zeros[1,,1,1] <- 1
+structable(zeros)
+
+# fit model excluding possible structural zeros
+Caesar.mod0s <- loglm(~Infection + (Risk*Antibiotics*Planned), data=Caesar, 
+	start=zeros)
+Caesar.mod0s
+
+anova(Caesar.mod0, Caesar.mod0s, test="Chisq")
+
+mosaic (Caesar.mod0s)
+
+# what terms to add?
+add1(Caesar.mod0, ~.^2, test="Chisq")
+
+# add Association of Infection:Antibiotics
+Caesar.mod1 <- update(Caesar.mod0, ~.+Infection:Antibiotics)
+anova(Caesar.mod0, Caesar.mod1, test="Chisq")
+
+mosaic(Caesar.mod1, gp=shading_Friendly, main="Adding Infection:Antibiotics")
+
+
+
 }
 
 \keyword{datasets}
