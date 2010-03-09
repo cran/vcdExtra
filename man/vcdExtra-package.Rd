@@ -13,8 +13,8 @@ a few functions designed to extend the vcd package.
 \tabular{ll}{
 Package: \tab vcdExtra\cr
 Type: \tab Package\cr
-Version: \tab 0.4-1\cr
-Date: \tab 2010-02-25\cr
+Version: \tab 0.4-2\cr
+Date: \tab 2010-03-09\cr
 License: \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }
@@ -29,11 +29,25 @@ package to a wider class of models.
 
 In addition, there are several new data sets, a new vignette,
 \describe{
-  \item{vcd-tutorial}{Tutorial: Working with categorical data with R and the vcd package, \code{vignette("vcd-tutorial", package = "vcdExtra") }}
+  \item{vcd-tutorial}{Working with categorical data with R and the vcd package, \code{vignette("vcd-tutorial", package = "vcdExtra") }}
 }
-and a few functions for manipulating categorical data sets.
-
+and a few functions for manipulating categorical data sets and working with models for
+categorical data. A new class, \code{\link{glmlist}}, is introduced for working with
+collections of \code{glm} objects.
 Some of these extensions may be migrated into vcd.
+
+In addition, a collection of demos illustrate fitting and visualizing a wide variety of models:
+\describe{
+  \item{mental-glm}{Mental health data: mosaics for glm() and gnm() models}
+  \item{occStatus}{Occupational status data: Compare mosaic using expected= to mosaic.glm}
+  \item{ucb-glm}{UCBAdmissions data: Conditional independence via loglm() and glm()}
+  \item{vision-quasi}{VisualAcuity data: Quasi- and Symmetry models}
+  \item{yaish-unidiff}{Yaish data: Unidiff model for 3-way table}
+  \item{Wong2-3}{Political views and support for women to work (U, R, C, R+C and RC(1) models)}
+  \item{Wong3-1}{Political views, support for women to work and national welfare spending (3-way, marginal, and conditional independence models)}
+  \item{housing}{Visualize glm(), multinom() and polr() models from example(housing, package="MASS")}
+}
+
 }
 \author{
 Michael Friendly
