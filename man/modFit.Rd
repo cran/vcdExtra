@@ -5,10 +5,12 @@
 \alias{modFit.glm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Brief summary of Model Fit for a glm or loglm object
+Brief Summary of Model Fit for a glm or loglm Object
 }
 \description{
-One-line summary of model fit for a glm loglm object
+Formats a brief summary of model fit for a \code{glm} or \code{loglm} object, showing
+the likelihood ratio Chisq (df) value and or AIC.  Useful for inclusion in a plot
+title or annotation. 
 }
 \usage{
 modFit(x, ...)
@@ -18,16 +20,16 @@ modFit(x, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A glm or loglm object
+A \code{glm} or \code{loglm} object
 }
   \item{\dots}{
 Arguments passed down
 }
   \item{stats}{
-One or more of \code{chisq} or \code{aic}
+One or more of \code{chisq} or \code{aic}, determining the statistics displayed.
 }
   \item{digits}{
-Number of digits after the decimal point
+Number of digits after the decimal point in displayed statistics.
 }
 
 }
@@ -35,7 +37,7 @@ Number of digits after the decimal point
 %%%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-	A character string
+	A character string containing the formatted values of the chosen statistics.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -55,7 +57,7 @@ Michael Friendly
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{summarize}}
 }
 \examples{
 data(Mental)
