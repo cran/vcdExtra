@@ -1,4 +1,4 @@
-# last modified 3 Mar 2010 by M. Friendly
+# last modified 7 Apr 2010 by M. Friendly
 import(vcd)
 export(
 	expand.dft,expand.table,collapse.table,
@@ -6,7 +6,9 @@ export(
 	modFit, modFit.glm, modFit.loglm,
 	GKgamma,print.GKgamma,
 	glmlist, loglmlist, summarize, 
-	print.Kappa)
+	print.Kappa,
+	mosaic3d, split3d, range3d, center3d,
+	Kway)
 
 S3method(mosaic, glm)
 S3method(sieve, glm)
@@ -19,4 +21,8 @@ S3method(summarize, loglm)
 S3method(summarize, loglmlist)
 S3method(print, GKgamma)
 S3method(print, Kappa)
+S3method(split3d, shape3d)
+S3method(split3d, list)
+S3method(mosaic3d, default)
+S3method(mosaic3d, loglm)
 
