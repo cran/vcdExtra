@@ -1,14 +1,15 @@
-# last modified 31 Oct 2010 by M. Friendly
+# last modified 28 Nov 2010 by M. Friendly
 import(vcd)
 export(
 	expand.dft,expand.table,collapse.table,
 	mosaic.glm, sieve.glm, assoc.glm,
 	modFit, modFit.glm, modFit.loglm,
 	GKgamma,print.GKgamma,
-	glmlist, loglmlist, summarize, 
+	glmlist, loglmlist, summarise, 
 	print.Kappa,
 	mosaic3d, split3d, range3d, center3d,
-	Kway, Crossings, meanResiduals, datasets
+	Kway, Crossings, meanResiduals, datasets,
+	loddsratio, as.array, aperm
 	)
 
 S3method(mosaic, glm)
@@ -16,14 +17,32 @@ S3method(sieve, glm)
 S3method(assoc, glm)
 S3method(modFit, glm)
 S3method(modFit, loglm)
-S3method(summarize, glm)
-S3method(summarize, glmlist)
-S3method(summarize, loglm)
-S3method(summarize, loglmlist)
+
+S3method(summarise, glm)
+S3method(summarise, glmlist)
+S3method(summarise, loglm)
+S3method(summarise, loglmlist)
 S3method(print, GKgamma)
 S3method(print, Kappa)
 S3method(split3d, shape3d)
 S3method(split3d, list)
+
 S3method(mosaic3d, default)
 S3method(mosaic3d, loglm)
+
+S3method(loddsratio, default)
+S3method(coef, loddsratio)
+S3method(confint, loddsratio)
+S3method(dim, loddsratio)
+S3method(dimnames, loddsratio)
+S3method(print, loddsratio)
+S3method(vcov, loddsratio)
+S3method(as.matrix, loddsratio)
+S3method(as.array, loddsratio)
+S3method(as.data.frame, loddsratio)
+
+S3method(aperm, default)
+S3method(aperm, table)
+
+
 

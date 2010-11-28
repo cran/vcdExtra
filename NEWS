@@ -1,3 +1,16 @@
+Version 0.5-2 (2010-11-28)
+
+o Added loddsratio and related methods for log odds ratios, generalizing vcd::oddsratio from
+  2 x 2 (x strata) tables to R x C (x strata) tables
+o Added as.matrix.loddsratio, as.array.loddsratio methods
+o Added some simple plot examples to example(loddsratio), anticipating a plot method
+o Added data(Fungicide), a 2 x 2 x 2 x 2 table
+o Renamed summarize() and related methods to summarise() to avoid conflict with plyr.
+o Addition to vcd-tutorial vignette on use of aperm() with table objects
+o Updated demo(yamaguchi-xie) to correct row/col nomenclature and add plot of BIC
+o Added aperm() S3 generic to handle table objects
+o Moved tv.dat to inst/doc/extdata to avoid warnings in R 2.12+
+
 Version 0.5-1 (2010-09-17)
 
 o Added Yamaguchi87 data (three-way mobility table)
