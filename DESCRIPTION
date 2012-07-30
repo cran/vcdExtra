@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: vcd additions
-Version: 0.5-3
-Date: 2012-03-07
+Version: 0.5-4
+Date: 2012-07-30
 Author@R: c(person(given = "Michael", family = "Friendly",
         role=c("aut", "cre"), email="friendly@yorku.ca"), person(given
         = "Heather", family = "Turner", role="ctb"), person(given =
@@ -12,7 +12,7 @@ Author@R: c(person(given = "Michael", family = "Friendly",
 Author: Michael Friendly with Heather Turner, Achim Zeileis, Duncan
         Murdoch and David Firth
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Depends: R (>= 2.10), vcd,gnm
+Depends: R (>= 2.10), vcd, gnm (>= 1.0.3)
 Suggests: ca,gmodels,Fahrmeir,effects,VGAM,plyr,rgl,lmtest,MASS,nnet
 Description: Provides additional data sets, methods and documentation
         to complement the vcd package for Visualizing Categorical Data
@@ -24,6 +24,6 @@ License: GPL (>= 2)
 URL: http://CRAN.R-project.org/package=vcdExtra
 LazyLoad: yes
 LazyData: yes
-Packaged: 2012-05-07 13:52:28 UTC; friendly
+Packaged: 2012-08-01 14:42:20 UTC; friendly
 Repository: CRAN
-Date/Publication: 2012-05-08 04:07:15
+Date/Publication: 2012-08-01 16:59:58
