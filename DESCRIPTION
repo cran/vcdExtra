@@ -1,9 +1,9 @@
 Package: vcdExtra
 Type: Package
 Title: vcd additions
-Version: 0.5-4
-Date: 2012-07-30
-Author@R: c(person(given = "Michael", family = "Friendly",
+Version: 0.5-5
+Date: 2012-08-20
+Authors@R: c(person(given = "Michael", family = "Friendly",
         role=c("aut", "cre"), email="friendly@yorku.ca"), person(given
         = "Heather", family = "Turner", role="ctb"), person(given =
         "Achim", family = "Zeileis", role="ctb"), person(given =
@@ -24,6 +24,8 @@ License: GPL (>= 2)
 URL: http://CRAN.R-project.org/package=vcdExtra
 LazyLoad: yes
 LazyData: yes
-Packaged: 2012-08-01 14:42:20 UTC; friendly
 Repository: CRAN
-Date/Publication: 2012-08-01 16:59:58
+Repository/R-Forge/Project: vcdextra
+Repository/R-Forge/Revision: 128
+Packaged: 2012-08-20 22:20:09 UTC; rforge
+Date/Publication: 2012-11-03 07:06:47
