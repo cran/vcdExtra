@@ -1,6 +1,44 @@
-\documentclass{Z}
-%% need no \usepackage{Sweave}
+%\VignetteIndexEntry{Tutorial: Working with categorical data with R and the vcd package}
+%\VignetteDepends{vcd,gmodels,ca}
+%\VignetteKeywords{contingency tables, mosaic plots, sieve plots, categorical data, independence, conditional independence, R}
+%\VignettePackage{vcdExtra}
+
+%\documentclass{Z}
+\documentclass[10pt,twoside]{article}
+\usepackage{Sweave}
 \usepackage{bm}
+\usepackage[toc]{multitoc}   % for table of contents
+
+% from Z.cls
+\usepackage[authoryear,round,longnamesfirst]{natbib}
+\bibpunct{(}{)}{;}{a}{}{,}
+\bibliographystyle{jss}
+
+\usepackage{hyperref}
+\usepackage{color}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+%  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+%\AtBeginDocument{
+%  \hypersetup{%
+%    pdfauthor = {Michael Friendly},
+%    pdftitle = {Tutorial: Working with categorical data with R and the vcd package},
+%    pdfkeywords = {contingency tables, mosaic plots, sieve plots, categorical data, independence, conditional independence, R}
+%  }
+%}
+
 
 % math stuff
 \newcommand*{\given}{\ensuremath{\, | \,}}
@@ -27,12 +65,12 @@
 \addtolength{\textheight}{2cm}
 
 % Vignette examples
-\newcommand*{\Example}{\textbf{\emph{Example}}: }
+\newcommand*{\Example}{\fbox{\textbf{\emph{Example}}:} }
 
 % R stuff
 \newcommand{\var}[1]{\textit{\texttt{#1}}}
 \newcommand{\data}[1]{\texttt{#1}}
-\newcommand{\class}[1]{\textsf{#1}}
+\newcommand{\class}[1]{\textsf{"#1"}}
 %% \code without `-' ligatures
 \def\nohyphenation{\hyphenchar\font=-1 \aftergroup\restorehyphenation}
 \def\restorehyphenation{\hyphenchar\font=`-}
@@ -44,42 +82,28 @@
 \def\Rd@code#1{\texttt{\nohyphenation#1}\egroup}
 
 \newcommand{\codefun}[1]{\code{#1()}}
+\let\proglang=\textsf
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\Rpackage}[1]{{\textsf{#1}}}
 
 %% almost as usual
 \author{Michael Friendly\\York University, Toronto}
 \title{Working with categorical data with \proglang{R} and the \pkg{vcd} and \pkg{vcdExtra} packages}
+\date{\footnotesize{Using \Rpackage{vcdExtra} version \Sexpr{packageDescription("vcdExtra")[["Version"]]}
+  and \Rpackage{vcd} version \Sexpr{packageDescription("vcd")[["Version"]]}; Date: \Sexpr{Sys.Date()}}}
+
 
 %% for pretty printing and a nice hypersummary also set:
-\Plainauthor{Michael Friendly} %% comma-separated
-\Shorttitle{vcd tutorial} %% a short title (if necessary)
-\Plaintitle{Tutorial: Working with categorical data with R and the vcd package}
-
-%% an abstract and keywords
-\Abstract{
-This tutorial describes the creation of frequency and contingency tables
-from categorical variables, along with tests of independence, measures
-of association, and methods for graphically displaying results. 
-The framework is provided by the \proglang{R} package \pkg{vcd},
-but other packages are used to help with various tasks.  
-The \pkg{vcdExtra} package extends the graphical methods provided by
-\pkg{vcd}.
-}
-
-\Keywords{contingency tables, mosaic plots, sieve plots, 
-categorical data, independence, conditional independence, generalized linear models,
-\proglang{R}}
-\Plainkeywords{contingency tables, mosaic plots, 
-  sieve plots, categorical data, independence, 
-  conditional independence, generalized linear models, R}
+%\Plainauthor{Michael Friendly} %% comma-separated
+%\Shorttitle{vcd tutorial} %% a short title (if necessary)
+%\Plaintitle{Tutorial: Working with categorical data with R and the vcd package}
 
 %\SweaveOpts{engine=R,eps=TRUE,height=6,width=7,results=hide,fig=FALSE,echo=TRUE}
 \SweaveOpts{engine=R,height=6,width=7,results=hide,fig=FALSE,echo=TRUE}
 \SweaveOpts{prefix.string=fig/vcd-tut,eps=FALSE}
+\SweaveOpts{keep.source=TRUE}
+%\SweaveOpts{concordance=TRUE}
 \setkeys{Gin}{width=0.7\textwidth}
-%\VignetteIndexEntry{Tutorial: Working with categorical data with R and the vcd package}
-%\VignetteDepends{vcd,gmodels,ca}
-%\VignetteKeywords{contingency tables, mosaic plots, sieve plots, categorical data, independence, conditional independence, R}
-%\VignettePackage{vcdExtra}
 
 <<preliminaries,echo=FALSE,results=hide>>=
 set.seed(1071)
@@ -96,15 +120,37 @@ art <- xtabs(~Treatment + Improved, data = Arthritis)
 
 %% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\SweaveOpts{keep.source=TRUE}
 
 \begin{document}
-%\SweaveOpts{concordance=TRUE}
+\maketitle
 
-%% include your article here, just as usual
-%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+%% an abstract and keywords
+\begin{abstract}
+This tutorial describes the creation of frequency and contingency tables
+from categorical variables, along with tests of independence, measures
+of association, and methods for graphically displaying results. 
+The framework is provided by the \proglang{R} package \pkg{vcd},
+but other packages are used to help with various tasks.  
+The \pkg{vcdExtra} package extends the graphical and statistical methods provided by
+\pkg{vcd}.
+\end{abstract}
 
-\section[Introduction]{Introduction}
+%\keywords{contingency tables, mosaic plots, sieve plots, 
+%categorical data, independence, conditional independence, generalized linear models,
+%\proglang{R}}
+%\Plainkeywords{contingency tables, mosaic plots, 
+%  sieve plots, categorical data, independence, 
+%  conditional independence, generalized linear models, R}
+
+{\small
+% \sloppy
+% \begin{multicols}{2}
+ \tableofcontents
+% \end{multicols}
+}
+
+
+\section[Introduction]{Introduction}\label{sec:intro}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 
@@ -134,18 +180,20 @@ available in \proglang{R}.  On the other hand, the implementation of graphical
 methods in \pkg{vcd} is more general in many respects than what I provided in
 \proglang{SAS}. Statistical models for categorical data in \proglang{R} have
 been extended considerably with the \pkg{gnm} package for generalized \emph{nonlinear}
-models.  The \pkg{vcdExtra} package extends \pkg{vcd} to models fit using
+models.  The \pkg{vcdExtra} package extends \pkg{vcd} methods to models fit using
 \codefun{glm} and \codefun{gnm}.
 
 A more complete theoretical description of these statistical
-methods is provided in Agresti's \citeyearpar{vcd:Agresti:2002}
+methods is provided in Agresti's \citeyearpar{vcd:Agresti:2002,Agresti:2013}
 \emph{Categorical Data Analysis}. For this, see
 the \proglang{Splus/R} companion by Laura Thompson,
-\url{https://home.comcast.net/~lthompson221/Splusdiscrete2.pdf}.
+\url{https://home.comcast.net/~lthompson221/Splusdiscrete2.pdf}
+and Agresti's support web page,
+\url{http://www.stat.ufl.edu/~aa/cda/cda.html}.
 
 
 
-\section{Creating and manipulating frequency tables}
+\section[Creating frequency tables]{Creating and manipulating frequency tables}\label{sec:creating}
 
 \proglang{R} provides many methods for creating frequency and contingency tables. Several are
 described below. In the examples below, we use some real examples and some anonymous
@@ -172,7 +220,8 @@ The \data{Arthritis} data is available in case form in the \pkg{vcd} package.
 There are two explanatory factors: \code{Treatment} and \code{Sex}. \code{Age}
 is a covariate, and \code{Improved} is the response--- an ordered factor,
 with levels 
-\Sexpr{paste(levels(Arthritis$Improved),collapse=' < ')}.  Excluding \code{Age}, we would have
+\code{\Sexpr{paste(levels(Arthritis$Improved),collapse=' < ')}}.  
+Excluding \code{Age}, we would have
 a $2 \times 2 \times 3$ contingency table for \code{Treatment}, \code{Sex} and \code{Improved}.
 %\code{"None" < "Some" < "Marked"}.
 <<case-form,results=verbatim>>=
@@ -241,7 +290,7 @@ str(JobSat)
 
 \end{description}
 
-\subsection{Ordered factors and reordered tables}\label{sec:ordered-factors}
+\subsection[Ordered factors]{Ordered factors and reordered tables}\label{sec:ordered-factors}
 In table form, the values of the table factors are ordered by their position in the table.
 Thus in the \data{JobSat} data, both \code{income} and \code{satisfaction} represent ordered
 factors, and the \emph{positions} of the values in the rows and columns reflects their
@@ -347,7 +396,7 @@ ftable(UCB)
 %str(as.data.frame(UCB))            # now OK
 %@
 %
-\subsection[structable]{\codefun{structable}}
+\subsection[structable()]{\codefun{structable}}\label{sec:structable}
 For 3-way and larger tables
 the \codefun{structable} function in \pkg{vcd} provides a convenient and flexible tabular display.
 The variables assigned to the rows and columns of a two-way display can be specified
@@ -363,7 +412,7 @@ HSE < - structable(Hair+Sex ~ Eye, HairEyeColor)   # save structable object
 mosaic(HSE)                                        # plot it
 @
 
-\subsection[table and friends]{\codefun{table} and friends}\label{sec:table}
+\subsection[table() and friends]{\codefun{table} and friends}\label{sec:table}
 
 You  can  generate frequency  tables from factor variables  using the  \codefun{table} function,  tables  of
 proportions using  the \codefun{prop.table} function,  and marginal  frequencies using
@@ -406,7 +455,7 @@ table option  \code{exclude=NULL} if  the variable  is a  vector. If  the variab
 factor you  have to  create a  new factor  using \code{newfactor  <- factor(oldfactor,
 exclude=NULL)}. 
 
-\subsection[xtabs]{\codefun{xtabs}}\label{sec:xtabs}
+\subsection[xtabs()]{\codefun{xtabs}}\label{sec:xtabs}
 
 The \codefun{xtabs} function allows you to create crosstabulations of data using formula style input.
 This typically works with case-form data supplied in a data frame or a matrix.
@@ -428,7 +477,7 @@ vector  of  frequencies  (useful if the data have already been tabulated in freq
 summary(GSStab)
 @
 
-\subsection[Collapsing over table factors]{Collapsing over table factors: \codefun{aggregate} and \codefun{apply}}
+\subsection[Collapsing over factors]{Collapsing over table factors: \codefun{aggregate} and \codefun{apply}}
 It sometimes happens that we have a data set with more variables or factors than 
 we want to analyse, or else, having done some initial analyses, we decide that
 certain factors are not important, and so should be excluded from graphic displays
@@ -494,7 +543,7 @@ Dayton.ACM.tab <- apply(Dayton.tab, MARGIN=1:3, FUN=sum)
 structable(cigarette+alcohol ~ marijuana, data=Dayton.ACM.tab)
 @
 
-\subsection{Converting among frequency tables and data frames}
+\subsection[Converting]{Converting among frequency tables and data frames}
 
 As we've seen, a given contingency table can be represented 
 equivalently in different forms,
@@ -639,7 +688,7 @@ levels(TV.df$Time) <- c(rep("8:00-8:59",4),rep("9:00-9:59",4), rep("10:00-10:44"
 TV2 <- xtabs(Freq ~ Day + Time + Network, TV.df)
 structable(Day ~ Time+Network,TV2)
 @
-Whew!
+Whew! See \figref{fig:TV-mosaic} for a mosaic plot of the \code{TV2} data.
 
 
 \section{Tests of Independence}
@@ -675,7 +724,7 @@ derived via Monte Carlo simulation.
 chisq.test(HairEye)
 @
 
-\subsection{Fisher Exact Test}
+\subsection{Fisher Exact Test}\label{sec:Fisher}
 
 \code{fisher.test(X)} provides an  exact test of  independence. \code{X} must be  a two-way
 contingency table in table form.  Another form, 
@@ -702,7 +751,7 @@ LDKEY is too small for this problem.
 Try increasing the size of the workspace.
 \end{Soutput}
 
-\subsection{Mantel-Haenszel test and conditional association}\label{sec:mantel}
+\subsection[Mantel-Haenszel test]{Mantel-Haenszel test and conditional association}\label{sec:mantel}
 
 Use the  \code{mantelhaen.test(X)} function  to perform  a Cochran-Mantel-Haenszel 
 $\chi^2$ chi
@@ -796,6 +845,50 @@ plot(lor, xlab="Department", ylab="Log Odds Ratio (Admit | Gender)")
 \label{fig:oddsratio}
 \end{center}
 \end{figure}
+
+\subsection[CMH tests: ordinal factors]{Cochran-Mantel-Haenszel tests for ordinal factors}\label{sec:CMH}
+The standard $\chi^2$ tests for association in a two-way table
+treat both table factors as nominal (unordered) categories.
+When one or both factors of a two-way table are
+quantitative or ordinal, more powerful tests of association
+may be obtaianed by taking ordinality into account, using
+row and or column scores to test for linear trends or differences
+in row or column means.
+
+More general versions of the CMH tests (Landis etal., 1978) are provided by assigning
+numeric scores to the row and/or column variables. 
+For example, with two ordinal factors (assumed to be equally spaced), assigning
+integer scores, \code{1:R} and \code{1:C} tests the linear $\times$ linear component
+of association. This is statistically equivalent to the Pearson correlation between the
+integer-scored table variables, with $\chi^2 = (n-1) r^2$, with only 1 $df$
+rather than $(R-1)\times(C-1)$ for the test of general association.
+
+When only one table
+variable is ordinal, these general CMH tests are analogous to an ANOVA, testing
+whether the row mean scores or column mean scores are equal, again consuming
+fewer $df$ than the test of general association.
+
+The \codefun{CMHtest} function in \pkg{vcdExtra} now calculates these various
+CMH tests for two possibly ordered factors, optionally stratified other factor(s).
+
+\Example
+Recall the $4 \times 4$ table, \code{JobSat} introduced in \secref{sec:creating},
+<<jobsat, results=verbatim>>=
+JobSat
+@
+
+Treating the \code{satisfaction} levels as equally spaced, but using
+midpoints of the \code{income} categories as row scores gives the following results:
+<<cmh1, results=verbatim>>=
+CMHtest(JobSat, rscores=c(7.5,20,32.5,60))
+@
+
+Note that with the relatively small cell frequencies, the test for general 
+give no evidence for association. However, the the \code{cor} test for linear x linear
+association on 1 df is nearly significant. The \pkg{coin} contains the
+functions \verb|cmh_test()| and \verb|lbl_test()|
+for CMH tests of general association and linear x linear association respectively.
+
 \subsection{Measures of Association}
 
 There are a variety of statistical measures of \emph{strength} of association for
@@ -813,7 +906,7 @@ assocstats(GSStab)
 @
 
 For tables with ordinal variables, like \data{JobSat}, some people prefer the
-Goodman-Kruskal $\gamma$ statistic (\citet[\S 2.4.3]{Agresti:2002})
+Goodman-Kruskal $\gamma$ statistic (\citet[\S 2.4.3]{vcd:Agresti:2002})
 based on a comparison of concordant
 and discordant pairs of observations in the case-form equivalent of a two-way table.
 <<gamma,results=verbatim>>=
@@ -826,7 +919,7 @@ gives further description of these and other measures of association.
 
 \subsection{Measures of Agreement}
 The
-\codefun{Kappa} function in the vcd package calculates Cohen's $\kappa$ and weighted
+\codefun{Kappa} function in the \pkg{vcd} package calculates Cohen's $\kappa$ and weighted
 $\kappa$ for a square two-way table with the same row and column categories \citep{Cohen:60}.%
 \footnote{ 
 Don't confuse this with \codefun{kappa} in base \proglang{R} that computes something
@@ -907,16 +1000,17 @@ title(xlab="Dim 1 (89.4%)", ylab="Dim 2 (9.5%)")
 \end{center}
 \end{figure}
 
-\section{Loglinear Models}
+\section{Loglinear Models}\label{sec:loglin}
 
 You can  use the  \codefun{loglm}  function in  the \pkg{MASS}  package to fit log-linear
 models.  Equivalent models can also be fit (from a different perspective) as generalized
 linear models with the \codefun{glm}  function using the \code{family='poisson'} argument,
 and the \pkg{gnm} package provides a wider range of generalized \emph{nonlinear} models,
 particularly for testing structured associations.
-The visualization methods for these models was originally developed for models fit using \codefun{loglm},
+The visualization methods for these models were originally developed for models fit using \codefun{loglm},
 so this approach is emphasized here.  Some extensions of these methods for models
-fit using \codefun{glm} and \codefun{gnm} are contained in the \pkg{vcdExtra} package.
+fit using \codefun{glm} and \codefun{gnm} are contained in the \pkg{vcdExtra} package
+and illustrated in \secref{sec:glm}.
 
 Assume we  have a 3-way  contingency table based  on
 variables A, B, and C.  
@@ -958,7 +1052,8 @@ $m_{ijk}$, this corresponds to
 The parameters $\lambda_i^A , \lambda_j^B$ and  $\lambda_k^C$ pertain to the differences among the
 one-way marginal frequencies for the factors A, B and C. 
 
-Similarly, the model of \emph{joint independence} allows an association between A and B, but specifies that
+Similarly, the model of \emph{joint independence},  $(A \: B) \perp C$,
+allows an association between A and B, but specifies that
 C is independent of both of these and their combinations,
 \begin{equation*}
 	\log ( m_{ijk} ) = \mu + \lambda_i^A + \lambda_j^B + \lambda_k^C + \lambda_{ij}^{AB} \equiv \texttt{A * B + C}
@@ -1015,7 +1110,8 @@ much wider class of models for frequency data to be fit than can be handled by
 \codefun{loglm}.  Of particular importance are models for ordinal factors and for
 square tables, where we can test more structured hypotheses about the patterns
 of association than are provided in the tests of general assosiation under
-\codefun{loglm}. 
+\codefun{loglm}. These are similar in spirit to the 
+non-parametric CMH tests described in \secref{sec:CMH}.
 
 \Example
 The data \code{Mental} in the \pkg{vcdExtra} package gives a two-way table in frequency form
@@ -1052,11 +1148,15 @@ roweff <- glm(Freq ~ mental + ses + mental:Cscore, family = poisson, data = Ment
 
 # linear x linear association
 linlin <- glm(Freq ~ mental + ses + Rscore:Cscore, family = poisson, data = Mental)
-
-# compare models using AIC
-AIC(indep, roweff, coleff, linlin)
 @
-In model comparisons, we can carry out tests of \emph{nested} models with
+The \codefun{summarize} in \pkg{vcdExtra} provides a nice, compact summary of the
+fit statistics for a set of models, collected into a \class{glmlist} object.
+Smaller is better for AIC and BIC.
+<<mental4a,results=verbatim>>=
+# compare models using AIC, BIC, etc
+summarise(glmlist(indep, roweff, coleff, linlin))
+@
+For specific model comparisons, we can also carry out tests of \emph{nested} models with
 \codefun{anova} when those models are listed from smallest to largest.
 Here, there are two separate paths from the most restrictive (independence) model
 through the model of uniform association, to those that allow only one of
@@ -1066,7 +1166,11 @@ anova(indep, linlin, coleff, test="Chisq")
 anova(indep, linlin, roweff, test="Chisq")	
 @
 The model of linear by linear association seems best on all accounts.
+For comparison, one might try the CMH tests on these data:
 
+<<mental6,results=verbatim>>=
+CMHtest(xtabs(Freq~ses+mental, data=Mental))
+@
 \section{Mosaic plots}\label{sec:mosaic}
 
 Mosaic plots provide an ideal method both for visualizing contingency tables and for 
@@ -1224,11 +1328,12 @@ so all \code{*.glm} methods apply, unless overridden in the \pkg{gnm} package.
 These are not restricted to the 
 Poisson family, but only apply to cases where the response variable is non-negative. 
 
+\Example
 Here, we plot the independence and the linear-by-linear association model
 for the Mental health data from \secref{sec:glm}.
 These examples illustrate some of the options for labeling (variable names and
-residuals printed in cells).  Note that the formula supplied to \codefun{mosaic}
-for \code{glm} objects refers to the order of factors displayed in the plot, not the model.
+residuals printed in cells).  Note that the \code{formula} supplied to \codefun{mosaic}
+for \class{glm} objects refers to the order of factors displayed in the plot, not the model.
 <<mental-plots,eval=FALSE>>=
 long.labels <- list(set_varnames = c(mental="Mental Health Status", ses="Parent SES"))
 mosaic(indep, ~ses+mental, residuals_type="rstandard",  
@@ -1236,8 +1341,8 @@ mosaic(indep, ~ses+mental, residuals_type="rstandard",
      main="Mental health data: Independence")
 
 mosaic(linlin, ~ses+mental, residuals_type="rstandard", 
-     labeling_args = long.labels, labeling=labeling_residuals, suppress=1, gp=shading_Friendly,
-     main="Mental health data: Linear x Linear")
+     labeling_args = long.labels, labeling=labeling_residuals, suppress=1, 
+     gp=shading_Friendly, main="Mental health data: Linear x Linear")
 @
 
 \setkeys{Gin}{width=0.49\textwidth}
@@ -1250,8 +1355,8 @@ mosaic(indep, ~ses+mental, residuals_type="rstandard",
 <<mental-plots2,fig=TRUE,echo=FALSE,height=6,width=6>>=
 long.labels <- list(set_varnames = c(mental="Mental Health Status", ses="Parent SES"))
 mosaic(linlin, ~ses+mental, residuals_type="rstandard", 
-     labeling_args = long.labels, labeling=labeling_residuals, suppress=1, gp=shading_Friendly,
-     main="Mental health data: Linear x Linear")
+     labeling_args = long.labels, labeling=labeling_residuals, suppress=1, 
+     gp=shading_Friendly, main="Mental health data: Linear x Linear")
 @
 
 The \pkg{gnm} package also fits a wide variety of models with nonlinear terms or terms for
@@ -1275,8 +1380,8 @@ mosaic(RC1model, residuals_type="rstandard", labeling_args = long.labels,
        main="Mental health data: RC(1) model")
 @
 Other forms of nonlinear terms are provided for the inverse of a predictor
-(codefun{Inv}) and the exponential of a predictor (codefun{Exp}).
-You should read \code{vignette("gnmOverview")} for further details.
+(\codefun{Inv}) and the exponential of a predictor (\codefun{Exp}).
+You should read \code{vignette("gnmOverview", package="gnm")} for further details.
 
 \subsection{Mosaic tips and techniques}\label{sec:tips}
 
@@ -1292,7 +1397,7 @@ to achieve a given effect from the \code{help()}.  As a first step, you should r
 these plot methods.  The notes below describe a few useful things that may not be obvious,
 or can be done in different ways.
 
-\subsubsection{Changing the labels for variables and levels}
+\subsubsection[Changing labels]{Changing the labels for variables and levels}
 With data in contingency table form or as a frequency data frame, it often happens
 that the variable names and/or the level values of the factors, while suitable
 for analysis, are less than adequate when used in mosaic plots and other strucplot
