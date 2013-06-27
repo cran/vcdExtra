@@ -1,9 +1,10 @@
+% !Rnw weave = Sweave
+%\VignetteEngine{Sweave}
 %\VignetteIndexEntry{Tutorial: Working with categorical data with R and the vcd package}
 %\VignetteDepends{vcd,gmodels,ca}
 %\VignetteKeywords{contingency tables, mosaic plots, sieve plots, categorical data, independence, conditional independence, R}
 %\VignettePackage{vcdExtra}
 
-%\documentclass{Z}
 \documentclass[10pt,twoside]{article}
 \usepackage{Sweave}
 \usepackage{bm}
@@ -109,11 +110,13 @@
 set.seed(1071)
 #library(vcd)
 library(vcdExtra)
+library(ggplot2)
 #data(Titanic)
 data(HairEyeColor)
 data(PreSex)
 data(Arthritis)
 art <- xtabs(~Treatment + Improved, data = Arthritis)
+if(!file.exists("fig")) dir.create("fig")
 @
 
 
@@ -122,6 +125,7 @@ art <- xtabs(~Treatment + Improved, data = Arthritis)
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 
 %% an abstract and keywords
@@ -218,7 +222,7 @@ the \codefun{str} function, or view the names of its components with the
 \Example
 The \data{Arthritis} data is available in case form in the \pkg{vcd} package. 
 There are two explanatory factors: \code{Treatment} and \code{Sex}. \code{Age}
-is a covariate, and \code{Improved} is the response--- an ordered factor,
+is a numeric covariate, and \code{Improved} is the response--- an ordered factor,
 with levels 
 \code{\Sexpr{paste(levels(Arthritis$Improved),collapse=' < ')}}.  
 Excluding \code{Age}, we would have
@@ -346,12 +350,17 @@ Arthritis$Improved <- ordered(Arthritis$Improved, levels=c("None", "Some", "Mark
 With this order of  \code{Improved}, the response in this data,
 a mosaic display of \code{Treatment} and \code{Improved} (\figref{fig:arthritis})shows a clearly
 interpretable pattern.
-\setkeys{Gin}{width=0.7\textwidth}
-\begin{figure}[htb]
-\begin{center}
-<<Arthritis,fig=TRUE,echo=FALSE,height=6,width=7,results=hide>>=
+<<Arthritis,fig=TRUE,echo=FALSE,height=6,width=7,results=hide,include=FALSE>>=
 mosaic(art, gp = shading_max, split_vertical = TRUE, main="Arthritis: [Treatment] [Improved]")
 @
+
+%\setkeys{Gin}{width=0.7\textwidth}
+\begin{figure}[htb]
+\begin{center}
+%<<Arthritis,fig=TRUE,echo=FALSE,height=6,width=7,results=hide>>=
+%mosaic(art, gp = shading_max, split_vertical = TRUE, main="Arthritis: [Treatment] [Improved]")
+%@
+\includegraphics[width=0.7\textwidth]{fig/vcd-tut-Arthritis}
 \caption{Mosaic plot for the \data{Arthritis} data, showing the marginal model of independence
 	for Treatment and Improved.  Age, a covariate, and Sex are ignored here.}
 \label{fig:arthritis}
@@ -441,7 +450,8 @@ prop.table(mytable, 2) # column percentages
 @
 
 \codefun{table} can  also  generate  multidimensional  tables  based  on  3  or  more
-categorical variables. In  this case, use  the \codefun{ftable}  function to print  the
+categorical variables. In  this case, use  the \codefun{ftable}  or \codefun{structable}
+function to print  the
 results more attractively.
 
 <<table-ex2>>=
@@ -450,7 +460,8 @@ mytable <- table(A, B, C)
 ftable(mytable)
 @
 
-Table ignores missing values. To include \code{NA} as a category in counts, include the
+\codefun{table}  ignores missing values by default. 
+To include \code{NA} as a category in counts, include the
 table option  \code{exclude=NULL} if  the variable  is a  vector. If  the variable is a
 factor you  have to  create a  new factor  using \code{newfactor  <- factor(oldfactor,
 exclude=NULL)}. 
@@ -477,7 +488,7 @@ vector  of  frequencies  (useful if the data have already been tabulated in freq
 summary(GSStab)
 @
 
-\subsection[Collapsing over factors]{Collapsing over table factors: \codefun{aggregate} and \codefun{apply}}
+\subsection[Collapsing over factors]{Collapsing over table factors: \codefun{aggregate}, \codefun{margin.table} and \codefun{apply}}
 It sometimes happens that we have a data set with more variables or factors than 
 we want to analyse, or else, having done some initial analyses, we decide that
 certain factors are not important, and so should be excluded from graphic displays
@@ -487,7 +498,8 @@ the factors which are not shown in the plots.
 
 The appropriate tools to use again depend on
 the form in which the data are represented--- a case-form data frame, a
-frequency-form data frame (\codefun{aggregate}), or a table-form array or table object (\codefun{apply}).
+frequency-form data frame (\codefun{aggregate}), or a table-form array or 
+table object (\codefun{margin.table} or \codefun{apply}).
 
 When the data are in frequency form, and we want to produce another
 frequency data frame, \codefun{aggregate} is a handy tool, using
@@ -500,7 +512,7 @@ $2^5$ table giving the frequencies of reported use (``ever used?'') of
 alcohol, cigarettes and marijuana in a sample of high school seniors,
 also classified by sex and race.  
 
-<<dayton1, results=verbatim>>==
+<<dayton1, results=verbatim>>=
 str(DaytonSurvey)
 head(DaytonSurvey)
 @
@@ -510,17 +522,19 @@ substances, we want to collapse over sex and race. The right-hand side of the fo
 used in the call to \codefun{aggregate} gives the factors to be retained in the
 new frequency data frame, \code{Dayton.ACM.df}.
 
-<<dayton2, results=verbatim>>==
+<<dayton2, results=verbatim>>=
 # data in frequency form
 # collapse over sex and race
-Dayton.ACM.df <- aggregate(Freq ~ cigarette+alcohol+marijuana, data=DaytonSurvey, FUN=sum)
+Dayton.ACM.df <- aggregate(Freq ~ cigarette+alcohol+marijuana, 
+                           data=DaytonSurvey, FUN=sum)
 Dayton.ACM.df
 @
 
 When the data are in table form, and we want to produce another
 table, \codefun{apply} with \code{FUN=sum} can be used in a similar way
 to sum the table over dimensions not mentioned in the \code{MARGIN}
-argument.
+argument.  \codefun{margin.table} is just a wrapper for \codefun{apply}
+using the \codefun{sum} function.
 
 
 \Example 
@@ -540,8 +554,64 @@ The elements in this new table are the column sums for
 <<dayton4, results=verbatim>>==
 # collapse over sex and race
 Dayton.ACM.tab <- apply(Dayton.tab, MARGIN=1:3, FUN=sum)
+Dayton.ACM.tab <- margin.table(Dayton.tab, 1:3)   # same result
 structable(cigarette+alcohol ~ marijuana, data=Dayton.ACM.tab)
 @
+
+
+
+Many of these operations can be performed using the \verb|**ply()| functions
+in the \pkg{plyr} package.
+For example, with the data in a frequency form data frame, use \codefun{ddply}
+to collapse over unmentioned factors, and \codefun{plyr::summarise}%
+\footnote{
+Ugh. This \pkg{plyr} function clashes with a function of the same name in \pkg{vcdExtra}.
+In this document I will use the explicit double-colon notation to keep them
+separate.
+}
+as the function to be applied to each piece.
+<<dayton5, eval=FALSE>>==
+Dayton.ACM.df <- ddply(DaytonSurvey, .(cigarette, alcohol, marijuana), 
+                       plyr::summarise, Freq=sum(Freq))
+@
+
+\subsection[Collapsing levels]{Collapsing table levels: \codefun{collapse.table}}
+
+A related problem arises when we have a table or array and for some purpose
+we want to reduce the number of levels of some factors by summing subsets
+of the frequencies.  For example, we may have initially coded Age in 10-year
+intervals, and decide that, either for analysis or display purposes, we
+want to reduce Age to 20-year intervals.  The \codefun{collapse.table} function
+in \pkg{vcdExtra} was designed for this purpose.
+
+\Example
+Create a 3-way table, and collapse Age from 10-year to 20-year intervals. 
+First, we generate a $2 \times 6 \times 3$ table of random counts from a 
+Poisson distribution with mean of 100.
+<<collapse1,results=verbatim>>=
+# create some sample data in frequency form
+sex <- c("Male", "Female")
+age <- c("10-19", "20-29",  "30-39", "40-49", "50-59", "60-69")
+education <- c("low", 'med', 'high')
+data <- expand.grid(sex=sex, age=age, education=education)
+counts <- rpois(36, 100)   # random Possion cell frequencies
+data <- cbind(data, counts)
+
+# make it into a 3-way table
+t1 <- xtabs(counts ~ sex + age + education, data=data)
+structable(t1)
+@ 
+Now collapse \code{age} to 20-year intervals, and \code{education}
+to 2 levels. In the arguments, levels of \code{age} and \code{education}
+given the same label are summed in the resulting smaller table.
+<<collapse2, results=verbatim>>=
+# collapse age to 3 levels, education to 2 levels
+t2 <- collapse.table(t1, 
+         age=c("10-29", "10-29",  "30-49", "30-49", "50-69", "50-69"),
+         education=c("<high", "<high", "high"))
+structable(t2)
+@
+
 
 \subsection[Converting]{Converting among frequency tables and data frames}
 
@@ -555,8 +625,8 @@ but some \proglang{R} functions were designed for one particular representation.
  \begin{center}
    \begin{tabular}{llll}
 	\hline
-                 & \multicolumn{3}{c}{To this} \\
-	From this      &     Case form         & Frequency form             &  Table form \\
+                 & \multicolumn{3}{c}{\textbf{To this}} \\
+	\textbf{From this}      &     Case form         & Frequency form             &  Table form \\
 	\hline
 	Case form      &   noop                 & \verb|xtabs(~A+B)|        &  \verb|table(A,B)|  \\ 
 	Frequency form &  \verb|expand.dft(X)|  & noop                      & \verb|xtabs(count~A+B)|\\
@@ -584,7 +654,8 @@ as.data.frame(GSStab)
 @
 
 \Example Convert the \code{Arthritis} data in case form to a 3-way table of
-\code{Treatment} $\times$ \code{Sex} $\times$ \code{Improved}.%
+\code{Treatment} $\times$ \code{Sex} $\times$ \code{Improved}.
+Note the use of \codefun{with} to avoid having to use \code{Arthritis\$Treatment} etc. within the call to \codefun{table}.%
 \footnote{
 \codefun{table} does not allow a \code{data} argument to provide
 an environment in which the table variables are to be found.  In the 
@@ -611,7 +682,7 @@ This function is included in \pkg{vcdExtra}.
 
 \Example Convert the \data{Arthritis} data in table form (\code{Art.tab}) back to a \code{data.frame}
 in case form, with factors
-\code{Treatment}, $\times$ \code{Sex} and \code{Improved}.
+\code{Treatment}, \code{Sex} and \code{Improved}.
 <<convert-ex3,results=verbatim>>=
 Art.df <- expand.dft(Art.tab)
 str(Art.df)
@@ -623,7 +694,7 @@ If you've followed so far, you're ready for a more complicated example.
 The data file, \code{tv.dat} represents a 4-way table of size
 $5 \times 11 \times 5 \times 3$ where the table variables (unnamed in the file)
 are read as \code{V1} -- \code{V4}, and the cell frequency is read
-as \code{V5}.  The file, stored in the \code{data/} directory
+as \code{V5}.  The file, stored in the \code{doc/extdata} directory
 of \pkg{vcdExtra}, can be read as follows:
 <<tv1,results=verbatim>>=
 tv.data<-read.table(system.file("doc","extdata","tv.dat",package="vcdExtra"))
@@ -644,10 +715,10 @@ Media Research for the week starting November 6, 1995.
 
 \begin{flushleft}
 The table variables are:\\
-~~\code{V1}-- values 1:5 correspond to the days Monday--Friday;\\
-~~\code{V2}-- values 1:11 correspond to the quarter hour times 8:00PM through 10:30PM;\\
-~~\code{V3}-- values 1:5 correspond to ABC, CBS, NBC, Fox, and non-network choices;\\
-~~\code{V4}-- values 1:3 correspond to transition states: turn the television Off, Switch channels, 
+~~~\code{V1}-- values 1:5 correspond to the days Monday--Friday;\\
+~~~\code{V2}-- values 1:11 correspond to the quarter hour times 8:00PM through 10:30PM;\\
+~~~\code{V3}-- values 1:5 correspond to ABC, CBS, NBC, Fox, and non-network choices;\\
+~~~\code{V4}-- values 1:3 correspond to transition states: turn the television Off, Switch channels, 
  or Persist in viewing the current channel.
 \end{flushleft}
 	 
@@ -659,18 +730,36 @@ so \code{nrow(tv.data)}=\Sexpr{nrow(tv.data)};
 and reshape it into an array.
 <<tv2,results=hide>>=
 TV <- array(tv.data[,5], dim=c(5,11,5,3))                                        
-
 dimnames(TV) <- list(c("Monday","Tuesday","Wednesday","Thursday","Friday"), 
                 c("8:00","8:15","8:30","8:45","9:00","9:15","9:30",         
-                "9:45","10:00","10:15","10:30"),                            
+                  "9:45","10:00","10:15","10:30"),                            
                 c("ABC","CBS","NBC","Fox","Other"), c("Off","Switch","Persist"))
 names(dimnames(TV))<-c("Day", "Time", "Network", "State")
 @
 
-But this table is too large and awkward to work with. Among the networks,
+More generally (even if there are missing cells), we can 
+use \codefun{xtabs} (or \codefun{plyr::daply})
+to do the cross-tabulation, using \code{V5} as the
+frequency variable.  Here's how to do this same operation with \codefun{xtabs}:
+<<tv2a,eval=FALSE>>=
+TV <- xtabs(V5 ~ ., data=tv.data)
+dimnames(TV) <- list(Day=c("Monday","Tuesday","Wednesday","Thursday","Friday"), 
+                Time=c("8:00","8:15","8:30","8:45","9:00","9:15","9:30",         
+                       "9:45","10:00","10:15","10:30"),                            
+                Network=c("ABC","CBS","NBC","Fox","Other"), 
+                State=c("Off","Switch","Persist"))
+@
+
+But this 4-way table is too large and awkward to work with. Among the networks,
 Fox and Other occur infrequently. 
 We can also cut it down to a 3-way table by considering only viewers who persist
-with the current station.
+with the current station.%
+\footnote{This relies on the fact that that indexing
+an array drops dimensions of length 1 by default,
+using the argument \code{drop=TRUE};
+the result is coerced to the lowest possible dimension.
+}
+
 <<tv3,results=verbatim>>=
 TV <- TV[,,1:3,]     # keep only ABC, CBS, NBC
 TV <- TV[,,,3]       # keep only Persist -- now a 3 way table
@@ -828,6 +917,36 @@ subtable. The following gives a display (not shown) similar to \figref{fig:fourf
 cotabplot(UCB, panel = cotab_fourfold)
 @
 
+When we want to view the conditional
+probabilities of a response variable (e.g., \code{Admit})
+in relation to several factors,
+an alternative visualization is a \codefun{doubledecker} plot.
+This plot is a specialized version of a mosaic plot, which
+highlights the levels of a response variable (plotted vertically)
+in relation to the factors (shown horizontally). The following
+call produces \figref{fig:doubledecker}, where we use indexing
+on the first factor (\code{Admit}) to make \code{Admitted}
+the highlighted level.
+
+In this plot, the
+association between \code{Admit} and \code{Gender} is shown
+where the heights of the highlighted conditional probabilities
+do not align. The excess of females admitted in Dept A stands out here.
+
+<<doubledecker,fig=TRUE, height=5,width=9,include=FALSE>>=
+doubledecker(Admit ~ Dept + Gender, data=UCBAdmissions[2:1,,])
+@
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{fig/vcd-tut-doubledecker}
+\caption{Doubledecker display for the \data{UCBAdmissions} data. The heights
+of the highlighted bars show the conditional probabilities of \texttt{Admit},
+given \texttt{Dept} and \texttt{Gender}.}
+\label{fig:doubledecker}
+\end{center}
+\end{figure}
+
 Finally, the there is a \codefun{plot} method for \code{oddsratio} objects.
 By default, it shows the 95\% confidence interval for the log odds ratio.
 \figref{fig:oddsratio} is produced by:
@@ -835,7 +954,7 @@ By default, it shows the 95\% confidence interval for the log odds ratio.
 plot(lor, xlab="Department", ylab="Log Odds Ratio (Admit | Gender)")
 @
 
-\setkeys{Gin}{width=0.4\textwidth}
+\setkeys{Gin}{width=0.5\textwidth}
 \begin{figure}[htb]
 \begin{center}
 <<oddsratio,fig=TRUE,height=6,width=6,echo=FALSE>>=
@@ -966,12 +1085,22 @@ Use the \pkg{ca} package for correspondence analysis for visually exploring rela
 between rows and columns in contingency tables.  For an $r \times c$ table,
 the method provides a breakdown of the Pearson $\chi^2$ for association in up to $M = \min(r-1, c-1)$
 dimensions, and finds scores for the row ($x_{im}$) and column ($y_{jm}$) categories
-such that the observations have the maximum possible correlations.
+such that the observations have the maximum possible correlations.%
+\footnote{
+	Related methods are the non-parametric
+	CMH tests using assumed row/column scores (\secref{sec:CMH}),
+	the analogous \codefun{glm} model-based methods (\secref{sec:CMH}),
+	and the more general RC models which can be fit using \codefun{gnm}.
+	Correspondence analysis differs in that it is a primarily
+	descriptive/exploratory method (no significance tests), but is
+	directly tied to informative graphic displays of the row/column categories.
+}	
+	
 
 
 Here, we carry out a simple correspondence analysis of the \data{HairEye} data.
 The printed results show that nearly 99\% of the association between hair color and eye color
-can be accounted for in 2 dimensions.
+can be accounted for in 2 dimensions, of which the first dimension accounts for 90\%.
 <<ca1,results=verbatim>>=
 library(ca)
 ca(HairEye)
@@ -1154,7 +1283,7 @@ fit statistics for a set of models, collected into a \class{glmlist} object.
 Smaller is better for AIC and BIC.
 <<mental4a,results=verbatim>>=
 # compare models using AIC, BIC, etc
-summarise(glmlist(indep, roweff, coleff, linlin))
+vcdExtra::summarise(glmlist(indep, roweff, coleff, linlin))
 @
 For specific model comparisons, we can also carry out tests of \emph{nested} models with
 \codefun{anova} when those models are listed from smallest to largest.
@@ -1171,6 +1300,45 @@ For comparison, one might try the CMH tests on these data:
 <<mental6,results=verbatim>>=
 CMHtest(xtabs(Freq~ses+mental, data=Mental))
 @
+
+\subsection{Non-linear terms}
+The strength of the \pkg{gnm} package is that it handles a wide variety of models
+that handle non-linear terms, where the parameters enter the model beyond a simple
+linear function.
+The simplest example is the Goodman RC(1) model, which allows a multiplicative
+term to account for the association of the table variables.
+In the notation of generalized linear models with a log link, this can be expressed as
+\begin{equation*}
+\log \mu_{ij} = \alpha_i + \beta_j + \gamma_{i} \delta_{j}	
+\end{equation*}
+where the row-multiplicative effect parameters $\gamma_i$ and 
+corresponding column parameters $\delta_j$ are estimated from the data.%
+\footnote{
+This is similar in spirit to a correspondence analysis with a single
+dimension, but as a statistical model.
+}
+Similarly, the RC(2) model adds two multiplicative terms to
+the independence model,
+\begin{equation*}
+\log \mu_{ij} = \alpha_i + \beta_j + \gamma_{i1} \delta_{j1} + \gamma_{i2} \delta_{j2}
+\end{equation*}
+
+In the \pkg{gnm} package, these models may be fit using the \codefun{Mult}
+to specify the multiplicative term, and \codefun{instances} to specify several
+such terms.
+
+\Example
+For the \code{Mental} data, we fit the RC(1) and RC(2) models, and compare
+these with the independence model.
+
+<<mental7,results=verbatim>>=
+RC1 <- gnm(Freq ~ mental + ses + Mult(mental,ses), data=Mental, 
+             family=poisson, , verbose=FALSE)
+RC2 <- gnm(Freq ~ mental+ses + instances(Mult(mental,ses),2), data=Mental, 
+             family=poisson, verbose=FALSE)
+anova(indep, RC1, RC2, test="Chisq")
+@
+
 \section{Mosaic plots}\label{sec:mosaic}
 
 Mosaic plots provide an ideal method both for visualizing contingency tables and for 
@@ -1456,7 +1624,7 @@ mosaic(~ Day + Network + Time, data=TV2, expected=~Day:Time + Network,
 
 
 
-\section[Continuous predictors]{Continuous predictors: spine and conditional density plots}\label{sec:contin}
+\section[Continuous predictors]{Continuous predictors}\label{sec:contin}
 When continuous predictors are available---and potentially important--- in explaining a
 categorical outcome, models for that outcome include:
 logistic regression (binary response), 
@@ -1465,6 +1633,7 @@ multinomial (generalized) logistic regression.
 Many of these are special cases of the generalized linear model using the
 \code{"poisson"} or \code{"binomial"} family and their relatives.
 
+\subsection{Spine and conditional density plots}\label{sec:spine}
 I don't go into fitting such models here, but I would be remiss not to illustrate some
 visualizations in \pkg{vcd} that are helpful here.
 The first of these is the spine plot or spinogram \citep{vcd:Hummel:1996}
@@ -1478,6 +1647,7 @@ the \emph{widths} of the bars corresponds to the relative frequencies of \code{x
 of the  bars then  correspond to  the conditional  relative frequencies  of {y} in
 every \code{x} group.
 
+\Example
 For the \data{Arthritis} data, we can see how \code{Improved} varies with \code{Age}
 as follows.  \codefun{spine} takes a formula of the form 
 \verb|y ~ x| with a single dependent factor and a single explanatory variable \code{x}
@@ -1534,6 +1704,84 @@ These may be real or artifactual, but they would be hard to see
 with most other visualization methods.
 When we switch from non-parametric data exploration to parametric
 statistical models, such effects are easily missed.
+
+\subsection[Model-based plots]{Model-based plots: effect plots and \pkg{ggplot2} plots}\label{sec:modelplots}
+The nonparametric conditional density plot uses smoothing methods
+to convey the distributions of the response variable,
+but displays that are simpler to interpret can often be obtained by plotting
+the predicted response from a parametric model.
+
+For complex \codefun{glm} models with interaction effects, the \pkg{effects}
+package  provides the most useful displays,
+plotting  the predicted values for a given term, averaging over other
+predictors not included in that term.  I don't illustrate this here, but
+see \citet{effects:1,effects:2} and \code{help(package="effects")}.
+
+Here I just briefly illustrate the capabilities of the \pkg{ggplot2} package
+for model-smoothed plots of categorical responses in \codefun{glm} models.
+
+\Example
+The \data{Donner} data frame in \pkg{vcdExtra} gives details on the survival
+of 90 members of the Donner party,
+a group of people who attempted to migrate to California in 1846.
+They were trapped by an early blizzard on the eastern side of the
+Sierra Nevada mountains, and before they could be rescued, 
+nearly half of the party had died.
+What factors affected who lived and who died?
+
+<<donner1, results=verbatim>>=
+data(Donner, package="vcdExtra")
+str(Donner)
+@
+A potential model of interest
+is the logistic regression model for $Pr(survived)$, allowing separate
+fits for males and females as a function of \code{age}.
+The key to this is the \verb|stat_smooth()| function, using
+	\code{method = "glm", family = binomial}. The \verb|formula = y ~ x|
+	specifies a linear fit on the logit scale (\figref{fig:donner3}, left)
+
+<<donner2a, fig=FALSE, eval=FALSE>>=
+# separate linear fits on age for M/F
+ggplot(Donner, aes(age, survived, color = sex)) +
+  geom_point(position = position_jitter(height = 0.02, width = 0)) +
+  stat_smooth(method = "glm", family = binomial, formula = y ~ x,
+           alpha = 0.2, size=2, aes(fill = sex))
+@
+Alternatively, we can allow a quadratic relation with \code{age}
+by specifying \verb|formula = y ~ poly(x,2)| (\figref{fig:donner3}, right).
+<<donner2b, fig=FALSE, eval=FALSE>>=
+# separate quadratics
+ggplot(Donner, aes(age, survived, color = sex)) +
+  geom_point(position = position_jitter(height = 0.02, width = 0)) +
+  stat_smooth(method = "glm", family = binomial, formula = y ~ poly(x,2),
+           alpha = 0.2, size=2, aes(fill = sex))
+@
+
+\setkeys{Gin}{width=0.49\textwidth}
+\begin{figure}[htb]
+\begin{center}
+<<donner3a,fig=TRUE,echo=FALSE,height=6,width=6, results=hide>>=
+ggplot(Donner, aes(age, survived, color = sex)) +
+  geom_point(position = position_jitter(height = 0.02, width = 0)) +
+  stat_smooth(method = "glm", family = binomial, formula = y ~ x,
+           alpha = 0.2, size=2, aes(fill = sex))
+
+@
+<<donner3b,fig=TRUE,echo=FALSE,height=6,width=6, results=hide>>=
+# separate quadratics
+ggplot(Donner, aes(age, survived, color = sex)) +
+  geom_point(position = position_jitter(height = 0.02, width = 0)) +
+  stat_smooth(method = "glm", family = binomial, formula = y ~ poly(x,2),
+           alpha = 0.2, size=2, aes(fill = sex))
+@
+\caption{Logistic regression plots for the  \data{Donner} data
+	showing survival vs. age, by sex. Left: linear logistic model; right: quadratic model}
+\label{fig:donner3}
+\end{center}
+\end{figure}
+These plots very nicely show (a) the fitted $Pr(survived)$ for males and females;
+(b) confidence bands around the smoothed model fits and (c) the individual
+observations by jittered points at 0 and 1 for those who died and survided, respectively.
 
 \bibliography{vcd,vcdExtra}
 

@@ -16,7 +16,9 @@ and dimension information (\code{dim} or code{length}) of each item,
 and formats these to provide additional descriptors.
 }
 \usage{
-datasets(package, allClass = FALSE, incPackage = length(package) > 1)
+datasets(package, allClass=FALSE, 
+    incPackage=length(package) > 1,
+    maxTitle=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +31,9 @@ include all classes of the item (\code{TRUE}) or just the last class (\code{FALS
   \item{incPackage}{
 include the package name in result?
 }
+  \item{maxTitle}{
+maximum length of data set Title
+}
 }
 \details{
 The requested packages must be installed, and are silently loaded in order
@@ -36,6 +41,11 @@ to extract \code{class} and size information.
 }
 \value{
 A \code{data.frame} whose rows correspond to data sets found in \code{package}.
+The columns (for a single package) are:
+  \item{Item}{data set name}
+  \item{class}{class}
+  \item{dim}{an abbreviation of the dimensions of the data set}
+  \item{Title}{data set title}
 }
 %\references{
 %%% ~put references to the literature/web site here ~
@@ -55,7 +65,7 @@ Michael Friendly, with R-help from Curt Seeliger
 \examples{
 datasets("vcdExtra")
 datasets(c("vcd", "vcdExtra"))
-datasets("datasets")
+datasets("datasets", maxTitle=50)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
