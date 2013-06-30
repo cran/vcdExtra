@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: vcd extensions and additions
-Version: 0.5-7
-Date: 2013-3-1
+Version: 0.5-10
+Date: 2013-06-27
 Authors@R: c(person(given = "Michael", family = "Friendly",
         role=c("aut", "cre"), email="friendly@yorku.ca"), person(given
         = "Heather", family = "Turner", role="ctb"), person(given =
@@ -13,7 +13,8 @@ Author: Michael Friendly with Heather Turner, Achim Zeileis, Duncan
         Murdoch and David Firth
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Depends: R (>= 2.10), vcd, gnm (>= 1.0.3)
-Suggests: ca,gmodels,Fahrmeir,effects,VGAM,plyr,rgl,lmtest,MASS,nnet
+Suggests:
+        ca,gmodels,Fahrmeir,effects,VGAM,plyr,rgl,lmtest,MASS,nnet,ggplot2,Sleuth2
 Description: Provides additional data sets, methods and documentation
         to complement the vcd package for Visualizing Categorical Data
         and the gnm package for Generalized Nonlinear Models.  In
@@ -26,8 +27,8 @@ LazyLoad: yes
 LazyData: yes
 Repository: CRAN
 Repository/R-Forge/Project: vcdextra
-Repository/R-Forge/Revision: 146
-Repository/R-Forge/DateTimeStamp: 2013-03-04 15:12:42
-Date/Publication: 2013-03-05 06:40:24
-Packaged: 2013-03-04 19:17:05 UTC; rforge
+Repository/R-Forge/Revision: 168
+Repository/R-Forge/DateTimeStamp: 2013-06-29 12:09:01
+Date/Publication: 2013-06-30 01:34:28
+Packaged: 2013-06-29 14:27:10 UTC; rforge
 NeedsCompilation: no
