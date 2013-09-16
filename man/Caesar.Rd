@@ -45,6 +45,7 @@ with other variables.}
 data(Caesar)
 #display table;  note that there are quite a few 0 cells
 structable(Caesar)
+require(MASS)
 
 # baseline model, Infection as response
 Caesar.mod0 <- loglm(~Infection + (Risk*Antibiotics*Planned), data=Caesar)
