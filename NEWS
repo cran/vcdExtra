@@ -1,3 +1,20 @@
+Version 0.6-0 (2014-03-07)
+
+o Removed Authors: in DESCRIPTION, bumped version
+
+Version 0.5-12 (2013-12-16)
+
+o Added ShakeWords data set- word frequency counts from Shakespeare (rev 188)
+o Added Geissler data-- all family sizes for Saxony sex composition data (rev 190)
+o Added logseries functions for the logarithmic series distribution (rev 191)
+o Added Depends data -- dependencies of r packages (rev 192)
+o Fixed buglet in seq_loglm() not respecting arrays
+o Added seq_mosaic() (rev 194)
+o Added CyclingDeaths data (rev 196)
+o mosaic3d() gets an interpolate= option to control shading levels (rev 197)
+o Fixed bug in seq_mosaic, thx to David Meyer (rev 200)
+o Fixed bug in seq_loglm() when marginals != 1:nf
+
 Version 0.5-11 (2013-07-01)
 
 o Added mosaic.glmlist to plot mosaics (or other strucplots) for some or all models in a glmlist (rev 169)
@@ -11,7 +28,6 @@ o Added Accident data (rev 178); fleshed out Accident examples (rev 180)
 o Fixed use of ::: for R 3.0.1 (rev 179)
 o Fixed various problems related to use of MASS:loglm (rev 181-183)
 o Added Titanicp to datasets (rev 185)
-
 
 
 Version 0.5-8 (2013-03-06)

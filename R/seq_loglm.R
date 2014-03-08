@@ -18,7 +18,7 @@
 seq_loglm <- function(
 	x,
 	type = c("joint", "conditional", "mutual", "markov", "saturated"),
-  marginals = 1:nf,  # which marginals to fit?
+	marginals = 1:nf,  # which marginals to fit?
 	vorder = 1:nf,     # order of variables in the sequential models
 	k = NULL,          # conditioning variable(s) for "joint", "conditional" or order for "markov"
 	prefix = 'model',
@@ -29,7 +29,7 @@ seq_loglm <- function(
   if (inherits(x, "data.frame") && "Freq" %in% colnames(x)) {
     x <- xtabs(Freq ~ ., data=x)
   }
-  if (!inherits(x, "table")) stop("not an xtabs or table or data.frame with a 'Freq' variable")
+  if (!inherits(x, c("table", "array"))) stop("not an xtabs, table, array or data.frame with a 'Freq' variable")
   
 	nf <- length(dim(x))
 	x <- aperm(x, vorder)
@@ -37,8 +37,9 @@ seq_loglm <- function(
 	indices <- 1:nf
 
   type = match.arg(type)
-  models <- as.list(rep(NULL, length(marginals))) 
-	for (i in marginals) {
+#  models <- as.list(rep(NULL, length(marginals))) 
+  models <- list()
+  for (i in marginals) {
 		mtab <- margin.table(x, 1:i)
 		if (i==1) {
 			# KLUDGE: use loglin, but try to make it look like a loglm object
@@ -72,12 +73,13 @@ seq_loglm <- function(
   		mod$model.string <- loglin2string(expected, brackets=if (i<nf) '()' else '[]')
   		
 		}
-  	cat(i, "  model.string: ", mod$model.string, "\n")
+#  	cat(i, "  model.string: ", mod$model.string, "\n")
 #  	cat("model:\n"); print(mod)
   	models[[i]] <- mod
 	}
-	class(models) <- "loglmlist"
 	names(models) <- paste(prefix, '.', indices, sep='')
+	models <- models[marginals]
+	class(models) <- "loglmlist"
 	invisible(models)
 }
 
