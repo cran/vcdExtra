@@ -16,8 +16,8 @@ adds a 3D version in \code{\link{mosaic3d}}.
 \tabular{ll}{
 Package: \tab vcdExtra\cr
 Type: \tab Package\cr
-Version: \tab 0.6-1\cr
-Date: \tab 2014-04-13\cr
+Version: \tab 0.6-3\cr
+Date: \tab 2014-10-27\cr
 License: \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }
@@ -50,7 +50,7 @@ categorical data.
 
 A new class, \code{\link{glmlist}}, is introduced for working with
 collections of \code{glm} objects, e.g., \code{\link{Kway}} for fitting
-all K-way models from a basic marginal model, and \code{\link{summarise}}
+all K-way models from a basic marginal model, and \code{\link{Summarise}}
 for brief statistical summaries of goodnes-of-fit for a collection of
 models.
 

@@ -1,3 +1,21 @@
+Version 0.6.3 (2014-10-27)
+
+o Fixed bug in logLik.loglm when the data contain zero frequencies (rev 228)
+o Made Summarise generic, adding a method for "glmlist" objects (rev 230)
+o Added a coef() method for "glmlist" objects (thx: John Fox)
+o Added a Summarise.loglmlist method (rev 232)
+o Replaced all documentation uses of summarise() with Summarise() (rev 233)
+o Added cutfac(), a convenience wrapper for cut() (rev 234)
+o Now use rgl:: in all mosaic3d functions
+
+Version 0.6-2 (2014-06-30)
+
+o added Summarise, to replace summarise
+o Added HairEyePlace data - 4 x 5 x 2, Caithness and Aberdeen hair/eye color (rev 223)
+o Added PhdPubs data from Long (1997) - publications by PhD candidates
+o Allow Summarise to work with models w/o a deviance() function
+o Fixed bug in Summarise wrt degrees of freedom
+
 Version 0.6-1 (2014-04-14)
 
 o Added ICU data

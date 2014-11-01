@@ -1,16 +1,21 @@
-# last modified 20 Dec 2013 by M. Friendly
+# last modified 29 Oct 2014 by M. Friendly
 # - removed aperm, now that aperm.table is in base
 # - removed meanResiduals, which is now in gnm
-# - added HLtest & methods
-# - added CMHtest
-# - added functions in loglin-utilities
-# - added logseries functions
-# - added seq_mosaic
-# - added logLik.loglm, blogits
+# + added HLtest & methods
+# + added CMHtest
+# + added functions in loglin-utilities
+# + added logseries functions
+# + added seq_mosaic
+# + added logLik.loglm, blogits
+# - removed as.array generic, now in base
+# + added cutfac
+# + now required to import: grid
 
 # we are a vcd extension; do we need to import gnm here?
 import(vcd)
 import(gnm)
+import(grid)
+#import(rgl)
 importFrom(MASS, loglm)
 
 # joy to the world
@@ -25,7 +30,8 @@ export(
 	mosaic3d, split3d, range3d, center3d,
 	Kway, Crossings, 
 	datasets,
-	loddsratio, as.array,
+	loddsratio, 
+#	as.array,
 #	aperm, meanResiduals,
 	HLtest, HosmerLemeshow,
 	CMHtest,
@@ -33,7 +39,9 @@ export(
 	loglin2formula, loglin2string, seq_loglm,
 	dlogseries, plogseries, qlogseries, rlogseries,
 	seq_mosaic,
-	blogits
+	blogits,
+	Summarise,
+	cutfac
 	)
 
 # basic methods for glm & loglm objects
@@ -49,6 +57,13 @@ S3method(summarise, glm)
 S3method(summarise, glmlist)
 S3method(summarise, loglm)
 S3method(summarise, loglmlist)
+
+S3method(Summarise, glmlist)
+S3method(Summarise, loglmlist)
+S3method(Summarise, default)
+
+S3method(coef, glmlist)
+
 S3method(logLik, loglm)
 S3method(print, GKgamma)
 S3method(print, Kappa)
