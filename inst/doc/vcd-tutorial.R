@@ -504,7 +504,7 @@ linlin <- glm(Freq ~ mental + ses + Rscore:Cscore, family = poisson, data = Ment
 ### code chunk number 63: mental4a
 ###################################################
 # compare models using AIC, BIC, etc
-vcdExtra::Summarise(glmlist(indep, roweff, coleff, linlin))
+vcdExtra::LRstats(glmlist(indep, roweff, coleff, linlin))
 
 
 ###################################################

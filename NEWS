@@ -1,4 +1,12 @@
-Version 0.6.3 (2014-10-27)
+Version 0.6-5 (2014-11-07)
+
+o Added Cormorants data (fixed to latest)
+o Added LRstats, to replace Summarise. Older summarise() and Summarise() will eventually be deprecated.
+o Now Suggests: AER for NMES1988 data
+o collapse.table() now works with array objects
+
+
+Version 0.6-3 (2014-10-27)
 
 o Fixed bug in logLik.loglm when the data contain zero frequencies (rev 228)
 o Made Summarise generic, adding a method for "glmlist" objects (rev 230)
