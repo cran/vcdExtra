@@ -16,8 +16,8 @@ adds a 3D version in \code{\link{mosaic3d}}.
 \tabular{ll}{
 Package: \tab vcdExtra\cr
 Type: \tab Package\cr
-Version: \tab 0.6-8\cr
-Date: \tab 2015-04-15\cr
+Version: \tab 0.6-9\cr
+Date: \tab 2015-06-11\cr
 License: \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }
@@ -50,7 +50,7 @@ categorical data.
 
 A new class, \code{\link{glmlist}}, is introduced for working with
 collections of \code{glm} objects, e.g., \code{\link{Kway}} for fitting
-all K-way models from a basic marginal model, and \code{\link{Summarise}}
+all K-way models from a basic marginal model, and \code{\link{LRstats}}
 for brief statistical summaries of goodnes-of-fit for a collection of
 models.
 
@@ -73,7 +73,7 @@ A collection of demos is included to illustrate fitting and visualizing a wide v
   \item{yaish-unidiff}{Yaish data: Unidiff model for 3-way table}
   \item{Wong2-3}{Political views and support for women to work (U, R, C, R+C and RC(1) models)}
   \item{Wong3-1}{Political views, support for women to work and national welfare spending (3-way, marginal, and conditional independence models)}
-  \item{housing}{Visualize glm(), multinom() and polr() models from example(housing, package="MASS")}
+  \item{housing}{Visualize glm(), multinom() and polr() models from \code{example(housing, package="MASS")}}
 }
 Use \code{ demo(package="vcdExtra")} for a complete current list.
 
