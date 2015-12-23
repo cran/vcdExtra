@@ -1,6 +1,6 @@
-d1a78c3d56cdff9c9b9cf663b959fe88 *DESCRIPTION
+757ab93e15c84ed22b5c887d935dce34 *DESCRIPTION
 97e38bd5d4f8346c6972548a2c9cac57 *NAMESPACE
-039aab0d47e36727731f160a0ee9f675 *NEWS
+3ae0de2f7ae5dc49e3fd1a99e4393b1b *NEWS
 779bcf552908cea9c4d8aee4763b5d94 *R/CMHtest.R
 1297dcac6985033047b58d1479164fbb *R/Crossings.R
 1963eb3fb347cf99287b4794b4fd57dc *R/GKgamma.R
@@ -33,6 +33,7 @@ ba2b62141b5cbaf77c2b06698553e983 *data/Accident.RData
 d295c350b177b842ccee2e5b164a58f4 *data/AirCrash.RData
 d775f487470c49d64119693325aa910c *data/Alligator.RData
 3bbe75f0bcf3a92f29625be117d1c296 *data/Bartlett.rda
+5fc3e4c48e1397773e90780afecbb6ca *data/Burt.RData
 0d56582a4b5af7562b3116810d53f961 *data/Caesar.rda
 b302d59a1a8d1f53d639375b7caf2919 *data/Cancer.rda
 3813cf7ec7f60ce7fa8e521d6ba63ba2 *data/Cormorants.RData
@@ -83,14 +84,15 @@ be799fa72e29b45c9c5117ad1396ab88 *demo/vision-quasi.R
 940d1145ba90b855df1b2b9a5f0be29f *demo/yaish-unidiff.R
 ffd20b4a85ca58f1dc3d8d1c3f4efd92 *demo/yamaguchi-xie.R
 3321d04d1eea258c261c59f337c21d1a *inst/doc/extdata/tv.dat
-9facebbfcdcdef7d6ac39a43b8608577 *inst/doc/vcd-tutorial.R
-7d227b5a95866e45d768208bf32e3b01 *inst/doc/vcd-tutorial.Rnw
+a83daa9c92751dc3841d36938540d128 *inst/doc/vcd-tutorial.R
+0f981b9f956efbb375da7a361886614e *inst/doc/vcd-tutorial.Rnw
 16a8bb652b8d659bd083751afd6e9e50 *inst/doc/vcd-tutorial.pdf
 dbdc00b3096f1f6dd1aa1dcf6ba61a64 *man/Abortion.Rd
 6afd301fd46982d6462bfe8bf2464814 *man/Accident.Rd
 070efb8d763bb42ecd90deb786742143 *man/AirCrash.Rd
 f5f3416a87eadefaee0e88f37642724c *man/Alligator.Rd
 f45fa8bbcbd267ba67e4317d5ebbc1af *man/Bartlett.Rd
+5380b712bb57acc195ae82e3fb1fa71e *man/Burt.Rd
 27f5225eab21c53a6257aeba94fdafe7 *man/CMHtest.Rd
 d8ae910df0c07de129ec3b69b3acf481 *man/Caesar.Rd
 f8c95d9e066845a9a3a3d4b28d196317 *man/Cancer.Rd
@@ -100,7 +102,7 @@ f8c95d9e066845a9a3a3d4b28d196317 *man/Cancer.Rd
 da4ff582c467c4480553d62cf4174260 *man/DaytonSurvey.Rd
 3b12bd35839a927d6a9a33588ee14ce8 *man/Depends.Rd
 7a9cbca6bc714f886cedff9ddbeda2e1 *man/Detergent.Rd
-b731146380fd71b50791560d9725b276 *man/Donner.Rd
+5521e46dbb42697bdae91f64d40276c7 *man/Donner.Rd
 16a2111b4172cf3760ccba1c0bff7fc3 *man/Draft1970.Rd
 6fb4be32f341d520ed96a419211a27c2 *man/Draft1970table.Rd
 4414c97734f59b366f93b83c10eb6974 *man/Dyke.Rd
@@ -152,7 +154,7 @@ cbc06b6d710e4ecaa9068cb2d296dd21 *man/seq_loglm.Rd
 c9bc86df1d05dee6cb577694863aeeb2 *man/seq_mosaic.Rd
 cec84e260d0b884b8c27073e224a998f *man/split3d.Rd
 86a2288b811a6468dfa0b3ea39bca4ef *man/vcdExtra-deprecated.Rd
-c7821e2650b1bf70bff741a9a73cf166 *man/vcdExtra-package.Rd
-7d227b5a95866e45d768208bf32e3b01 *vignettes/vcd-tutorial.Rnw
+485ff93cfec9e2f709f8ebf55fe3227d *man/vcdExtra-package.Rd
+0f981b9f956efbb375da7a361886614e *vignettes/vcd-tutorial.Rnw
 ace1d42555f8fbfb6345c83898c59e01 *vignettes/vcd.bib
 d20caf9dc57fb78d792790e721f6d365 *vignettes/vcdExtra.bib

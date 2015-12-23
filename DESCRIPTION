@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.6-11
-Date: 2015-09-14
+Version: 0.6-12
+Date: 2015-12-06
 Authors@R: c(person(given = "Michael", family = "Friendly", role=c("aut", "cre"), email="friendly@yorku.ca"),
             person(given = "Heather", family = "Turner", role="ctb"),
             person(given = "Achim", family = "Zeileis", role="ctb"),
@@ -26,6 +26,6 @@ URL: http://CRAN.R-project.org/package=vcdExtra
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2015-09-16 20:49:16 UTC; Friendly
+Packaged: 2015-12-23 15:47:51 UTC; Friendly
 Repository: CRAN
-Date/Publication: 2015-09-17 07:51:20
+Date/Publication: 2015-12-23 17:18:53
