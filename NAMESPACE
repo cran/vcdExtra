@@ -12,6 +12,7 @@
 # + now required to import: grid
 # - removed loddsratio (now in vcd)
 # - removed print.Kappa (now in vcd)
+# + import from ca; export mpcaplot
 
 # we are a vcd extension; do we need to import gnm here?
 import(vcd)
@@ -24,7 +25,10 @@ importFrom(MASS, loglm)
 importFrom("grDevices", "hsv")
 importFrom("stats", "as.formula", "deviance", "family", "fitted", "formula", "glm", "logLik", "loglin", "model.frame", "na.pass", "nobs", "pchisq", "poisson", "qnorm", "quantile", "reformulate", "residuals", "rstandard", "runif", "terms", "update", "xtabs")
 importFrom("utils", "data", "menu", "type.convert")
-
+importFrom("ca", "cacoord", "multilines")
+importFrom("grDevices", "rgb")
+importFrom("graphics", "abline", "plot", "points", "text")
+importFrom("stats", "update.formula")
 
 # joy to the world
 export(
@@ -51,7 +55,9 @@ export(
 	blogits,
 	Summarise,
 	LRstats,
-	cutfac
+	cutfac,
+  mcaplot,
+  update.xtabs
 	)
 
 # basic methods for glm & loglm objects
@@ -62,6 +68,7 @@ S3method(modFit, glm)
 S3method(modFit, loglm)
 S3method(mosaic, glmlist)
 S3method(mosaic, loglmlist)
+S3method(update, xtabs)
 
 #S3method(summarise, glm)
 #S3method(summarise, glmlist)

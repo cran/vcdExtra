@@ -324,7 +324,7 @@ fisher.test(GSStab)
 
 
 ###################################################
-### code chunk number 38: vcd-tutorial.Rnw:831-832 (eval = FALSE)
+### code chunk number 38: vcd-tutorial.Rnw:840-841 (eval = FALSE)
 ###################################################
 ## fisher.test(HairEye)
 
