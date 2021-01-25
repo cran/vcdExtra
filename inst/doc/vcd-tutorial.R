@@ -253,7 +253,7 @@ str(Art.df)
 ###################################################
 ### code chunk number 29: tv1
 ###################################################
-tv.data<-read.table(system.file("doc","extdata","tv.dat",package="vcdExtra"))
+tv.data<-read.table(system.file("extdata","tv.dat", package="vcdExtra"))
 head(tv.data,5)
 
 

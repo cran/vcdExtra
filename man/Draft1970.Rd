@@ -38,14 +38,14 @@ September 24.
 Starr, N. (1997).
 Nonrandom Risk: The 1970 Draft Lottery,
 \emph{Journal of Statistics Education}, v.5, n.2
-\url{http://www.amstat.org/publications/jse/v5n2/datasets.starr.html}
+\url{http://jse.amstat.org/v5n2/datasets.starr.html}
 
 }
 \references{
 Fienberg, S. E. (1971), 
 "Randomization and Social Affairs: The 1970 Draft Lottery," \emph{Science}, 171, 255-261.
 
-\url{http://en.wikipedia.org/wiki/Draft_lottery_(1969)}
+\url{https://en.wikipedia.org/wiki/Draft_lottery_(1969)}
 
 }
 \seealso{\code{\link{Draft1970table}}

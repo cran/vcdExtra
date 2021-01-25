@@ -1,12 +1,12 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/vcdExtra)](https://cran.r-project.org/package=vcdExtra)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/vcdExtra)](https://cran.r-project.org/package=vcdExtra)
-[![Rdoc](http://www.rdocumentation.org/badges/version/vcdExtra)](http://www.rdocumentation.org/packages/vcdExtra)
+[![Rdoc](http://www.rdocumentation.org/badges/version/vcdExtra)](https://www.rdocumentation.org/packages/vcdExtra)
 
 
-# vcdExtra
+# vcdExtra <img src="vcdExtra-logo.png" align="right" height="200px" />
 ## Extensions and additions to vcd: Visualizing Categorical Data 
 
-Version 0.7-1
+Version 0.7-5
 
 This package provides additional data sets, documentation, and
 a few functions designed to extend the [vcd](https://CRAN.R-project.org/package=vcd) package for *Visualizing Categorical Data*
@@ -15,6 +15,8 @@ In particular, vcdExtra extends mosaic, assoc and sieve plots from vcd to handle
 adds a 3D version in `mosaic3d()`.
 
 `vcdExtra` is now a support package for the book [*Discrete Data Analysis with R*](http://ddar.datavis.ca) by Michael Friendly and David Meyer.
+
+### Details
 
 The main purpose of this package is to serve as a sandbox for
 introducing extensions of
@@ -53,3 +55,14 @@ _Working with categorical data with R and the vcd package_, `vignette("vcd-tutor
 and a few useful utility functions for manipulating categorical data sets and working with models for
 categorical data. 
 
+## Installation
+
+Get the released version from CRAN:
+
+     install.packages("vcdExtra")
+
+The development version can be installed to your R library directly from this repo via:
+
+     if (!require(devtools)) install.packages("devtools")
+     library(devtools)
+     install_github("friendly/vcdExtra")

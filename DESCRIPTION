@@ -1,17 +1,21 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.7-1
-Date: 2017-09-28
+Version: 0.7-5
+Date: 2021-01-22
 Authors@R: c(person(given = "Michael", family = "Friendly", role=c("aut", "cre"), email="friendly@yorku.ca"),
             person(given = "Heather", family = "Turner", role="ctb"),
             person(given = "Achim", family = "Zeileis", role="ctb"),
             person(given = "Duncan", family = "Murdoch", role="ctb"),
             person(given = "David", family = "Firth", role="ctb")
             )
-Author: Michael Friendly [aut, cre], Heather Turner [ctb], Achim Zeileis [ctb], Duncan Murdoch [ctb], David Firth [ctb]
+Author: Michael Friendly [aut, cre],
+  Heather Turner [ctb],
+  Achim Zeileis [ctb],
+  Duncan Murdoch [ctb],
+  David Firth [ctb]
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Depends: R (>= 2.10), vcd, gnm (>= 1.0.3), grid
+Depends: R (>= 2.10), vcd, gnm (>= 1.0-3), grid
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
         ggplot2, Sleuth2, car, lattice, stats4, rgl, AER
 Imports: MASS, grDevices, stats, utils, ca
@@ -27,6 +31,6 @@ BugReports: https://github.com/friendly/vcdExtra
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2017-09-29 19:03:29 UTC; Friendly
+Packaged: 2021-01-25 16:08:54 UTC; friendly
 Repository: CRAN
-Date/Publication: 2017-09-29 21:57:53 UTC
+Date/Publication: 2021-01-25 17:00:02 UTC
