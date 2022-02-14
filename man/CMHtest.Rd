@@ -11,11 +11,11 @@ Generalized Cochran-Mantel-Haenszel Tests
 \description{
 Provides generalized Cochran-Mantel-Haenszel tests of association of two possibly ordered factors, 
 optionally stratified other factor(s).  With strata, \code{CMHtest} calculates these tests for
-each level of the statifying variables and also provides overall tests controlling for the
+each level of the stratifying variables and also provides overall tests controlling for the
 strata.
 
 For ordinal factors, more powerful tests than the test for general association
-(independence) are obtained by assigning scores to the row and columm categories. 
+(independence) are obtained by assigning scores to the row and column categories. 
 }
 \usage{
 CMHtest(x, ...)

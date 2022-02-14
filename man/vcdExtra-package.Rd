@@ -6,6 +6,8 @@
 Extensions and additions to vcd: Visualizing Categorical Data
 }
 \description{
+\if{html}{\figure{vcdExtra-logo.png}{options: align='right' alt='logo' width='100'}}
+
 This package provides additional data sets, documentation, and
 a few functions designed to extend the \code{vcd} package for Visualizing Categorical Data
 and the \code{gnm} package for Generalized Nonlinear Models. 
@@ -21,11 +23,11 @@ The web site for the book is \url{http://ddar.datavis.ca}.
 }
 \details{
 \tabular{ll}{
-Package: \tab vcdExtra\cr
-Type: \tab Package\cr
-Version: \tab 0.7-5\cr
-Date: \tab 2021-01-22\cr
-License: \tab GPL version 2 or newer\cr
+Package:  \tab vcdExtra\cr
+Type:     \tab Package\cr
+Version:  \tab 0.7-6\cr
+Date:     \tab 2021-02-12\cr
+License:  \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }
 The main purpose of this package is to serve as a sandbox for
@@ -58,7 +60,7 @@ categorical data.
 A new class, \code{\link{glmlist}}, is introduced for working with
 collections of \code{glm} objects, e.g., \code{\link{Kway}} for fitting
 all K-way models from a basic marginal model, and \code{\link{LRstats}}
-for brief statistical summaries of goodnes-of-fit for a collection of
+for brief statistical summaries of goodness-of-fit for a collection of
 models.
 
 For square tables with ordered factors, \code{\link{Crossings}} supplements the 
@@ -69,7 +71,7 @@ specification of terms in model formulas using
 
 
 
-Some of these extensions may be migrated into vcd or gnm.
+Some of these extensions may be migrated into \pkg{vcd} or \pkg{gnm}.
 
 A collection of demos is included to illustrate fitting and visualizing a wide variety of models:
 \describe{
@@ -92,10 +94,10 @@ complete list, or \code{datasets(package="vcdExtra")} for an annotated one showi
 \author{
 Michael Friendly
 
-Maintainer: Michael Friendly <friendly AT yorku.ca>
+Maintainer: Michael Friendly <friendly AT yorku.ca> || (\href{https://orcid.org/0000-0002-3237-0941}{ORCID})
 }
 \references{
-Friendly, M. \emph{Visualizing Categorical Data}, Cary NC: SAS Insitute, 2000.
+Friendly, M. \emph{Visualizing Categorical Data}, Cary NC: SAS Institute, 2000.
 Web materials: \url{http://www.datavis.ca/books/vcd/}.
 
 Friendly, M. and Meyer, D. (2016). 
