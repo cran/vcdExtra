@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Michael Friendly" />
+
+<meta name="date" content="2022-04-21" />
+
+<title>Creating and manipulating frequency tables</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Creating and manipulating frequency tables</h1>
+<h4 class="author">Michael Friendly</h4>
+<h4 class="date">2022-04-21</h4>
+
+
+
+<p>R provides many methods for creating frequency and contingency tables. Several are described below. In the examples below, we use some real examples and some anonymous ones, where the variables <code>A</code>, <code>B</code>, and <code>C</code> represent categorical variables, and <code>X</code> represents an arbitrary R data object.</p>
+<div id="forms-of-frequency-data" class="section level2">
+<h2>Forms of frequency data</h2>
+<p>The first thing you need to know is that categorical data can be represented in three different forms in R, and it is sometimes necessary to convert from one form to another, for carrying out statistical tests, fitting models or visualizing the results. Once a data object exists in R, you can examine its complete structure with the <code>str()</code> function, or view the names of its components with the <code>names()</code> function.</p>
+<div id="case-form" class="section level3">
+<h3>Case form</h3>
+<p>Categorical data in case form are simply data frames containing individual observations, with one or more factors, used as the classifying variables. In case form, there may also be numeric covariates. The total number of observations is <code>nrow(X)</code>, and the number of variables is <code>ncol(X)</code>.</p>
+<p><strong><em>Example</em></strong>:</p>
+<p>The <code>Arthritis</code> data is available in case form in the <code>vcd</code> package. There are two explanatory factors: <code>Treatment</code> and <code>Sex</code>. <code>Age</code> is a numeric covariate, and <code>Improved</code> is the response— an ordered factor, with levels None &lt; Some &lt; Marked. Excluding <code>Age</code>, this represents a <span class="math inline">\(2 \times 2 \times 3\)</span> contingency table for <code>Treatment</code>, <code>Sex</code> and <code>Improved</code>, but in case form.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Arthritis)      <span class="co"># show the variables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;ID&quot;        &quot;Treatment&quot; &quot;Sex&quot;       &quot;Age&quot;       &quot;Improved&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Arthritis)        <span class="co"># show the structure</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    84 obs. of  5 variables:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ ID       : int  57 46 77 17 36 23 75 39 33 55 ...</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Treatment: Factor w/ 2 levels &quot;Placebo&quot;,&quot;Treated&quot;: 2 2 2 2 2 2 2 2 2 2 ...</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Sex      : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 2 2 2 2 2 2 2 ...</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Age      : int  27 29 30 32 46 58 59 59 63 63 ...</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Improved : Ord.factor w/ 3 levels &quot;None&quot;&lt;&quot;Some&quot;&lt;..: 2 1 1 3 3 3 1 3 1 1 ...</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Arthritis,<span class="dv">5</span>)     <span class="co"># first 5 observations, same as Arthritis[1:5,] </span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   ID Treatment  Sex Age Improved</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 57   Treated Male  27     Some</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 46   Treated Male  29     None</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 77   Treated Male  30     None</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 17   Treated Male  32   Marked</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 36   Treated Male  46   Marked</span></span></code></pre></div>
+</div>
+<div id="frequency-form" class="section level3">
+<h3>Frequency form</h3>
+<p>Data in frequency form is also a data frame containing one or more factors, and a frequency variable, often called <code>Freq</code> or <code>count</code>. The total number of observations is: <code>sum(X$Freq)</code>, <code>sum(X[,&quot;Freq&quot;])</code> or some equivalent form.</p>
+<p>The number of cells in the table is given by <code>nrow(X)</code>.</p>
+<p><strong><em>Example</em></strong>: For small frequency tables, it is often convenient to enter them in frequency form using <code>expand.grid()</code> for the factors and <code>c()</code> to list the counts in a vector. The example below, from <span class="citation">(Agresti, 2002)</span> gives results for the 1991 General Social Survey, with respondents classified by sex and party identification.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agresti (2002), table 3.11, p. 106</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>GSS <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand.grid</span>(<span class="at">sex =</span> <span class="fu">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>), </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">party =</span> <span class="fu">c</span>(<span class="st">&quot;dem&quot;</span>, <span class="st">&quot;indep&quot;</span>, <span class="st">&quot;rep&quot;</span>)),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">count =</span> <span class="fu">c</span>(<span class="dv">279</span>,<span class="dv">165</span>,<span class="dv">73</span>,<span class="dv">47</span>,<span class="dv">225</span>,<span class="dv">191</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>GSS</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">##      sex party count</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 female   dem   279</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   male   dem   165</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 female indep    73</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   male indep    47</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 female   rep   225</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   male   rep   191</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(GSS)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;sex&quot;   &quot;party&quot; &quot;count&quot;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(GSS)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    6 obs. of  3 variables:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ sex  : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 2 1 2 1 2</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ party: Factor w/ 3 levels &quot;dem&quot;,&quot;indep&quot;,..: 1 1 2 2 3 3</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ count: num  279 165 73 47 225 191</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(GSS<span class="sc">$</span>count)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 980</span></span></code></pre></div>
+</div>
+<div id="table-form" class="section level3">
+<h3>Table form</h3>
+<p>Table form data is represented by a <code>matrix</code>, <code>array</code> or <code>table</code> object, whose elements are the frequencies in an <span class="math inline">\(n\)</span>-way table. The variable names (factors) and their levels are given by <code>dimnames(X)</code>. The total number of observations is <code>sum(X)</code>. The number of dimensions of the table is <code>length(dimnames(X))</code>, and the table sizes are given by <code>sapply(dimnames(X), length)</code>.</p>
+<p><strong><em>Example</em></strong>: The <code>HairEyeColor</code> is stored in table form in <code>vcd</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HairEyeColor)                      <span class="co"># show the structure</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; num [1:4, 1:4, 1:2] 32 53 10 3 11 50 10 30 10 25 ...</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Hair: chr [1:4] &quot;Black&quot; &quot;Brown&quot; &quot;Red&quot; &quot;Blond&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Eye : chr [1:4] &quot;Brown&quot; &quot;Blue&quot; &quot;Hazel&quot; &quot;Green&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Sex : chr [1:2] &quot;Male&quot; &quot;Female&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(HairEyeColor)                      <span class="co"># number of cases</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 592</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">dimnames</span>(HairEyeColor), length) <span class="co"># table dimension sizes</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Hair  Eye  Sex </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">##    4    4    2</span></span></code></pre></div>
+<p><strong><em>Example</em></strong>: Enter frequencies in a matrix, and assign <code>dimnames</code>, giving the variable names and category labels. Note that, by default, <code>matrix()</code> uses the elements supplied by <em>columns</em> in the result, unless you specify <code>byrow=TRUE</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A 4 x 4 table  Agresti (2002, Table 2.8, p. 57) Job Satisfaction</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>JobSat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>( <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">1</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                   <span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">14</span>, <span class="dv">9</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">6</span>, <span class="dv">7</span>,<span class="dv">12</span>,<span class="dv">11</span>), <span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(JobSat) <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">income =</span> <span class="fu">c</span>(<span class="st">&quot;&lt; 15k&quot;</span>, <span class="st">&quot;15-25k&quot;</span>, <span class="st">&quot;25-40k&quot;</span>, <span class="st">&quot;&gt; 40k&quot;</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">satisfaction =</span> <span class="fu">c</span>(<span class="st">&quot;VeryD&quot;</span>, <span class="st">&quot;LittleD&quot;</span>, <span class="st">&quot;ModerateS&quot;</span>, <span class="st">&quot;VeryS&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>JobSat</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">##         satisfaction</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## income   VeryD LittleD ModerateS VeryS</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt; 15k      1       3        10     6</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">##   15-25k     2       3        10     7</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   25-40k     1       6        14    12</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   &gt; 40k      0       1         9    11</span></span></code></pre></div>
+<p><code>JobSat</code> is a <strong>matrix</strong>, not an object of <code>class(&quot;table&quot;)</code>, and some functions are happier with tables than matrices. You can coerce it to a table with <code>as.table()</code>,</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>JobSat <span class="ot">&lt;-</span> <span class="fu">as.table</span>(JobSat)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(JobSat)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; num [1:4, 1:4] 1 2 1 0 3 3 6 1 10 10 ...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 2</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ income      : chr [1:4] &quot;&lt; 15k&quot; &quot;15-25k&quot; &quot;25-40k&quot; &quot;&gt; 40k&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ satisfaction: chr [1:4] &quot;VeryD&quot; &quot;LittleD&quot; &quot;ModerateS&quot; &quot;VeryS&quot;</span></span></code></pre></div>
+</div>
+</div>
+<div id="sec:ordered-factors" class="section level2">
+<h2>Ordered factors and reordered tables</h2>
+<p>In table form, the values of the table factors are ordered by their position in the table. Thus in the <code>JobSat</code> data, both <code>income</code> and <code>satisfaction</code> represent ordered factors, and the <em>positions</em> of the values in the rows and columns reflects their ordered nature.</p>
+<p>Yet, for analysis, there are time when you need <em>numeric</em> values for the levels of ordered factors in a table, e.g., to treat a factor as a quantitative variable. In such cases, you can simply re-assign the <code>dimnames</code> attribute of the table variables. For example, here, we assign numeric values to <code>income</code> as the middle of their ranges, and treat <code>satisfaction</code> as equally spaced with integer scores.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(JobSat)<span class="sc">$</span>income <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">7.5</span>,<span class="dv">20</span>,<span class="fl">32.5</span>,<span class="dv">60</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(JobSat)<span class="sc">$</span>satisfaction <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code></pre></div>
+<p>For the <code>HairEyeColor</code> data, hair color and eye color are ordered arbitrarily. For visualizing the data using mosaic plots and other methods described below, it turns out to be more useful to assure that both hair color and eye color are ordered from dark to light. Hair colors are actually ordered this way already, and it is easiest to re-order eye colors by indexing. Again <code>str()</code> is your friend.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>HairEyeColor <span class="ot">&lt;-</span> HairEyeColor[, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>), ]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HairEyeColor)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; num [1:4, 1:4, 1:2] 32 53 10 3 10 25 7 5 3 15 ...</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 3</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Hair: chr [1:4] &quot;Black&quot; &quot;Brown&quot; &quot;Red&quot; &quot;Blond&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Eye : chr [1:4] &quot;Brown&quot; &quot;Hazel&quot; &quot;Green&quot; &quot;Blue&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Sex : chr [1:2] &quot;Male&quot; &quot;Female&quot;</span></span></code></pre></div>
+<p>This is also the order for both hair color and eye color shown in the result of a correspondence analysis () below.</p>
+<p>With data in case form or frequency form, when you have ordered factors represented with character values, you must ensure that they are treated as ordered in R. <!-- \footnote{In SAS, many procedures offer the option --> <!--    `order = data | internal | formatted` to allow character values --> <!--    to be ordered according to (a) their order in the data set, (b) --> <!--    sorted internal value, or (c) sorted formatted representation --> <!--    provided by a SAS format. --> <!-- } --></p>
+<p>Imagine that the <code>Arthritis</code> data was read from a text file.<br />
+By default the <code>Improved</code> will be ordered alphabetically: <code>Marked</code>, <code>None</code>, <code>Some</code> — not what we want. In this case, the function <code>ordered()</code> (and others) can be useful.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Arthritis <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;arthritis.txt&quot;</span>,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Arthritis<span class="sc">$</span>Improved <span class="ot">&lt;-</span> <span class="fu">ordered</span>(Arthritis<span class="sc">$</span>Improved, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;None&quot;</span>, <span class="st">&quot;Some&quot;</span>, <span class="st">&quot;Marked&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                              )</span></code></pre></div>
+<p>The dataset <code>Arthritis</code> in the <code>vcd</code> package is a data.frame in this form With this order of <code>Improved</code>, the response in this data, a mosaic display of <code>Treatment</code> and <code>Improved</code> () shows a clearly interpretable pattern.</p>
+<p>The original version of <code>mosaic</code> in the <code>vcd</code> package required the input to be a contingency table in array form, so we convert using <code>xtabs()</code>.</p>
+<!-- ```{r Arthritis, height=6, width=7, fig.cap="Mosaic plot for the `Arthritis` data ..."} -->
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Arthritis, <span class="at">package=</span><span class="st">&quot;vcd&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>art <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(<span class="sc">~</span>Treatment <span class="sc">+</span> Improved, <span class="at">data =</span> Arthritis)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(art, <span class="at">gp =</span> shading_max, <span class="at">split_vertical =</span> <span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">&quot;Arthritis: [Treatment] [Improved]&quot;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Mosaic plot for the <code>Arthritis</code> data, showing the marginal model of independence for Treatment and Improved. Age, a covariate, and Sex are ignored here.</p>
+</div>
+<p>Finally, there are situations where, particularly for display purposes, you want to re-order the <em>dimensions</em> of an <span class="math inline">\(n\)</span>-way table, or change the labels for the variables or levels. This is easy when the data are in table form: <code>aperm()</code> permutes the dimensions, and assigning to <code>names</code> and <code>dimnames</code> changes variable names and level labels respectively. We will use the following version of <code>UCBAdmissions</code> in @(sec:mantel) below.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>UCB <span class="ot">&lt;-</span> <span class="fu">aperm</span>(UCBAdmissions, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(UCB)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">dimnames</span>(UCB)) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;Admit?&quot;</span>, <span class="st">&quot;Department&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display as a flattened table</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">ftable</span>(UCB)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">##               Department   A   B   C   D   E   F</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Sex    Admit?                                   </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Male   Yes               512 353 120 138  53  22</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">##        No                313 207 205 279 138 351</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Female Yes                89  17 202 131  94  24</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">##        No                 19   8 391 244 299 317</span></span></code></pre></div>
+</div>
+<div id="sec:structable" class="section level2">
+<h2><code>structable()</code></h2>
+<p>For 3-way and larger tables the <code>structable()</code> function in <code>vcd</code> provides a convenient and flexible tabular display. The variables assigned to the rows and columns of a two-way display can be specified by a model formula.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(HairEyeColor)                   <span class="co"># show the table: default</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">##              Eye Brown Hazel Green Blue</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Hair  Sex                              </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Black Male          32    10     3   11</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">##       Female        36     5     2    9</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Brown Male          53    25    15   50</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">##       Female        66    29    14   34</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Red   Male          10     7     7   10</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">##       Female        16     7     7    7</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Blond Male           3     5     8   30</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">##       Female         4     5     8   64</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(Hair<span class="sc">+</span>Sex <span class="sc">~</span> Eye, HairEyeColor)   <span class="co"># specify col ~ row variables</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="do">##       Hair Black        Brown         Red        Blond       </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="do">##       Sex   Male Female  Male Female Male Female  Male Female</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Eye                                                          </span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Brown         32     36    53     66   10     16     3      4</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Hazel         10      5    25     29    7      7     5      5</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Green          3      2    15     14    7      7     8      8</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Blue          11      9    50     34   10      7    30     64</span></span></code></pre></div>
+<p>It also returns an object of class <code>&quot;structable&quot;</code> which may be plotted with <code>mosaic()</code> (not shown here).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>HSE <span class="sc">&lt;</span> <span class="sc">-</span> <span class="fu">structable</span>(Hair<span class="sc">+</span>Sex <span class="sc">~</span> Eye, HairEyeColor)   <span class="co"># save structable object</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(HSE)                                        <span class="co"># plot it</span></span></code></pre></div>
+</div>
+<div id="sec:table" class="section level2">
+<h2><code>table()</code> and friends</h2>
+<p>You can generate frequency tables from factor variables using the <code>table()</code> function, tables of proportions using the <code>prop.table()</code> function, and marginal frequencies using <code>margin.table()</code>.</p>
+<p>For these examples, create some categorical vectors:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a> n<span class="ot">=</span><span class="dv">500</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> A <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;a1&quot;</span>,<span class="st">&quot;a2&quot;</span>), n, <span class="at">rep=</span><span class="cn">TRUE</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> B <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;b1&quot;</span>,<span class="st">&quot;b2&quot;</span>), n, <span class="at">rep=</span><span class="cn">TRUE</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> C <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;c1&quot;</span>,<span class="st">&quot;c2&quot;</span>), n, <span class="at">rep=</span><span class="cn">TRUE</span>))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a> mydata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(A,B,C)</span></code></pre></div>
+<p>These lines illustrate <code>table</code>-related functions:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-Way Frequency Table</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(mydata)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## The following objects are masked _by_ .GlobalEnv:</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     A, B, C</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>mytable <span class="ot">&lt;-</span> <span class="fu">table</span>(A,B)   <span class="co"># A will be rows, B will be columns</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>mytable                 <span class="co"># print table</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## A     b1  b2</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 116 114</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 138 132</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">1</span>) <span class="co"># A frequencies (summed over B)</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## A</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  a1  a2 </span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 230 270</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">2</span>) <span class="co"># B frequencies (summed over A)</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## B</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  b1  b2 </span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 254 246</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable)    <span class="co"># cell percentages</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">## A       b1    b2</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.232 0.228</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.276 0.264</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">1</span>) <span class="co"># row percentages</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.5043478 0.4956522</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5111111 0.4888889</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">2</span>) <span class="co"># column percentages</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.4566929 0.4634146</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5433071 0.5365854</span></span></code></pre></div>
+<p><code>table()</code> can also generate multidimensional tables based on 3 or more categorical variables. In this case, you can use the <code>ftable()</code> or <code>structable()</code> function to print the results more attractively.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3-Way Frequency Table</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mytable <span class="ot">&lt;-</span> <span class="fu">table</span>(A, B, C)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(mytable)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##       C c1 c2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## A  B         </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## a1 b1   45 71</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">##    b2   59 55</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## a2 b1   62 76</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    b2   76 56</span></span></code></pre></div>
+<p><code>table()</code> ignores missing values by default. To include <code>NA</code> as a category in counts, include the table option <code>exclude=NULL</code> if the variable is a vector. If the variable is a factor you have to create a new factor using .</p>
+</div>
+<div id="sec:xtabs" class="section level2">
+<h2><code>xtabs()</code></h2>
+<p>The <code>xtabs()</code> function allows you to create cross-tabulations of data using formula style input. This typically works with case-form data supplied in a data frame or a matrix. The result is a contingency table in array format, whose dimensions are determined by the terms on the right side of the formula.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3-Way Frequency Table</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>mytable <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(<span class="sc">~</span>A<span class="sc">+</span>B<span class="sc">+</span>C, <span class="at">data=</span>mydata)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(mytable)    <span class="co"># print table</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##       C c1 c2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## A  B         </span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## a1 b1   45 71</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">##    b2   59 55</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## a2 b1   62 76</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##    b2   76 56</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mytable)   <span class="co"># chi-square test of indepedence</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Call: xtabs(formula = ~A + B + C, data = mydata)</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of cases in table: 500 </span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of factors: 3 </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Test for independence of all factors:</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  Chisq = 9.888, df = 4, p-value = 0.04235</span></span></code></pre></div>
+<p>If a variable is included on the left side of the formula, it is assumed to be a vector of frequencies (useful if the data have already been tabulated in frequency form).</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(GSStab <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(count <span class="sc">~</span> sex <span class="sc">+</span> party, <span class="at">data=</span>GSS))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">##         party</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## sex      dem indep rep</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   female 279    73 225</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   male   165    47 191</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(GSStab)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Call: xtabs(formula = count ~ sex + party, data = GSS)</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of cases in table: 980 </span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of factors: 2 </span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Test for independence of all factors:</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  Chisq = 7.01, df = 2, p-value = 0.03005</span></span></code></pre></div>
+</div>
+<div id="collapsing-over-table-factors-aggregate-margin.table-and-apply" class="section level2">
+<h2>Collapsing over table factors: <code>aggregate()</code>, <code>margin.table()</code> and <code>apply()</code>}</h2>
+<p>It sometimes happens that we have a data set with more variables or factors than we want to analyse, or else, having done some initial analyses, we decide that certain factors are not important, and so should be excluded from graphic displays by collapsing (summing) over them. For example, mosaic plots and fourfold displays are often simpler to construct from versions of the data collapsed over the factors which are not shown in the plots.</p>
+<p>The appropriate tools to use again depend on the form in which the data are represented— a case-form data frame, a frequency-form data frame (<code>aggregate()</code>), or a table-form array or table object (<code>margin.table()</code> or <code>apply()</code>).</p>
+<p>When the data are in frequency form, and we want to produce another frequency data frame, <code>aggregate()</code> is a handy tool, using the argument <code>FUN=sum</code> to sum the frequency variable over the factors <em>not</em> mentioned in the formula.</p>
+<p><strong><em>Example</em></strong>: The data frame <code>DaytonSurvey</code> in the <code>vcdExtra</code> package represents a <span class="math inline">\(2^5\)</span> table giving the frequencies of reported use (``ever used?’’) of alcohol, cigarettes and marijuana in a sample of high school seniors, also classified by sex and race.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(DaytonSurvey)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    32 obs. of  6 variables:</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ cigarette: Factor w/ 2 levels &quot;Yes&quot;,&quot;No&quot;: 1 2 1 2 1 2 1 2 1 2 ...</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ alcohol  : Factor w/ 2 levels &quot;Yes&quot;,&quot;No&quot;: 1 1 2 2 1 1 2 2 1 1 ...</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ marijuana: Factor w/ 2 levels &quot;Yes&quot;,&quot;No&quot;: 1 1 1 1 2 2 2 2 1 1 ...</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ sex      : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 1 1 1 1 1 1 1 2 2 ...</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ race     : Factor w/ 2 levels &quot;white&quot;,&quot;other&quot;: 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Freq     : num  405 13 1 1 268 218 17 117 453 28 ...</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(DaytonSurvey)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   cigarette alcohol marijuana    sex  race Freq</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       Yes     Yes       Yes female white  405</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2        No     Yes       Yes female white   13</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       Yes      No       Yes female white    1</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 4        No      No       Yes female white    1</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 5       Yes     Yes        No female white  268</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 6        No     Yes        No female white  218</span></span></code></pre></div>
+<p>To focus on the associations among the substances, we want to collapse over sex and race. The right-hand side of the formula used in the call to <code>aggregate()</code> gives the factors to be retained in the new frequency data frame, <code>Dayton.ACM.df</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data in frequency form</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># collapse over sex and race</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Freq <span class="sc">~</span> cigarette<span class="sc">+</span>alcohol<span class="sc">+</span>marijuana, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">data=</span>DaytonSurvey, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">FUN=</span>sum)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   cigarette alcohol marijuana Freq</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       Yes     Yes       Yes  911</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2        No     Yes       Yes   44</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       Yes      No       Yes    3</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 4        No      No       Yes    2</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 5       Yes     Yes        No  538</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 6        No     Yes        No  456</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 7       Yes      No        No   43</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 8        No      No        No  279</span></span></code></pre></div>
+<p>When the data are in table form, and we want to produce another table, <code>apply()</code> with <code>FUN=sum</code> can be used in a similar way to sum the table over dimensions not mentioned in the <code>MARGIN</code> argument. <code>margin.table()</code> is just a wrapper for <code>apply()</code> using the <code>sum()</code> function.</p>
+<p><strong><em>Example</em></strong>: To illustrate, we first convert the <code>DaytonSurvey</code> to a 5-way table using <code>xtabs()</code>, giving <code>Dayton.tab</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in table form</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Dayton.tab <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(Freq <span class="sc">~</span> cigarette<span class="sc">+</span>alcohol<span class="sc">+</span>marijuana<span class="sc">+</span>sex<span class="sc">+</span>race, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data=</span>DaytonSurvey)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(cigarette<span class="sc">+</span>alcohol<span class="sc">+</span>marijuana <span class="sc">~</span> sex<span class="sc">+</span>race, </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>Dayton.tab)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="do">##              cigarette Yes              No            </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="do">##              alcohol   Yes      No     Yes      No    </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="do">##              marijuana Yes  No Yes  No Yes  No Yes  No</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="do">## sex    race                                           </span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="do">## female white           405 268   1  17  13 218   1 117</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="do">##        other            23  23   0   1   2  19   0  12</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="do">## male   white           453 228   1  17  28 201   1 133</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="do">##        other            30  19   1   8   1  18   0  17</span></span></code></pre></div>
+<p>Then, use <code>apply()</code> on <code>Dayton.tab</code> to give the 3-way table <code>Dayton.ACM.tab</code> summed over sex and race. The elements in this new table are the column sums for <code>Dayton.tab</code> shown by <code>structable()</code> just above.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># collapse over sex and race</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.tab <span class="ot">&lt;-</span> <span class="fu">apply</span>(Dayton.tab, <span class="at">MARGIN=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">FUN=</span>sum)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.tab <span class="ot">&lt;-</span> <span class="fu">margin.table</span>(Dayton.tab, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)   <span class="co"># same result</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(cigarette<span class="sc">+</span>alcohol <span class="sc">~</span> marijuana, <span class="at">data=</span>Dayton.ACM.tab)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="do">##           cigarette Yes      No    </span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">##           alcohol   Yes  No Yes  No</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="do">## marijuana                          </span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Yes                 911   3  44   2</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="do">## No                  538  43 456 279</span></span></code></pre></div>
+<p>Many of these operations can be performed using the <code>**ply()</code> functions in the <code>plyr</code> package. For example, with the data in a frequency form data frame, use <code>ddply()</code> to collapse over unmentioned factors, and <code>plyr::summarise()</code> as the function to be applied to each piece. <!-- \footnote{ --> <!-- Ugh. This `plyr` function clashes with a function of the same name in `vcdExtra`. --> <!-- In this document I will use the explicit double-colon notation to keep them --> <!-- separate. --> <!-- } --></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plyr)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ddply</span>(DaytonSurvey, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                             .(cigarette, alcohol, marijuana), </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                             plyr<span class="sc">::</span>summarise, <span class="at">Freq=</span><span class="fu">sum</span>(Freq))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df</span></code></pre></div>
+</div>
+<div id="collapsing-table-levels-collapse.table" class="section level2">
+<h2>Collapsing table levels: <code>collapse.table()</code></h2>
+<p>A related problem arises when we have a table or array and for some purpose we want to reduce the number of levels of some factors by summing subsets of the frequencies. For example, we may have initially coded Age in 10-year intervals, and decide that, either for analysis or display purposes, we want to reduce Age to 20-year intervals. The <code>collapse.table()</code> function in <code>vcdExtra</code> was designed for this purpose.</p>
+<p><strong><em>Example</em></strong>: Create a 3-way table, and collapse Age from 10-year to 20-year intervals. First, we generate a <span class="math inline">\(2 \times 6 \times 3\)</span> table of random counts from a Poisson distribution with mean of 100.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create some sample data in frequency form</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>sex <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Female&quot;</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;10-19&quot;</span>, <span class="st">&quot;20-29&quot;</span>,  <span class="st">&quot;30-39&quot;</span>, <span class="st">&quot;40-49&quot;</span>, <span class="st">&quot;50-59&quot;</span>, <span class="st">&quot;60-69&quot;</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>education <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&#39;med&#39;</span>, <span class="st">&#39;high&#39;</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">sex=</span>sex, <span class="at">age=</span>age, <span class="at">education=</span>education)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">36</span>, <span class="dv">100</span>)   <span class="co"># random Possion cell frequencies</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data, counts)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make it into a 3-way table</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(counts <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> education, <span class="at">data=</span>data)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(t1)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="do">##                  age 10-19 20-29 30-39 40-49 50-59 60-69</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sex    education                                        </span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Male   low              98   105   104    90    90   101</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="do">##        med              97   105   101    88    97   107</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="do">##        high             99   101   109    88    99    96</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Female low             102   117   101   105    85    88</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="do">##        med             106    84    92   116   110    96</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="do">##        high            106    96   121    91   107   102</span></span></code></pre></div>
+<p>Now collapse <code>age</code> to 20-year intervals, and <code>education</code> to 2 levels. In the arguments, levels of <code>age</code> and <code>education</code> given the same label are summed in the resulting smaller table.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># collapse age to 3 levels, education to 2 levels</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">collapse.table</span>(t1, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">age=</span><span class="fu">c</span>(<span class="st">&quot;10-29&quot;</span>, <span class="st">&quot;10-29&quot;</span>,  <span class="st">&quot;30-49&quot;</span>, <span class="st">&quot;30-49&quot;</span>, <span class="st">&quot;50-69&quot;</span>, <span class="st">&quot;50-69&quot;</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">education=</span><span class="fu">c</span>(<span class="st">&quot;&lt;high&quot;</span>, <span class="st">&quot;&lt;high&quot;</span>, <span class="st">&quot;high&quot;</span>))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(t2)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="do">##                  age 10-29 30-49 50-69</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">## sex    education                      </span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Male   &lt;high           405   383   395</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="do">##        high            200   197   195</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Female &lt;high           409   414   379</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="do">##        high            202   212   209</span></span></code></pre></div>
+</div>
+<div id="converting-among-frequency-tables-and-data-frames" class="section level2">
+<h2>Converting among frequency tables and data frames</h2>
+<p>As we’ve seen, a given contingency table can be represented equivalently in different forms, but some R functions were designed for one particular representation.</p>
+<p>The table below shows some handy tools for converting from one form to another.</p>
+<!-- [htb] -->
+<!--  \caption{Tools for converting among different forms for categorical data} {#tab:convert} -->
+<!--    {llll} -->
+<!--    \hline -->
+<!--                  & \multicolumn{3}{c}{**To this**} \\ -->
+<!--    **From this**      &     Case form         & Frequency form             &  Table form \\ -->
+<!--    \hline -->
+<!--    Case form      &   noop                 & `xtabs(~A+B)`        &  `table(A,B)`  \\  -->
+<!--    Frequency form &  `expand.dft(X)`  & noop                      & `xtabs(count~A+B)`\\ -->
+<!--    Table form     &  `expand.dft(X)`  & `as.data.frame(X)`   &  noop \\ -->
+<!--    \hline -->
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>From this</strong></th>
+<th align="left"></th>
+<th align="left"><strong>To this</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"><em>Case form</em></td>
+<td align="left"><em>Frequency form</em></td>
+<td><em>Table form</em></td>
+</tr>
+<tr class="even">
+<td align="left"><em>Case form</em></td>
+<td align="left">noop</td>
+<td align="left"><code>xtabs(~A+B)</code></td>
+<td><code>table(A,B)</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Frequency form</em></td>
+<td align="left"><code>expand.dft(X)</code></td>
+<td align="left">noop</td>
+<td><code>xtabs(count~A+B)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><em>Table form</em></td>
+<td align="left"><code>expand.dft(X)</code></td>
+<td align="left"><code>as.data.frame(X)</code></td>
+<td>noop</td>
+</tr>
+</tbody>
+</table>
+<p>For example, a contingency table in table form (an object of <code>class(table)</code>) can be converted to a data.frame with <code>as.data.frame()</code>.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The resulting <code>data.frame</code> contains columns representing the classifying factors and the table entries (as a column named by the <code>responseName</code> argument, defaulting to <code>Freq</code>. This is the inverse of <code>xtabs()</code>.</p>
+<p><strong><em>Example</em></strong>: Convert the <code>GSStab</code> in table form to a data.frame in frequency form.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(GSStab)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="do">##      sex party Freq</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 female   dem  279</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   male   dem  165</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 female indep   73</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   male indep   47</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 female   rep  225</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   male   rep  191</span></span></code></pre></div>
+<p><strong><em>Example</em></strong>: Convert the <code>Arthritis</code> data in case form to a 3-way table of <code>Treatment</code> <span class="math inline">\(\times\)</span> <code>Sex</code> <span class="math inline">\(\times\)</span> <code>Improved</code>. Note the use of <code>with()</code> to avoid having to use <code>Arthritis\$Treatment</code> etc. within the call to <code>table()</code>.%<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Art.tab <span class="ot">&lt;-</span> <span class="fu">with</span>(Arthritis, <span class="fu">table</span>(Treatment, Sex, Improved))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.tab)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; int [1:2, 1:2, 1:3] 19 6 10 7 7 5 0 2 6 16 ...</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 3</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Treatment: chr [1:2] &quot;Placebo&quot; &quot;Treated&quot;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Sex      : chr [1:2] &quot;Female&quot; &quot;Male&quot;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Improved : chr [1:3] &quot;None&quot; &quot;Some&quot; &quot;Marked&quot;</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(Art.tab)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="do">##                  Improved None Some Marked</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Treatment Sex                             </span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Placebo   Female            19    7      6</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male              10    0      1</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Treated   Female             6    5     16</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male               7    2      5</span></span></code></pre></div>
+<p>There may also be times that you will need an equivalent case form <code>data.frame</code> with factors representing the table variables rather than the frequency table. For example, the <code>mca()</code> function in package <code>MASS</code> only operates on data in this format. Marc Schwartz initially provided code for <code>expand.dft()</code> on the Rhelp mailing list for converting a table back into a case form <code>data.frame</code>. This function is included in <code>vcdExtra</code>.</p>
+<p><strong><em>Example</em></strong>: Convert the <code>Arthritis</code> data in table form (<code>Art.tab</code>) back to a <code>data.frame</code> in case form, with factors <code>Treatment</code>, <code>Sex</code> and <code>Improved</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Art.df <span class="ot">&lt;-</span> <span class="fu">expand.dft</span>(Art.tab)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.df)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    84 obs. of  3 variables:</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Treatment: chr  &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; ...</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Sex      : chr  &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; ...</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Improved : chr  &quot;None&quot; &quot;None&quot; &quot;None&quot; &quot;None&quot; ...</span></span></code></pre></div>
+</div>
+<div id="sec:complex" class="section level2">
+<h2>A complex example</h2>
+<p>If you’ve followed so far, you’re ready for a more complicated example. The data file, <code>tv.dat</code> represents a 4-way table of size <span class="math inline">\(5 \times 11 \times 5 \times 3\)</span> where the table variables (unnamed in the file) are read as <code>V1</code> – <code>V4</code>, and the cell frequency is read as <code>V5</code>. The file, stored in the <code>doc/extdata</code> directory of <code>vcdExtra</code>, can be read as follows:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;tv.dat&quot;</span>, <span class="at">package=</span><span class="st">&quot;vcdExtra&quot;</span>))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tv.data,<span class="dv">5</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   V1 V2 V3 V4 V5</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  1  1  1  1  6</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  2  1  1  1 18</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  3  1  1  1  6</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  4  1  1  1  2</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5  1  1  1 11</span></span></code></pre></div>
+<p>For a local file, just use <code>read.table()</code> in this form:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;C:/R/data/tv.dat&quot;</span>)</span></code></pre></div>
+<p>The data <code>tv.dat</code> came from the initial implementation of mosaic displays in R by Jay Emerson. In turn, they came from the initial development of mosaic displays <span class="citation">(Hartigan &amp; Kleiner, 1984)</span> that illustrated the method with data on a large sample of TV viewers whose behavior had been recorded for the Neilson ratings. This data set contains sample television audience data from Neilsen Media Research for the week starting November 6, 1995.</p>
+<p>The table variables are:</p>
+<ul>
+<li><code>V1</code>– values 1:5 correspond to the days Monday–Friday;</li>
+<li><code>V2</code>– values 1:11 correspond to the quarter hour times 8:00PM through 10:30PM;</li>
+<li><code>V3</code>– values 1:5 correspond to ABC, CBS, NBC, Fox, and non-network choices;</li>
+<li><code>V4</code>– values 1:3 correspond to transition states: turn the television Off, Switch channels, or Persist in viewing the current channel.</li>
+</ul>
+<p>We are interested just the cell frequencies, and rely on the facts that the</p>
+<ol style="list-style-type: lower-alpha">
+<li>the table is complete— there are no missing cells, so <code>nrow(tv.data)</code> = 825;</li>
+<li>the observations are ordered so that <code>V1</code> varies most rapidly and <code>V4</code> most slowly. From this, we can just extract the frequency column and reshape it into an array. [That would be dangerous if any observations were out of order.]</li>
+</ol>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">array</span>(tv.data[,<span class="dv">5</span>], <span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">3</span>))                                        </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">dimnames</span>(TV))<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Network&quot;</span>, <span class="st">&quot;State&quot;</span>)</span></code></pre></div>
+<p>More generally (even if there are missing cells), we can use <code>xtabs()</code> (or <code>plyr::daply()</code>) to do the cross-tabulation, using <code>V5</code> as the frequency variable. Here’s how to do this same operation with <code>xtabs()</code>:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(V5 <span class="sc">~</span> ., <span class="at">data=</span>tv.data)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Time =</span> <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                              <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Network =</span> <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">State =</span> <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># table dimensions</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(TV)</span></code></pre></div>
+<p>But this 4-way table is too large and awkward to work with. Among the networks, Fox and Other occur infrequently. We can also cut it down to a 3-way table by considering only viewers who persist with the current station.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV[,,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,]      <span class="co"># keep only ABC, CBS, NBC</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV2[,,,<span class="dv">3</span>]       <span class="co"># keep only Persist -- now a 3 way table</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(TV2)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Time 8:00 8:15 8:30 8:45 9:00 9:15 9:30 9:45 10:00 10:15 10:30</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Day       Network                                                               </span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Monday    ABC           146  151  156   83  325  350  386  340   352   280   278</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           337  293  304  233  311  251  241  164   252   265   272</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           263  219  236  140  226  235  239  246   279   263   283</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Tuesday   ABC           244  181  231  205  385  283  345  192   329   351   364</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           173  180  184  109  218  235  256  250   274   263   261</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           315  254  280  241  370  214  195  111   188   190   210</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Wednesday ABC           233  161  194  156  339  264  279  140   237   228   203</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           158  126  207   59   98  103  122   86   109   105   110</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           134  146  166   66  194  230  264  143   274   289   306</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Thursday  ABC           174  183  197  181  187  198  211   86   110   122   117</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           196  185  195  104  106  116  116   47   102    84    84</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           515  463  472  477  590  473  446  349   649   705   747</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Friday    ABC           294  281  305  239  278  246  245  138   246   232   233</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           130  144  154   81  129  153  136  126   138   136   152</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           195  220  248  160  172  164  169   85   183   198   204</span></span></code></pre></div>
+<p>Finally, for some purposes, we might want to collapse the 11 times into a smaller number. Half-hour time slots make more sense. Here, we use <code>as.data.frame.table()</code> to convert the table back to a data frame, <code>levels()</code> to re-assign the values of <code>Time</code>, and finally, <code>xtabs()</code> to give a new, collapsed frequency table.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>TV.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame.table</span>(TV2)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(TV.df<span class="sc">$</span>Time) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;8:00&quot;</span>, <span class="dv">2</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;8:30&quot;</span>, <span class="dv">2</span>),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:00&quot;</span>, <span class="dv">2</span>), </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:30&quot;</span>, <span class="dv">2</span>), </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;10:00&quot;</span>,<span class="dv">2</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;10:30&quot;</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>TV3 <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(Freq <span class="sc">~</span> Day <span class="sc">+</span> Time <span class="sc">+</span> Network, TV.df)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(Day <span class="sc">~</span> Time<span class="sc">+</span>Network, TV3)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="do">##               Day Monday Tuesday Wednesday Thursday Friday</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Time  Network                                             </span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:00  ABC            297     425       394      357    575</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            630     353       284      381    274</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            482     569       280      978    415</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:30  ABC            239     436       350      378    544</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            537     293       266      299    235</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            376     521       232      949    408</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:00  ABC            675     668       603      385    524</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            562     453       201      222    282</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            461     584       424     1063    336</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:30  ABC            726     537       419      297    383</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            405     506       208      163    262</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            485     306       407      795    254</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:00 ABC            632     680       465      232    478</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            517     537       214      186    274</span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            542     378       563     1354    381</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:30 ABC            278     364       203      117    233</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            272     261       110       84    152</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            283     210       306      747    204</span></span></code></pre></div>
+<p>We’ve come this far, so we might as well show a mosaic display. This is analogous to that used by <span class="citation">Hartigan &amp; Kleiner (1984)</span>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(TV3, <span class="at">shade =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">labeling =</span> <span class="fu">labeling_border</span>(<span class="at">rot_labels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">90</span>)))</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAJACAMAAABSRCkEAAAAnFBMVEUAAAAAACgAADoAAEkAAGYAOjoAOmYAOpAAZrY6AAA6ADo6AGY6OgA6Ojo6ZmY6kNtJAABJSQBKb+NYAABmAABmADpmZjpmZmZmkJBmtrZmtv+QOgCQZgCQkGaQtpCQ27aQ29uQ2/+dqOK2ZgC2Zma225C2/7a2///TP2rbkDrb///i4uLklaX/tkn/tmb/trb/25D//7b//9v///+okXQHAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO2dDZvjKHLHlUnvjbt3EydzPZuc+17Sp+zOaXajc7e+/3eLeJEEMmoXVBkk6/9/nruxew3C8DMUUBRVB0EMVaULAG1bAAhiCQBBLAEgiCUABLEEgCCWABDEEgCCWAJAEEsACGIJAEEsASCIJQAEsXTnANWV1b8/PnwrXZi7FACCWLpzgHqdHz+9li7DHWsvAJ37Hqh/9dfHSv1b6e6o6XumY+nibV37AqgadRiGNxDE084AOnStYqbR/VDfDb09wzTiaV8A9a/0/7U9QK3ti06lC7ht7RegBgBJaIcA9YOWAejz99JluwPtF6DeIjrpF6ULuG3tFyDMwkS0Y4A0QeCHqfsHCLqpABDEEgCCWAJAEEsACGIJAEEsASCIJSGAGndTqa0q48M1vqCmbGJS+imiH/xBPvHFsDr/+O0iGalQoYTJpcgqGYAavUFpOWjVG/WNxxfUlI1a46Om1Kr10mDKgz/IJ74YVtY5xEtGKlQoYXIp8koEoPeXQ///9cG+OZo34wtqyrfno/kLJeWUomvMrmjUgz/IJ74YVn1PoTjwkpEKFUqYXIrMkgVIvTA/5EbtHNgX1JTjXygptcwPs///6Ad/kE98MWwm1bFVnx2TUQsVTJhaitySH8LOT7ox+iobXlBTjn8gpVSyDW/Sxz14OZ/4Ykz5aA7cZMRCXSZklCKrhIxox84bf83jC2pK8+7oZHHtsfbXaRo+8sGL+cQXYyq+amYvGbFQlwkZpcgqGYDq/vufH83Odlw7uim13l8+f6fXmTF+2QB5+SQUY5AsQKmlyCoRgLxhOmokCQzwfVVF9Np1b3/++vU1+sEf5JNSjCGR8BCWVoqsEgHI+5FE2bKBn1efLNJutIsoDCPayye1GN3AgfdzohXqMiGjFFkl2APZH0nUbNpLOb6JnLnyp/FePqnF6OwXiZ/GhxIySpFV8jZQ3Hqel7LuW1DXF3Xt7O354PRf6QuJfj7RxRjVJi4khhKmlyKrhGZh1jvULGCMa/ANYQ3eS1kP+xqUlEpvz+aDCQ/+IJ/oYgyyXWkTXahQwuRSZBU2UyGWABDEEgCCWAJAEEsACGIJAEEsASCIJQAEsQSAIJYAEMQSAIJYAkAQS+kAVWlKSs57JPfpN8smIqPkZrq1GAD9I0VVSvIRoC9MTU8XyubvPE0Z/faxABAAAkDzlAAIAAEgAMQUAAJALAEgAMQSANoTQPb+PckTHgBoVwDpg0tvz4KXPACgTQFU28jopiuxZzXeX/rXJCYMQKKHhADQlgA6P/1szv8YEhobVESfPCTF43KOTo73NdrjQ29f/1LZS/n0kUbzn9+e//T84Y1GAGhLADUPv5gwasNYdByOsOo4DFfbzOmBdOQYdaJTnXlVb/TApjNr9S00J33c8u3ZfnYRAwor4ZQAKDdA7y8HG3tqAOg0Hsju/kkJRWGTHWxMtvbh25uKKKG40X8ZYjiY89Q9aC6jYQyuP3UpJQDKDVA79gZ2CDt0U2g3iuwsbIw6ZMloK93fnMZgjfY/9P9v/wqA7gIghY3pOiwJ43ui6nGYmy787G0hPTAaSrRBfrIA9X8CQHcEkAlCUeubqjQJbXVIBmgwazQq5xEg/alPr+iB7hEg55ZXS0LtBOSkaAJoZMLERqtcgPpXjg10O4Bu7EIVSLRvgCwqOhSNJUGFnRqM6JZwffAEkLGlbF/z9tybRZqSKRDNOAu7GUAFtG+AhlFHNf3QAw0z7y5qGm+yqUx0ah08prZ9jbaN7OqSXQcSAKgHdB3xsfYN0ND6yhQabCDT5jq+UqEQQrQeaFy1LKtdAzQtxvSWj7eVoaJjFbvDnDyErYGhXQO0UkWUbBg0hR4MI3olAE0WTmiT9SP7R4laMmVTnTxLLYqACxaimhAA5emBbgaQGmTtNtzUBaW1AQDaIUB6R/YyZb4mBEAyABmPjdGcta4bBhE1m/+Lu3A4eHk8n4YPBtcsGQuJ+ZoQAAkBpF0RB0eOwXXD4KKut6scgCYvj9Po4xHEgPZgY794JjQAkgSIajqypPfNRkeOwRwxfYzCo54Acrw8Th/e00EqWf35e3OYe4UAIEGA8mjarTD7pAYM9dcxUr678jx4eQwfDIpmAx27tu/8Gm+xCgBtFCDbp50G1w311+YCINfLw34wKBpAJ32TjXebDQDqkpcyhEcmspweaJAdtS56oAsvjyWfa8pXUHv7akwEQPNsNqbAzqj1GbN3Sk0urBdeHkvTeVJdqA6uPq5gCBP7xa8NoDxdlZ2wW0eOwXXDeFZrFw516/Dn7/2IdXK9PEYfj2DJSU+ulWPIbB+jAEByWh1AWYwl24sMe1LWdcNbB9Iz7j8ZG2j08rAf3P46kJz2CdAtBIA4X0KuPPcL0LCIWFXlFxIFv7aQKcXVmNH9AqRkDs/OzKhNAyQk7rRwJwANxtMdzcKEBIDIC4lKbekhTG4dSEgAiLyQqFQX74GSHhl6upAAENUGGhegnJTMKktItHuApkhArle9nufIORvHiValIb//TQMkZEplBsiJBOQECDI/b1J8IKY0v8PJCjsebWodSBCgKw1GHFDyAuQeIXQCBNUH89ebn93TZ88ae0awrQDQ1gByIwFNAYIykGNld1z1YNmPSREA6a5rPs4CoMwAeaRMAYJ0jI6MMsuBzec/RwBUhyw0AJQZIC+QyxQgyDjHx9jQvEUyDcP56TXCBgqHoAFARQEaAwRp9WME3YiugkUgyp7EP8YY0WFfIgBUfghzx4bgMBEUByCDbDOa8VFbGR8UI6HKEhLtGyAvEtAUIGg460AP/swAyCwk9ANY3DQ+eCYIAJWfxqt/hp/3h4dvllsuCqDGrAI5odKo8YEwC1sBQG4kICdAkFmRaemxU5IBatyOBAuJ2wPI2RG42MqIWIhOBcgE+RwEgDYIkIxSAbIjl0U1CiB9un7GOADaG0DhzCgfMuNrU93R0WYANC9CamaEzwz+QOU9EpMeGXw6AJoXITUzwmfu0CMRAF0UITUzwmcWeqB8rjQAaNsAhW0g7oMT6vmOAaL+7sSrPgtAwVkY98EJ3db6AOJKskbJKgDQSrQ6gLYpACQA0AY7DjHlBWjwRlQq5fk/aHWnMrapzD1QOMgvexaWVFi2OE+/pbIWvMA0PrTTy71w7h7aXUzV7x9r2wB1avP3YvgqcGPh6pTaEV78Mu4eIL0V6y8DbRogqXZPqoNQbdw/QGoxyN/KYFZZSiIxXWswYnMCIDJAajI2i5HIrLKURGICQHkBMpc9zVIyqywhEdvkIDcYACJnRvhMXYXOPpYAKOmRwacDoGwANQvrhwAIAHWclWgAlBmg9xdT/8oZ2bt0d4oaRGzzQrOweUpmlSUk2jtAxpKox2Nhjb3hfYwaRGw5AJSqjQP0gzoR6gA0XGzR6f9K7oMAULI2DtBBh3NxATr5UYOILQeAUrV1gMztlNMQduhS4ksBoGRtHaAxLMYUHigce+fjlgNAqdo8QENgnik8EACKSASA1NGq2gnO8fANQ1hEIgDUM3N0AFIBL92oQcSWA0CpugOAzk8/eeGBMI2PSASAOrUz6dhAp86LGkRsOQCUqnsA6O15vpURukfgw5YDQKnaNEBiAkDJAkD6YQAoVQBIPwwApQoA6YcBoFQBIP0wAJQqAKQfthKAmG7tCYkSH8l9+s2yicgouZlCLbcOgKCtCgBBLAEgiCUABLEEgCCWABDEEgCCWAJAEEsACGIJAEEsASCIJQAEsbQSgHjbh+kpBbZUWcWQLAo9n+RmCrXcSgBieUJUv8Vqqu0vfI3FYF62IlOK6/kAIAD0QSkAEABilQIAASBWKQAQAGKVAgABIFYpABAAYpUCAAEgVikAEABilQIAASBWKQAQAGKVAgABIFYpABAAYpWCDlBtb6/d1l0Zb8/B654AUHaAzk8/TxeubOmujKZHfB6OGADlB6h5+MWE1NzgXRkXDAGg7AC9vxyGSJtbvCtDIeTcGAaAsgPU9sOUGba2d1eGuTXV7ScBUHaA6vFujI3dlaHiyBpy2qkLAkC5ATo/anZUE2zrroy355CFD4ByA9RY/+hTdx93ZQCgvACNgcYP3dbuytCh0Kv5pbsAKC9ArR0HlBm9sbsy+nL2Br8t6ZgSAOUFyEKjTaFt3ZWh7LS2L3HjMc47CgWAvkQCNP1+e8tnW3dlqPWq84/f9P+kBIC+xE/jpepeMmdKenXP4tvXVwAEgAKZUT6kjP36OBvCmM9NHvwAELvuJXOmpa/VgpU/CSsnACRZgeXWgYoJAElWYMGFRNYsjFNkCQ15ASBuZtc+MCwiKvkLidFmsGcKr0PMXwEAovVAxuet9Zeq7gIgpgAQcRpv9utmC4ksgBg/+xUpsQOL78m2DZB2fOs8X46ODVByyntU3l9PkYVEpVqyBwJAxVTCBlJdUCNpA3FWoiXErLZNq8A0PrRdVw6gpKl3eCK+S/zWsg50FwBds15vb9LmFwBaDUBSA2nePq+ER+JROeT6YxgAElwHopZXREU8Es+PB7Wl6qYEQACIvg6kJmIrWQcCQEwVAUidRmoAEAC6yIzyofrw9vz5uz5P4qQEQACIbERXn17nJ9gAEADqMI0HQNzM0lMCoOwATbHI3HM9ep8gwt+4zFbG5++1f4ofAGUHyIlF5oQoMzuVq45Q1n56bZQR7QeYAkCZAXIPMTshyszyXESQhSLuHMqZbDaNZ63eA6B4gNxYZFOIsvjwHEXWgVThW8FzPeno7RYgj5QpRJmOEhRX97kBGnqgWvBgIUN7BcgzIaYQZWpoi7Khi9lADTkAzW0FgDo3RJlWPz1bsxFtJor0Et5WewUoMISZeHf2L+ROaCXrQMW0V4C8WGRTiLIh7EtL/oGvBCDmLIxhREtoyGtLAF1O49U/Q8dEn+IUmIXZWl/HbrykNgWQG4vMCVHWalO6vbhKgPalM/ZAM8QBUP6tjOlww8VWRoSFWmwIW4lHoqQ2BtANvnROgFbikSgpAJQToJV4JEoKAGUEaDUeiXudhUmp2CxsLcd6kgJUL4SrXglAVOBFtJZ1IAAkdrAwrwCQIEBbangp5Q5xt7CFehcA7VIACACxBIAAEEsA6O4Aymt13UWY3/sAKNEGv8Ci+scVbRqge+6Bbt3wRCwA0GYBunHDS+UDgAAQKx8ABIBY+ahPvr8YG1T5knk3Fk4HnoltjpXonQJkzmDUo0erCbzsHHgmthwA2ilAPzwpSGr/ZPMWbm0OpwRAuQE66JOoLkAn/8AzseUA0F4B0sQ4Q9ihSzgaD4D2C9B4wnw62TyLmUJqOQC0W4BUmIKpB1InmwEQAIoASB1sqJ1zhQ/fMIQBoBiAuvroAKSOObgHnoktB4B2DND56SfvZDOm8QAoCqDefnZsoFPnHXgmthwA2jNAKua7v5URus3tw5YDQLsESEwACACxtBaAWL5YHC8uCYl8CVw4xwEI2qoAEMQSAIJYKhFcIXq5HFqvCvRATW/GRe/ZQStVmSEMDN2NStlACiHB2zKgUioCUNvTc4rZsYNy6+2rjdl67Vde5M5Uu9cieWEPJKu350+vpItXCszC1nJNBvSBbBSD622FdSAorFrbGVdVZgirYEKvXw1pppwfoPrz9+YwuL6NKW+7exhKlvRImRLcpCwReV1rosUoPAEVsIGOXavuTPWmYCnuHFVa4rGiv7A1lYCZgeilU/SKW26jVQN06s4/ftP/c1ICoBUBFKMid6aqRQYABIAuM6N8SJ0eqY8YwsoDVFsjORTepR/FaAd7Ckzja3UCsuLfFwaAeACdn36eYgTNw7v8D/VgxkrWgQBQfoCah1/MVDgU3uUPf1yrEb2QEgDlBuj95TAcDguEd/k1eDNpqOWyAiQa5hcAsQBSFzObYWtj4V3MKDu7VxoAZQeoHsO5rDi8iz746GuAHLOwsgCdHzU7ahwIh3chRtu8NUDVfEduCNTKvzMVAHEAaqwlcerC4V2UK0dF2I6/9RDWVjOO1UKiLi56oJIAjWfjD104vMt/6rMP9dUTELe3gYzhPHVDJgpEAxuoKECDDaraIRTe5Q9/1H8cwkl/0ObBCknUUvraQygU/wEAZQZoGACUKRQK7/K359UAFL5ld54SAGUFaPKm6S2fYHiXeiVDWGuXfK6gDIDyAnRd6zCiNc7WaB4AUlPFRuLabwB0S4DWMo2/LEE/4p4fD2pL1U0JgMQA4nskLrRcUJlWov93HL/UOpCy17AOdCOAZGQs1/I+0Zce9AogNZw1AMgBSELMxltousKzMLvN4ppi9UF1j3oFy0m5b4DWqt6SLguQQqVWRzAO7t96nubbvqyfXFoyUYBSxazwm8r8+PMAZJelAgAdzAr5Cg+BSQK0Jslgawew60aQCEBttQjQw7fz4+n6emYB3S1A1Kiy0zzdXUnU5Dx80+ME6XECFdI/bAEgtZKpy3mYf7wuHh5o7wA5l1s6TtFmQ6P+9DfTA133L5MAqPn85yWA1PmLmSXWfnptlBFdmqBku+UGJoxEWUbbjgaQeyuG4xRtlue0iWocPjLYQOen1yUbKCDlzqGcBtZoFiWL3ei8GONe+HAiQO7llpNT9GxyQ5mFeWtRF9+MoOHaso4GkCqmKvxsIZFR+4mzMEmlxrsvB5BHyuQUrf0SjexmWBxAKZXXjH3gwl6YX4ahByruUCap7QHkmRCTU3Q3BJWir0RzATo/vS5O4+vhR+/2i8YGanxPVwBUFKDRKVqrn/YM/kCEr84FyPGtnQPUWC+yHmqXFg33bI4IgDIDFBjCJoeJ/uW//oe1i65xxB/CnBL46XuQLTftVbeAElsZAhpLsDmAvMstJ6fowdGs/ZdHqkfi7QCaInwSYn0WAEiuzdYFEI37y2m8+me8yHBUwR5oASC9sFit4GSqXJutCiCqnMstHadoM1j83wTQtRgdMgANmXnvFgCqQ73R3gGSHE+pmg43XGxlfHqlO5TlBii8BL1zgDasmwI0/Tp8h7JASgC0Nunt1ObqSlB2gMIBILYOUK5hJ59aPZLVV9cSbwjQYskCXdDGAVqTZLBV1vX56TXXNH7IjPCZt2DkIgAkpusO+rRmOuhNhuCUZ/FxWXqgcMoCAAmIWV/T1xcsjAxAtgc6P95+HUiv65iRclMArUmi58JEADJHiqsM60B6Kaox+3BX0y+HuGP85ADQLQAafFujip60G6+XxI17GBHtQIg7lhK5E1QS/05Z1ggQ9avL5Gx4oA2uoRB3G1fKCOz2hgCoJvdA4RB3BZTcawQ6szsDKOqyFe/7XFYNTWZYIvtEK9Wle6DU1ePQQvL2ABoWeGodCkjJveqgSgUosS0GX7aIhcSm+MWXeweoGoOMh646GDdWrwaYEgCoHda7I8z7eYg7zgCSpr0D9MPTEGQ8dNWB+lNDujOVD1Az7pcw1oE468Bp3O0doIM+heECdPIO+1C6n/lXTwLAcY8vBVBSst0DpIlxhjD/qgNS9zP/6mnrQNN+LXkIuzjaDIDyAzSergpcdUDsfuZfPQUgeyqDvA4UPtoMgAoANBwJvbzqgNr9zL96js3U8NFmAFQAILUWVzs+9eNVB+nrQAQAPsyM8JmFo80AqABAXX10AJquOlg1QAtHmwFQCYDOTz95p3r8aTytzXMDtHC0GQCVAKi3nx0byL3qgLzMmx+g8NFmAFQEIH16J3jVAbnN8wMUTAmA8gIkprwALd5GDoB2DFA7dn9UP4HLHhIA7Rcg5Utm/Qtp6a3DAIxoAKRk/Htqmk+0oxrrQABIKdonujMe/74tBID2C5B2K2npAKnNs4vzsrGuQK5fRqo7h4BYxRcuS0ReCc28KLZLqzF/qE71asmhdIBoSFLsHigKoPLhxSFhZR7C1PhF8zOBtqH8RnQLhu5JRabxKph16VM9kIwKLCQaXY0bAm1CIqcyyFsZWmYluvi5MEhE2TdTK5hAd6XcAKHjuTOtxB8I2qoAEMQSAIJYWglA2fYRr+TAK0hSHkJVEJOP/eQQBPoyvMs+fKIDHhrsHFgFSSqGyJPj8rEfPT/9PMUICoZ3IbUcGyCZKK0ilQeASPnYjzYPv5hTYEvhXWgtx9/KiIjSulwMkcoDQKR8Kttwh+FwWDC8C7XluACleCQGiiFSeQCIlI/5qNp+MsNWMLwLueVkbCB6lNaFYohUHgAi5WM+Wo/hXALhXSJaTgYgepTWhWKIVB4AIuWjP2riOul2uwzvEtNynpP45aSQpogorQvFEKk8AETKR3/UuW37IrxLVMsFTxlEKipKa7gYIpUHgEj5qI+OZ+MP3WV4l4U7ucItJwBQZJTWYDFEKg8AkfJRHx2umlBmNC+8CwMge0CnVJTWy8oDQB11JXoIz6RMIV54F3YPVCxK62XlbRsgpqLq2/Y0nbZ8eOFduADFR2kNFoPRbncC0EbFBig6Smu4GIx2A0AlJTILGzNLT8loNwBUUgDIb8YdATQ5brhGEPGiwlEAyG/G7QNEtbcdxw3Hn8PMxWLcOXID1BMeWO0EQHIOZbRHuis+jj+HOSEasSJdoAcKxXeRqbxtA8R4clw+ZivDcdyY/Dni9zLKDGHBGEF8ASBSPs5WhtHkzzHuStHrvJANpBASP9wsMQBIdIRpT84KkLfvPvlzmLgFMQ0jA5BdGKemNyHuIjZc9qCSAI3+HFr99CyzEd1WEQCpeaL5ePGLm1el4kOYG++CHvpCAiB9g5zOjPThEN2skUM26F8pFTKi1bx98ucY9shachckAVDz+c9xQ1igGL9xBICid+MD03j1z9Ax0QcHAYDOT68xNtBwGZUfJ1oEIIE+jJEFsyOUAogqx3HD8ecw1khLnyN7xU6qi+HixI4IUP/ZfsI4+ROYYsgA9HuqZKfx+dFNoXdy3LjYyoiIoVKFaiBKzu1xNBvo2LXqykv/wrm7Aigl0VbFBkhHaY0C6NSdf/ym/+cUAwBtVByA9Hqy491PvvLy7esrALoVQLcY7T56nMiXibGBlPN/fcQQdjOAvlzTxgFSG769pebPEwGQmO4foGAxAJDULGyTAA2ZpacEQNcbnkbFXQO0eKM9AAJAHbEHMqucs80WAASAOuo03uy2YBYGgC4zI3xGB8Lq5tt16wFIwI69lfELgJTM7T7T4Wybci0AlRMAIttAOibeSm2gcgJA1Gl86Pg+AAJA3QrWgdjmS0EBIBZAPDHLvQoBILJH4lHt46/0RIYEx2nwAyC6R+L58WDP0K5OnGasUvIAQG5mhM+odSA1EVvpmR4AFFthJQBSp44aAOS3JgCiDmGHt+fP33V8WWnxzRcAFF3nBYzo6tPrPAoEo+md5k9vAwCUqrVM40UqDwCR8tk2QMNe2CylSOUBIFI+2wZo2I2fpRSpPABEymfbAIXn7wAIAHXUHsgavr4/kEjlASBSPtsGaCGlSOUBIFI+AGipRgAQKZ9tA4Qh7AZPjstn2wBZzUxpAASAurghzN+NB0AAqIsDqMUQJvfkuHzUR99fTP2rsw3efWHTDRrENi8FUAOA5J4cl48ByAT1rcfwYOaYg3ODBrHNCwE0240HQNkB+kFFBnMA0pGjE+5MLTUL80sIgLIDdNBXG7gAnfwbNIhtjnUgN4c9AaSJcYawQ5dw1woA8nPYE0BjeNTpqgzvAgRiy2UHSJv5WEgUfXJcPgNAQ4Dm6aqMTQAUvIYBABUASC2lTACphtnCEBaGHACVAKirjw5AamHFvUGD2Ob5AYJDmfiT4/KZADo//eRdlbGFaXy4lwRARQDq7WfHBjp13g0axDbPbgPNbsmwKUUqDwCR8nEAUies/K2MUOyUD9s8K0DLQTZFKg8AkfK5j83UWUqRygNApHwA0FKNACBSPhsGKDwF6wAQuwoAkETlASBSPgBoqUYAECkfALRUIwCIlM+mAcI0/hZPjstn0wChB7rFk+PyAUBLNQKASPkAoKUaAUCkfADQUo0AIFI+GwZoOaVI5QEgUj4AaKlGABApHwC0VCMAiJQPAFqqEQBEygcALdUIACLlA4CWagQAkfIBQEs1AoBI+QCgpRoBQKR8ANBSjQAgUj4AaKlGABApHwC0VCMAiJQPAFqqEQBEygcALdUIACLlA4CWagQAkfK5S4BkLpxj51Dy1mamIvJJbqZQy60DIGirAkAQSwAIYgkAQSwBIIglAASxBIAglgAQxBIAglgCQBBLAAhiCQBBLK0EIO5OYiWxoSqUS+J3kqgKYhbJzRRquZUAxPNl+CLh0iGUy0TCbzGakv09WRXtyQDoRk0vkwsAYmSWnpLV7EJNL5MLAGJklp6S1exCTS+TCwBiZJaektXsQk0vkwsAYmSWnpLV7EJNL5MLAGJklp6S1exCTS+Ty3YAqquj/VfJXvekr7Rd7XVPyylZzS7U9DK5bAag89PPJla3vfZbE6QvnOvqNV84F07JanahppfJZTMANQ+/mLv/DED6MtsNXHm5kJLV7EJNL5PLVgB6fzkM915agHp2hkt3/xm4WXuh5QCQcC5bAajthykzbNkhrIdpC9d+L6RkNbtQ08vkshWAFDbmDnZjRFfj+7iWyw3Q23MVoBwA5Qbo/KjZUWb0cGvzYRMA9X1lT/u8nAAoN0CN3Zk/deO98Q/fNjOEXTAEgDIDNF77fRgBavreaDCizSXypDYvZAMphJwbwwBQZoBau9KjzOihB+r/2cg0vtVdp1tKAJQZIAuNNoUGG+jU2YXE95c8C4nnH1UXYm4h1B0iKb36vCl9O3VBACgvQLan6bTl421l6ObMs5Xx9qwBOD+NtNJmYSG6AdD+NlNba8S4/Uh6MVjNLtT0MrkAIJr6wdKg00wzP/IQVlWil+4KNb1MLgCILANQ/W/jnJyUvjfZeuamQdikZDW7UNPL5LI3gBgnPzRAb8/K4qo1QTQb6Ni1fZLGM9QAkChAGY/1cORYP+YlDaCTnr6ZKdyguwQoTonJVqfFyEcAAAWCSURBVEkGUQ5AZkSifIH3l2P39vV1BwBBCxr3IVyA9FyeVHdqxbwf8WZDGF8yOQnkIlHH+5AGyPQ99CGst5fUrq8/CYN2KTsLU9N4uhEN3V5b6SPtEKZWws2cfDUl27lyTuNFdbVkwyKi0t2PYYmmU2SyUB73C5CSOTjS0vd7t6rUdaCoZME8aABNJ8Dc3VT9Gy/146ZN483Wx/3PwlYOkHMCzDkYZpw6Is6FiYq6kKjU+nth6bUWV3m3z2UjALmuY87BMD0lSjmdISLqQqJS7fdA6bUWV3m3z2UjALknwKaDYaXIGQpO+ZDpJBu/kwRAmQHySJkOhumzGeVEM+9DPm8AKDNA3gGe6WCYGtoKTpAZDmXptRZXebfPZYsAjQfDtPrpGduIHkzdOAGg37YCUGAIM6cM7V+4nRAAYmexboC8E2DTwbDBz4+9THcjgPqOc1yMxjReIlkwj7RpvPpn6Jja6z3Q+emvj+PxULulrg6ZVXpjqwdIM2RiflSXZ5GDQg/022YAck+AOQfDWm1Kt4T27q3t03iC1YDX56PWkdQM2wVIvTdH8Y2NXlVLNlbMOtAsZXqtxVXe7XPZCkDObPhiK4MygBkkhpFQeXmp8eXrq+mOHICMvU7o0+JWomcp02ttXnk88cvDBkig9LSP8TSNWkOz2tetGsMcgMyfZ6cowqK74l+k5Iv8zSkqCNBWZJxQR2u7H7vUSNibOzpynguQbSAhgMJG9NoEgK5qBMiYyO3Dr+q4hOpnZkOYN6Pj20DbkERXWLIHzSAboWrYUnh7/q++S9DDSzsMYSZqZ8SMfnOVAKXr/Nh3I04coVotZJvOp++QemrUCsH7S2VmYTQPEcI6UMryEhSpLJ3d+fG/H13Dxm6Sq+Gph0W1tLJW/jSsA5EsFhpAoYl82mARqhWZXApKog5+/1CSszBZMQBKN1pnRqjMOlBBedEK4gSAVgNQwU4MAH2g7QDEb8XkUxkbAciX9tA/zt94f/VkT7arWb3jFgCAPIByJAvmkR8gvafWWBbGN95fPdnodq0Obh4RYAoASScL5kEA6P1luqmHdd2TkRnPmodv3hvvr65sdDtDgvPfCQBNXfa63Tn4rbh2gKrxohXOdU9693Tk4lPojX7heXQM0e2c8Jq24MSnXgoAZQfoh6fhopX0654avxvw/BjHN+qF69GhZZasH3599mwkAJROQnaADo114Um97uni1hPPi2h80+p16blHh36t+XOdawFQOgn5AdLEOENY5HVPF9N470TQ+Ea/uPToMACZUVMkzC8ASksWzIMGkO5uJiM6+rqnWQ+03P+YqwmU5gCZQOMTVwAonYQCAKlJ0NQDpVz35NhAjcvP+Ma+GA1qP7pdmxKpPiwAVAAg1YC141Ofct3TMAtrXH+x8c3w4nIT3Ub4naLbmYJHPn0SACoBUFcfHYDSrnsy8mZY45vprxceHTZIff84d1kQAKWTUASg89NP3qmehOuejOz1dZ9etW01vBlfXHp02G6nrTCNFyKhCEC9/ezYQEnXPYkKAKWTUAYgfc8A67onUQGgdBK2vZkqJACUTgIA6lgA8SWTk0Auid9JoiqIWSQ306213pJBmxAAglgCQBBLAAhiCQBBLAEgiCUABLEEgCCWABDEEgCCWAJAEEsACGIJAEEsASCIJQAEsQSAIJYAEMQSAIJYAkAQSwAIYgkAQSwBIIglAASxBIAglgAQxBIAglgCQBBLAAhiCQBBLAEgiCUABLEEgCCWABDEEgCCWAJAEEsACGIJAEEsASCIJQAEsQSAIJYAEMQSAIJYAkAQSwAIYgkAQSwBIIglAASxBIAglgAQxBIAglgCQBBLAAhiCQBBLAEgiCUABLEEgCCWABDE0v8DrkFdmpOxHWcAAAAASUVORK5CYII=" /><!-- --></p>
+<p>This mosaic displays can be read at several levels, corresponding to the successive splits of the tiles and the residual shading. Several trends are clear for viewers who persist:</p>
+<ul>
+<li>Overall, there are about the same number of viewers on each weekday, with slightly more on Thursday.</li>
+<li>Looking at time slots, viewership is slightly greater from 9:00 - 10:00 overall and also 8:00 - 9:00 on Thursday and Friday</li>
+</ul>
+<p>From the residual shading of the tiles:</p>
+<ul>
+<li>Monday: CBS dominates in all time slots.</li>
+<li>Tuesday” ABC and CBS dominate after 9:00</li>
+<li>Thursday: is a largely NBC day</li>
+<li>Friday: ABC dominates in the early evening</li>
+</ul>
+<!-- ```{r, tv4} -->
+<!-- TV.df <- as.data.frame.table(TV) -->
+<!-- levels(TV.df$Time) <- c(rep("8:00-8:59",4), -->
+<!--                         rep("9:00-9:59",4),  -->
+<!--                         rep("10:00-10:44",3)) -->
+<!-- TV3 <- xtabs(Freq ~ Day + Time + Network, TV.df) -->
+<!-- structable(Day ~ Time+Network, TV3) -->
+<!-- ``` -->
+<!-- Whew! See \figref{fig:TV-mosaic} for a mosaic plot of the `TV3` data. -->
+<!-- The table is too large to display conveniently, but we can show a subtable -->
+<!-- by selecting the indices.  This call to `ftable()` subsets the first three -->
+<!-- levels of each factor. -->
+<!-- ```{r tv4} -->
+<!-- ftable(TV[1:3,1:3,1:3,1:3], col.vars = 3:4) -->
+<!-- ``` -->
+<!-- We've come this far, so we might as well show a mosaic display. This is analogous to that used by -->
+<!-- @vcd:Hartigan+Kleiner:1984. The result is too complex to see very much.  It would be useful to simplify -->
+<!-- the table by collapsing one or more of the table dimensions, e.g., `Time`. -->
+<!-- ```{r tv-mosaic2, fig.height=7, fig.width=7} -->
+<!-- mosaic(TV[,,1:4,], shade=TRUE,  -->
+<!--        labeling_args = list(abbreviate_labs = c(8,5,1,1))) -->
+<!-- ``` -->
+<!-- ## Styles -->
+<!-- The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows: -->
+<!--     output:  -->
+<!--       rmarkdown::html_vignette: -->
+<!--         css: mystyles.css -->
+<!-- ## Figures -->
+<!-- The figure sizes have been customised so that you can easily put two images side-by-side.  -->
+<!-- ```{r, fig.show='hold'} -->
+<!-- plot(1:10) -->
+<!-- plot(10:1) -->
+<!-- ``` -->
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-vcd:Agresti:2002" class="csl-entry">
+Agresti, A. (2002). <em>Categorical data analysis</em> (2nd ed.). Hoboken, New Jersey: John Wiley &amp; Sons.
+</div>
+<div id="ref-vcd:Hartigan+Kleiner:1984" class="csl-entry">
+Hartigan, J. A., &amp; Kleiner, B. (1984). A mosaic of television ratings. <em>The American Statistician</em>, <em>38</em>, 32–35.
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Changing <code>Admit</code> to <code>Admit?</code> might be useful for display purposes, but is dangerous— because it is then difficult to use that variable name in a model formula. See @(sec:tips) for options <code>labeling_args</code> and <code>set_labels</code>to change variable and level names for displays in the <code>strucplot</code> framework.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Because R is object-oriented, this is actually a short-hand for the function <code>as.data.frame.table()</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p><code>table()</code> does not allow a <code>data</code> argument to provide an environment in which the table variables are to be found. In the examples in @(sec:table) I used <code>attach(mydata)</code> for this purpose, but <code>attach()</code> leaves the variables in the global environment, while <code>with()</code> just evaluates the <code>table()</code> expression in a temporary environment of the data.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>This relies on the fact that that indexing an array drops dimensions of length 1 by default, using the argument <code>drop=TRUE</code>; the result is coerced to the lowest possible dimension.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

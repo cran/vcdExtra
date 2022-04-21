@@ -6,7 +6,7 @@
 Extensions and additions to vcd: Visualizing Categorical Data
 }
 \description{
-\if{html}{\figure{vcdExtra-logo.png}{options: align='right' alt='logo' width='100'}}
+% \if{html}{\figure{man/figures/logo.png}{options: align='right' alt='logo' width='100'}}
 
 This package provides additional data sets, documentation, and
 a few functions designed to extend the \code{vcd} package for Visualizing Categorical Data
@@ -25,8 +25,8 @@ The web site for the book is \url{http://ddar.datavis.ca}.
 \tabular{ll}{
 Package:  \tab vcdExtra\cr
 Type:     \tab Package\cr
-Version:  \tab 0.7-6\cr
-Date:     \tab 2021-02-12\cr
+Version:  \tab 0.8-0\cr
+Date:     \tab 2022-04-20\cr
 License:  \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }

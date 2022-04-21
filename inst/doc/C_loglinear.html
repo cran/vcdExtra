@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Michael Friendly" />
+
+<meta name="date" content="2022-04-21" />
+
+<title>Loglinear Models</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Loglinear Models</h1>
+<h4 class="author">Michael Friendly</h4>
+<h4 class="date">2022-04-21</h4>
+
+
+
+<p>You can use the <code>loglm()</code> function in the <code>MASS</code> package to fit log-linear models. Equivalent models can also be fit (from a different perspective) as generalized linear models with the <code>glm()</code> function using the <code>family=&#39;poisson&#39;</code> argument, and the <code>gnm</code> package provides a wider range of generalized <em>nonlinear</em> models, particularly for testing structured associations. The visualization methods for these models were originally developed for models fit using <code>loglm()</code>, so this approach is emphasized here. Some extensions of these methods for models fit using <code>glm()</code> and <code>gnm()</code> are contained in the <code>vcdExtra</code> package and illustrated in .</p>
+<p>Assume we have a 3-way contingency table based on variables A, B, and C. The possible different forms of loglinear models for a 3-way table are shown in the table below. @(tab:loglin-3way) The <strong>Model formula</strong> column shows how to express each model for <code>loglm()</code> in R.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> In the <strong>Interpretation</strong> column, the symbol “<span class="math inline">\(\perp\)</span>” is to be read as “is independent of,” and “<span class="math inline">\(\;|\;\)</span>” means “conditional on,” or “adjusting for,” or just “given.”</p>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="23%" />
+<col width="18%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Model</strong></th>
+<th align="left"><strong>Model formula</strong></th>
+<th align="left"><strong>Symbol</strong></th>
+<th align="left"><strong>Interpretation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mutual independence</td>
+<td align="left"><code>~A + B + C</code></td>
+<td align="left"><span class="math inline">\([A][B][C]\)</span></td>
+<td align="left"><span class="math inline">\(A \perp B \perp C\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Joint independence</td>
+<td align="left"><code>~A*B + C</code></td>
+<td align="left"><span class="math inline">\([AB][C]\)</span></td>
+<td align="left"><span class="math inline">\((A \: B) \perp C\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Conditional independence</td>
+<td align="left"><code>~(A+B)*C</code></td>
+<td align="left"><span class="math inline">\([AC][BC]\)</span></td>
+<td align="left"><span class="math inline">\((A \perp B) \;|\; C\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">All two-way associations</td>
+<td align="left"><code>~A*B + A*C + B*C</code></td>
+<td align="left"><span class="math inline">\([AB][AC][BC]\)</span></td>
+<td align="left">homogeneous association</td>
+</tr>
+<tr class="odd">
+<td align="left">Saturated model</td>
+<td align="left"><code>~A*B*C</code></td>
+<td align="left"><span class="math inline">\([ABC]\)</span></td>
+<td align="left">3-way association</td>
+</tr>
+</tbody>
+</table>
+<p>For example, the formula <code>~A + B + C</code> specifies the model of <em>mutual independence</em> with no associations among the three factors. In standard notation for the expected frequencies <span class="math inline">\(m_{ijk}\)</span>, this corresponds to</p>
+<p><span class="math display">\[  \log ( m_{ijk} ) = \mu + \lambda_i^A + \lambda_j^B + \lambda_k^C \equiv  A + B + C \]</span></p>
+<p>The parameters <span class="math inline">\(\lambda_i^A , \lambda_j^B\)</span> and <span class="math inline">\(\lambda_k^C\)</span> pertain to the differences among the one-way marginal frequencies for the factors A, B and C.</p>
+<p>Similarly, the model of <em>joint independence</em>, <span class="math inline">\((A \: B) \perp C\)</span>, allows an association between A and B, but specifies that C is independent of both of these and their combinations,</p>
+<p><span class="math display">\[  \log ( m_{ijk} ) = \mu + \lambda_i^A + \lambda_j^B + \lambda_k^C + \lambda_{ij}^{AB} \equiv A * B + C \]</span></p>
+<p>where the parameters <span class="math inline">\(\lambda_{ij}^{AB}\)</span> pertain to the overall association between A and B (collapsing over C).</p>
+<p>In the literature or text books, you will often find these models expressed in shorthand symbolic notation, using brackets, <code>[ ]</code> to enclose the <em>high-order terms</em> in the model. Thus, the joint independence model can be denoted <code>[AB][C]</code>, as shown in the <strong>Symbol</strong> column in the table. @(tab:loglin-3way).</p>
+<p>Models of <em>conditional independence</em> allow (and fit) two of the three possible two-way associations. There are three such models, depending on which variable is conditioned upon. For a given conditional independence model, e.g., <code>[AB][AC]</code>, the given variable is the one common to all terms, so this example has the interpretation <span class="math inline">\((B \perp C) \;|\; A\)</span>.</p>
+<div id="sec:loglm" class="section level2">
+<h2>Fitting with <code>loglm()</code></h2>
+<p>For example, we can fit the model of mutual independence among hair color, eye color and sex in <code>HairEyeColor</code> as</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Independence model of hair and eye color and sex.  </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">loglm</span>(<span class="sc">~</span>Hair<span class="sc">+</span>Eye<span class="sc">+</span>Sex, <span class="at">data=</span>HairEyeColor)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## loglm(formula = ~Hair + Eye + Sex, data = HairEyeColor)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Statistics:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##                       X^2 df P(&gt; X^2)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Likelihood Ratio 166.3001 24        0</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Pearson          164.9247 24        0</span></span></code></pre></div>
+<p>Similarly, the models of conditional independence and joint independence are specified as</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Conditional independence</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">loglm</span>(<span class="sc">~</span>(Hair <span class="sc">+</span> Eye) <span class="sc">*</span> Sex, <span class="at">data=</span>HairEyeColor)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## loglm(formula = ~(Hair + Eye) * Sex, data = HairEyeColor)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Statistics:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                       X^2 df P(&gt; X^2)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Likelihood Ratio 156.6779 18        0</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Pearson          147.9440 18        0</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Joint independence model.  </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">loglm</span>(<span class="sc">~</span>Hair<span class="sc">*</span>Eye <span class="sc">+</span> Sex, <span class="at">data=</span>HairEyeColor)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hec<span class="fl">.3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## loglm(formula = ~Hair * Eye + Sex, data = HairEyeColor)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Statistics:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                       X^2 df  P(&gt; X^2)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Likelihood Ratio 19.85656 15 0.1775045</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Pearson          19.56712 15 0.1891745</span></span></code></pre></div>
+<p>Note that printing the model gives a brief summary of the goodness of fit. A set of models can be compared using the <code>anova()</code> function.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(hec<span class="fl">.1</span>, hec<span class="fl">.2</span>, hec<span class="fl">.3</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## LR tests for hierarchical log-linear models</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  ~Hair + Eye + Sex </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  ~(Hair + Eye) * Sex </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 3:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  ~Hair * Eye + Sex </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">##            Deviance df Delta(Dev) Delta(df) P(&gt; Delta(Dev)</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1   166.30014 24                                    </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2   156.67789 18    9.62225         6        0.14149</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 3    19.85656 15  136.82133         3        0.00000</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Saturated   0.00000  0   19.85656        15        0.17750</span></span></code></pre></div>
+</div>
+<div id="sec:glm" class="section level2">
+<h2>Fitting with <code>glm()</code> and <code>gnm()</code></h2>
+<p>The <code>glm()</code> approach, and extensions of this in the <code>gnm</code> package allows a much wider class of models for frequency data to be fit than can be handled by <code>loglm()</code>. Of particular importance are models for ordinal factors and for square tables, where we can test more structured hypotheses about the patterns of association than are provided in the tests of general association under <code>loglm()</code>. These are similar in spirit to the non-parametric CMH tests described in .</p>
+<p><strong><em>Example</em></strong>: The data <code>Mental</code> in the <code>vcdExtra</code> package gives a two-way table in frequency form classifying young people by their mental health status and parents’ socioeconomic status (SES), where both of these variables are ordered factors.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Mental)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    24 obs. of  3 variables:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ ses   : Ord.factor w/ 6 levels &quot;1&quot;&lt;&quot;2&quot;&lt;&quot;3&quot;&lt;&quot;4&quot;&lt;..: 1 1 1 1 2 2 2 2 3 3 ...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ mental: Ord.factor w/ 4 levels &quot;Well&quot;&lt;&quot;Mild&quot;&lt;..: 1 2 3 4 1 2 3 4 1 2 ...</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Freq  : int  64 94 58 46 57 94 54 40 57 105 ...</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(Freq <span class="sc">~</span> mental<span class="sc">+</span>ses, <span class="at">data=</span>Mental)   <span class="co"># display the frequency table</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">##           ses</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## mental       1   2   3   4   5   6</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   Well      64  57  57  72  36  21</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   Mild      94  94 105 141  97  71</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   Moderate  58  54  65  77  54  54</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   Impaired  46  40  60  94  78  71</span></span></code></pre></div>
+<p>Simple ways of handling ordinal variables involve assigning scores to the table categories, and the simplest cases are to use integer scores, either for the row variable (<code>column effects&#39;&#39; model), the column variable (</code>row effects’’ model), or both (``uniform association’’ model).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>indep <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> mental <span class="sc">+</span> ses, <span class="at">family =</span> poisson, <span class="at">data =</span> Mental)  <span class="co"># independence model</span></span></code></pre></div>
+<p>To fit more parsimonious models than general association, we can define numeric scores for the row and column categories</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use integer scores for rows/cols </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Cscore <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Mental<span class="sc">$</span>ses)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Rscore <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Mental<span class="sc">$</span>mental) </span></code></pre></div>
+<p>Then, the row effects model, the column effects model, and the uniform association model can be fit as follows:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column effects model (ses)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>coleff <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> mental <span class="sc">+</span> ses <span class="sc">+</span> Rscore<span class="sc">:</span>ses, <span class="at">family =</span> poisson, <span class="at">data =</span> Mental)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># row effects model (mental)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>roweff <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> mental <span class="sc">+</span> ses <span class="sc">+</span> mental<span class="sc">:</span>Cscore, <span class="at">family =</span> poisson, <span class="at">data =</span> Mental)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># linear x linear association</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>linlin <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> mental <span class="sc">+</span> ses <span class="sc">+</span> Rscore<span class="sc">:</span>Cscore, <span class="at">family =</span> poisson, <span class="at">data =</span> Mental)</span></code></pre></div>
+<p>The <code>LRstats()</code> function in <code>vcdExtra</code> provides a nice, compact summary of the fit statistics for a set of models, collected into a <em>glmlist</em> object. Smaller is better for AIC and BIC.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare models using AIC, BIC, etc</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>vcdExtra<span class="sc">::</span><span class="fu">LRstats</span>(<span class="fu">glmlist</span>(indep, roweff, coleff, linlin))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Likelihood summary table:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">##           AIC    BIC LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## indep  209.59 220.19   47.418 15  3.155e-05 ***</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## roweff 174.45 188.59    6.281 12     0.9013    </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## coleff 179.00 195.50    6.829 10     0.7415    </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## linlin 174.07 185.85    9.895 14     0.7698    </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p>For specific model comparisons, we can also carry out tests of <em>nested</em> models with <code>anova()</code> when those models are listed from smallest to largest. Here, there are two separate paths from the most restrictive (independence) model through the model of uniform association, to those that allow only one of row effects or column effects.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(indep, linlin, coleff, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)  </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Analysis of Deviance Table</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1: Freq ~ mental + ses</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2: Freq ~ mental + ses + Rscore:Cscore</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 3: Freq ~ mental + ses + Rscore:ses</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1        15     47.418                          </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2        14      9.895  1   37.523 9.035e-10 ***</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3        10      6.829  4    3.066    0.5469    </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(indep, linlin, roweff, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Analysis of Deviance Table</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1: Freq ~ mental + ses</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2: Freq ~ mental + ses + Rscore:Cscore</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 3: Freq ~ mental + ses + mental:Cscore</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="do">##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    </span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 1        15     47.418                          </span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 2        14      9.895  1   37.523 9.035e-10 ***</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 3        12      6.281  2    3.614    0.1641    </span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p>The model of linear by linear association seems best on all accounts. For comparison, one might try the CMH tests on these data:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">CMHtest</span>(<span class="fu">xtabs</span>(Freq<span class="sc">~</span>ses<span class="sc">+</span>mental, <span class="at">data=</span>Mental))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Cochran-Mantel-Haenszel Statistics for ses by mental </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">##                  AltHypothesis  Chisq Df       Prob</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## cor        Nonzero correlation 37.156  1 1.0907e-09</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## rmeans  Row mean scores differ 40.297  5 1.3012e-07</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## cmeans  Col mean scores differ 40.666  3 7.6971e-09</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## general    General association 45.958 15 5.4003e-05</span></span></code></pre></div>
+</div>
+<div id="non-linear-terms" class="section level2">
+<h2>Non-linear terms</h2>
+<p>The strength of the <code>gnm</code> package is that it handles a wide variety of models that handle non-linear terms, where the parameters enter the model beyond a simple linear function. The simplest example is the Goodman RC(1) model <span class="citation">(Goodman, 1979)</span>, which allows a multiplicative term to account for the association of the table variables. In the notation of generalized linear models with a log link, this can be expressed as</p>
+<p><span class="math display">\[ \log \mu_{ij} = \alpha_i + \beta_j + \gamma_{i} \delta_{j}   ,\]</span></p>
+<p>where the row-multiplicative effect parameters <span class="math inline">\(\gamma_i\)</span> and corresponding column parameters <span class="math inline">\(\delta_j\)</span> are estimated from the data.%<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Similarly, the RC(2) model adds two multiplicative terms to the independence model,</p>
+<p><span class="math display">\[ \log \mu_{ij} = \alpha_i + \beta_j + \gamma_{i1} \delta_{j1} + \gamma_{i2} \delta_{j2} . \]</span></p>
+<p>In the <code>gnm</code> package, these models may be fit using the <code>Mult()</code> to specify the multiplicative term, and <code>instances()</code> to specify several such terms.</p>
+<p><strong><em>Example</em></strong>: For the <code>Mental</code> data, we fit the RC(1) and RC(2) models, and compare these with the independence model.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>RC1 <span class="ot">&lt;-</span> <span class="fu">gnm</span>(Freq <span class="sc">~</span> mental <span class="sc">+</span> ses <span class="sc">+</span> <span class="fu">Mult</span>(mental,ses), <span class="at">data=</span>Mental, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">family=</span>poisson, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>RC2 <span class="ot">&lt;-</span> <span class="fu">gnm</span>(Freq <span class="sc">~</span> mental<span class="sc">+</span>ses <span class="sc">+</span> <span class="fu">instances</span>(<span class="fu">Mult</span>(mental,ses),<span class="dv">2</span>), <span class="at">data=</span>Mental, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">family=</span>poisson, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(indep, RC1, RC2, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Analysis of Deviance Table</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 1: Freq ~ mental + ses</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 2: Freq ~ mental + ses + Mult(mental, ses)</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Model 3: Freq ~ mental + ses + Mult(mental, ses, inst = 1) + Mult(mental, </span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">##     ses, inst = 2)</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)    </span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1        15     47.418                         </span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2         9     40.230  6    7.188   0.3038    </span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3         3      0.523  6   39.707  5.2e-07 ***</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Goodman:79" class="csl-entry">
+Goodman, L. A. (1979). Simple models for the analysis of association in cross-classifications having ordered categories. <em>Journal of the American Statistical Association</em>, <em>74</em>, 537–552.
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For <code>glm()</code>, or <code>gnm()</code>, with the data in the form of a frequency data.frame, the same model is specified in the form <code>glm(Freq</code> <span class="math inline">\(\sim\)</span> <code>..., family=&quot;poisson&quot;)</code>, where <code>Freq</code> is the name of the cell frequency variable and <code>...</code> specifies the <em>Model formula</em>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>This is similar in spirit to a correspondence analysis with a single dimension, but as a statistical model.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

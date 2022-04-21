@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.7-6
-Date: 2022-02-12
+Version: 0.8-0
+Date: 2022-04-20
 Language: en-US
 Authors@R: c(person(given = "Michael", family = "Friendly", role=c("aut", "cre"), email="friendly@yorku.ca"),
             person(given = "Heather", family = "Turner", role="ctb"),
@@ -22,7 +22,8 @@ Author: Michael Friendly [aut, cre],
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Depends: R (>= 2.10), vcd, gnm (>= 1.0-3), grid
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
-        ggplot2, Sleuth2, car, lattice, stats4, rgl, AER
+        ggplot2, Sleuth2, car, lattice, stats4, rgl, AER, coin, Hmisc,
+        knitr, rmarkdown
 Imports: MASS, grDevices, stats, utils, ca
 Description: Provides additional data sets, methods and documentation to complement the 'vcd' package for Visualizing Categorical Data
     and the 'gnm' package for Generalized Nonlinear Models.
@@ -31,11 +32,12 @@ Description: Provides additional data sets, methods and documentation to complem
 	'glm' and 'loglm' objects. This package is now a support package for the book, "Discrete Data Analysis with R" by
   Michael Friendly and David Meyer.
 License: GPL (>= 2)
-URL: https://CRAN.R-project.org/package=vcdExtra
+URL: https://friendly.github.io/vcdExtra/
 BugReports: https://github.com/friendly/vcdExtra
+VignetteBuilder: knitr, rmarkdown
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2022-02-14 15:45:07 UTC; friendly
+Packaged: 2022-04-21 13:41:11 UTC; friendly
 Repository: CRAN
-Date/Publication: 2022-02-14 16:20:02 UTC
+Date/Publication: 2022-04-21 14:10:01 UTC
