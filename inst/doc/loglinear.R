@@ -47,7 +47,7 @@ anova(hec.1, hec.2, hec.3)
 
 ## ---- mental1-----------------------------------------------------------------
 str(Mental)
-xtabs(Freq ~ mental+ses, data=Mental)   # display the frequency table
+xtabs(Freq ~ mental + ses, data=Mental)   # display the frequency table
 
 ## ---- mental2-----------------------------------------------------------------
 indep <- glm(Freq ~ mental + ses, family = poisson, data = Mental)  # independence model

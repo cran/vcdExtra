@@ -1,9 +1,9 @@
 \name{DaytonSurvey}
 \alias{DaytonSurvey}
 \docType{data}
-\title{
-Dayton Student Survey on Substance Use
-}
+
+\title{Dayton Student Survey on Substance Use}
+
 \description{
 This data, from Agresti (2002), Table 9.1, gives the result of a 1992
 survey in Dayton Ohio of  2276 high school seniors on
@@ -54,11 +54,24 @@ http://www.stat.ufl.edu/~aa/cda/Thompson_manual.pdf
 \examples{
 data(DaytonSurvey)
 
-mod.GR <- glm(Freq ~ . + sex*race, data=DaytonSurvey, family=poisson)  # mutual independence + GR
-mod.homog.assoc <- glm(Freq ~ .^2, data=DaytonSurvey, family=poisson)  # homogeneous association
+# mutual independence
+mod.0  <- glm(Freq ~ ., data=DaytonSurvey, family=poisson)   
+
+# mutual independence + GR
+mod.GR <- glm(Freq ~ . + sex*race, data=DaytonSurvey, family=poisson)  
+anova(mod.GR, test = "Chisq")
+
+# all two-way terms
+mod.all2way <- glm(Freq ~ .^2, data=DaytonSurvey, family=poisson)  
+anova(mod.all2way, test = "Chisq")
+
+# compare models
+LRstats(mod.0, mod.GR, mod.all2way)
 
 # collapse over sex and race
-Dayton.ACM <- aggregate(Freq ~ cigarette+alcohol+marijuana, data=DaytonSurvey, FUN=sum)
-
+Dayton.ACM <- aggregate(Freq ~ cigarette+alcohol+marijuana, 
+                        data=DaytonSurvey, 
+                        FUN=sum)
+Dayton.ACM
 }
 \keyword{datasets}

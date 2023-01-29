@@ -178,13 +178,13 @@ Dayton.ACM.tab <- margin.table(Dayton.tab, 1:3)   # same result
 
 structable(cigarette+alcohol ~ marijuana, data=Dayton.ACM.tab)
 
-## ---- dayton5, eval=FALSE-----------------------------------------------------
-#  library(plyr)
-#  Dayton.ACM.df <- plyr::ddply(DaytonSurvey,
-#                               .(cigarette, alcohol, marijuana),
-#                               plyr::summarise, Freq=sum(Freq))
-#  
-#  Dayton.ACM.df
+## ---- dayton5-----------------------------------------------------------------
+library(plyr)
+Dayton.ACM.df <- plyr::ddply(DaytonSurvey, 
+                             .(cigarette, alcohol, marijuana), 
+                             plyr::summarise, Freq=sum(Freq))
+
+Dayton.ACM.df
 
 ## ---- collapse1---------------------------------------------------------------
 # create some sample data in frequency form
@@ -266,7 +266,7 @@ TV3 <- xtabs(Freq ~ Day + Time + Network, TV.df)
 
 structable(Day ~ Time+Network, TV3)
 
-## ----tv-mosaic1, fig.height=6, fig.width=6------------------------------------
+## ----tv-mosaic1, fig.height=6, fig.width=7------------------------------------
 mosaic(TV3, shade = TRUE,
        labeling = labeling_border(rot_labels = c(0, 0, 0, 90)))
 

@@ -23,7 +23,7 @@ died in London between Nov. 5 and Nov. 13, 2013.
 %%%  ~~ If necessary, more details than the __description__ above ~~
 %}
 \source{
-\url{https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data},
+\url{https://www.data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data},
 STATS 19 data, 2005-2012, using the files
 \code{Casualty0512.csv} and 
 \code{Accidents0512.csv}
@@ -38,9 +38,15 @@ Have London's roads become more dangerous for cyclists?
 \examples{
 data(CyclingDeaths)
 
-plot(deaths ~ date, data=CyclingDeaths, type="h", 
-	lwd=3, ylab="Number of deaths", axes=FALSE)
-axis(1, at=seq(as.Date('2005-01-01'), by='years', length.out=9), labels=2005:2013)
+plot(deaths ~ date, data=CyclingDeaths, 
+  type="h", 
+	lwd=3, 
+	ylab="Number of deaths", 
+	axes=FALSE)
+axis(1, at=seq(as.Date('2005-01-01'), 
+               by='years', 
+               length.out=9), 
+     labels=2005:2013)
 axis(2, at=0:3)
 
 # make a one-way frequency table

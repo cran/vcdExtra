@@ -44,17 +44,11 @@ an  optional  data   frame,  list  or   environment  (or  object   coercible  by
 found in data, the variables are taken from \code{environment(formula)}, typically  the
 environment from which \code{glm} is called.
 }
-  \item{\dots}{
-Other arguments passed to \code{glm}
+  \item{\dots}{Other arguments passed to \code{glm}}
+  \item{order}{Highest order interaction of the models generated. Defaults to the number of terms in the model formula.}
+  \item{prefix}{Prefix used to label the models fit in the \code{glmlist} object.}
 }
-  \item{order}{
-Highest order interaction of the models generated. Defaults to the number
-of terms in the model formula.
-}
-  \item{prefix}{
-Prefix used to label the models fit in the \code{glmlist} object.
-}
-}
+
 \details{
 With \code{y} as the response in the \code{formula}, the 0-way (null) model
 is \code{y ~ 1}.  
@@ -92,7 +86,10 @@ Michael Friendly and Heather Turner
 }
 \examples{
 ## artificial data
-factors <- expand.grid(A=factor(1:3), B=factor(1:2), C=factor(1:3), D=factor(1:2))
+factors <- expand.grid(A=factor(1:3), 
+                       B=factor(1:2), 
+                       C=factor(1:3), 
+                       D=factor(1:2))
 Freq <- rpois(nrow(factors), lambda=40)
 df <- cbind(factors, Freq)
 
@@ -103,7 +100,8 @@ LRstats(mods4)
 
 # JobSatisfaction data
 data(JobSatisfaction, package="vcd")
-modSat <- Kway(Freq ~ management+supervisor+own, data=JobSatisfaction, 
+modSat <- Kway(Freq ~ management+supervisor+own, 
+               data=JobSatisfaction, 
                family=poisson, prefix="JobSat")
 LRstats(modSat)
 anova(modSat, test="Chisq")

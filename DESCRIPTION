@@ -1,29 +1,28 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.8-0
-Date: 2022-04-20
+Version: 0.8-2
+Date: 2023-01-19
 Language: en-US
-Authors@R: c(person(given = "Michael", family = "Friendly", role=c("aut", "cre"), email="friendly@yorku.ca"),
+Authors@R: c(
+            person(given = "Michael", 
+                   family = "Friendly", 
+                   role=c("aut", "cre"), 
+                   email="friendly@yorku.ca",
+                   comment = c(ORCID = "0000-0002-3237-0941")),
             person(given = "Heather", family = "Turner", role="ctb"),
+            person(given = "David", family = "Meyer", role="ctb"),
             person(given = "Achim", family = "Zeileis", role="ctb"),
             person(given = "Duncan", family = "Murdoch", role="ctb"),
             person(given = "David", family = "Firth", role="ctb"),
             person(given = "Matt", family = "Kumar", role="ctb"),
             person(given = "Shuguang", family = "Sun", role="ctb")
             )
-Author: Michael Friendly [aut, cre],
-  Heather Turner [ctb],
-  Achim Zeileis [ctb],
-  Duncan Murdoch [ctb],
-  David Firth [ctb],
-  Matt Kumar [ctb],
-  Shuguang Sun [ctb]
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Depends: R (>= 2.10), vcd, gnm (>= 1.0-3), grid
+Depends: R (>= 3.5.0), vcd, gnm (>= 1.0-3), grid
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
         ggplot2, Sleuth2, car, lattice, stats4, rgl, AER, coin, Hmisc,
-        knitr, rmarkdown
+        knitr, rmarkdown, seriation
 Imports: MASS, grDevices, stats, utils, ca
 Description: Provides additional data sets, methods and documentation to complement the 'vcd' package for Visualizing Categorical Data
     and the 'gnm' package for Generalized Nonlinear Models.
@@ -38,6 +37,14 @@ VignetteBuilder: knitr, rmarkdown
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2022-04-21 13:41:11 UTC; friendly
+Packaged: 2023-01-29 18:37:45 UTC; friendly
+Author: Michael Friendly [aut, cre] (<https://orcid.org/0000-0002-3237-0941>),
+  Heather Turner [ctb],
+  David Meyer [ctb],
+  Achim Zeileis [ctb],
+  Duncan Murdoch [ctb],
+  David Firth [ctb],
+  Matt Kumar [ctb],
+  Shuguang Sun [ctb]
 Repository: CRAN
-Date/Publication: 2022-04-21 14:10:01 UTC
+Date/Publication: 2023-01-29 19:00:02 UTC

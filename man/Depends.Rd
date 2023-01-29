@@ -10,7 +10,8 @@ dependencies declared in 4983 packages listed on CRAN on January 17, 2014.
 }
 \usage{data(Depends)}
 \format{
-  The format is:
+  The format is a one-way frequency table of counts of packages with 0, 1, 2, ... dependencies.
+  
  'table' int [1:15(1d)] 986 1347 993 685 375 298 155 65 32 19 ...
  - attr(*, "dimnames")=List of 1
   ..$ Depends: chr [1:15] "0" "1" "2" "3" ...
@@ -28,7 +29,14 @@ Using code from
 %}
 \examples{
 data(Depends)
-plot(Depends, xlab="Number of Dependencies", ylab="Number of R Packages", lwd=8)
+plot(Depends, 
+     xlab="Number of Dependencies", 
+     ylab="Number of R Packages", 
+     lwd=8)
+
+# what type of distribution?
+# Ord_plot can't classify this!
+Ord_plot(Depends)
 
 \dontrun{
 # The code below, from Joseph Rickert, downloads and tabulates the data
