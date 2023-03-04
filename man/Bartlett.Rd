@@ -69,3 +69,8 @@ pairs(Bartlett, gp=shading_Friendly)
 }
 
 \keyword{datasets}
+
+\concept{2 by 2 tables}
+\concept{loglinear models}
+\concept{homogeneity of association}
+\concept{odds ratios}

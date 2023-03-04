@@ -58,3 +58,7 @@ if (require(nnet)) {
 
 }
 \keyword{datasets}
+
+\concept{loglinear models}
+\concept{multinomial models}
+\concept{zero counts}

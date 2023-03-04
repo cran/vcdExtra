@@ -15,11 +15,13 @@ knitr::set_alias(w = "fig.width",
                  cap = "fig.cap")
 
 
-# preload datasets ???
+# Load packages
 set.seed(1071)
 library(vcd)
 library(vcdExtra)
 library(ggplot2)
+library(seriation)
+
 data(HairEyeColor)
 data(PreSex)
 data(Arthritis, package="vcd")

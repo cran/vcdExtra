@@ -1,3 +1,10 @@
+## Version 0.8-3 (2023-02-16)
+
+- All datasets now classified with \concept{} tags by method of analysis. These can be found using `help.search(pattern, field="concept")`
+- Added a vignette, `datasets.Rmd` showing all datasets classified by method tags. Links only work in the `pkgdown` site.
+- Added `Asbestos` data
+
+
 ## Version 0.8-2 (2023-01-19)
 
 This is a major enhancement release of the `vcdExtra` package, focusing on documentation and examples.

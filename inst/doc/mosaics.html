@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2023-01-29" />
+<meta name="date" content="2023-03-04" />
 
 <title>Mosaic plots</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Mosaic plots</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2023-01-29</h4>
+<h4 class="date">2023-03-04</h4>
 
 
 
@@ -762,15 +762,14 @@ jointly.</p>
 <code>seriation::seriate()</code> to find the order of permutations of
 <code>Task</code> and <code>Who</code> along the CA dimensions.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(seriation)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Loading required package: seriation</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>order <span class="ot">&lt;-</span> <span class="fu">seriate</span>(HouseTasks, <span class="at">method =</span> <span class="st">&quot;CA&quot;</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the permuted row and column labels</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(HouseTasks)[order[[<span class="dv">1</span>]]]</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] &quot;Laundry&quot;   &quot;Main_meal&quot; &quot;Dinner&quot;    &quot;Breakfast&quot; &quot;Tidying&quot;   &quot;Dishes&quot;   </span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7] &quot;Shopping&quot;  &quot;Official&quot;  &quot;Holidays&quot;  &quot;Finances&quot;  &quot;Insurance&quot; &quot;Driving&quot;  </span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] &quot;Repairs&quot;</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(HouseTasks)[order[[<span class="dv">2</span>]]]</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;Wife&quot;        &quot;Alternating&quot; &quot;Jointly&quot;     &quot;Husband&quot;</span></span></code></pre></div>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>order <span class="ot">&lt;-</span> <span class="fu">seriate</span>(HouseTasks, <span class="at">method =</span> <span class="st">&quot;CA&quot;</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the permuted row and column labels</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(HouseTasks)[order[[<span class="dv">1</span>]]]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] &quot;Laundry&quot;   &quot;Main_meal&quot; &quot;Dinner&quot;    &quot;Breakfast&quot; &quot;Tidying&quot;   &quot;Dishes&quot;   </span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7] &quot;Shopping&quot;  &quot;Official&quot;  &quot;Holidays&quot;  &quot;Finances&quot;  &quot;Insurance&quot; &quot;Driving&quot;  </span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] &quot;Repairs&quot;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(HouseTasks)[order[[<span class="dv">2</span>]]]</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;Wife&quot;        &quot;Alternating&quot; &quot;Jointly&quot;     &quot;Husband&quot;</span></span></code></pre></div>
 <p>Now, use <code>seriation::permute()</code> to use <code>order</code>
 for the permutations of <code>Task</code> and <code>Who</code>, and plot
 the resulting mosaic:</p>
