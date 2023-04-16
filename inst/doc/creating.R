@@ -1,6 +1,7 @@
 ## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
+  message = FALSE,
   warning = FALSE,
   fig.height = 6,
   fig.width = 7,
@@ -205,6 +206,25 @@ t2 <- collapse.table(t1,
          age=c("10-29", "10-29",  "30-49", "30-49", "50-69", "50-69"),
          education=c("<high", "<high", "high"))
 structable(t2)
+
+## ----titanicp1----------------------------------------------------------------
+table(Titanicp$sibsp, Titanicp$parch)
+
+## ----titanicp2----------------------------------------------------------------
+library(dplyr)
+Titanicp <- Titanicp |>
+  mutate(sibspF = case_match(sibsp,
+                            0 ~ "0",
+                            1 ~ "1",
+                            2:max(sibsp) ~ "2+")) |>
+  mutate(sibspF = ordered(sibspF)) |>
+  mutate(parchF = case_match(parch,
+                             0 ~ "0",
+                             1 ~ "1",
+                             2:max(parch) ~ "2+")) |>
+  mutate(parchF = ordered(parchF)) 
+
+table(Titanicp$sibspF, Titanicp$parchF)
 
 ## ---- convert-ex1-------------------------------------------------------------
 as.data.frame(GSStab)

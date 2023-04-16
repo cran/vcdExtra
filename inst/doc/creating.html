@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2023-03-04" />
+<meta name="date" content="2023-04-16" />
 
 <title>Creating and manipulating frequency tables</title>
 
@@ -363,7 +363,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Creating and manipulating frequency
 tables</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2023-03-04</h4>
+<h4 class="date">2023-04-16</h4>
 
 
 
@@ -523,7 +523,7 @@ position in the table. Thus in the <code>JobSat</code> data, both
 <code>income</code> and <code>satisfaction</code> represent ordered
 factors, and the <em>positions</em> of the values in the rows and
 columns reflects their ordered nature.</p>
-<p>Yet, for analysis, there are time when you need <em>numeric</em>
+<p>Yet, for analysis, there are times when you need <em>numeric</em>
 values for the levels of ordered factors in a table, e.g., to treat a
 factor as a quantitative variable. In such cases, you can simply
 re-assign the <code>dimnames</code> attribute of the table variables.
@@ -583,6 +583,19 @@ we convert using <code>xtabs()</code>.</p>
 showing the marginal model of independence for Treatment and Improved.
 Age, a covariate, and Sex are ignored here.</p>
 </div>
+<p>Several data sets in the package illustrate the salutary effects of
+reordering factor levels in mosaic displays and other analyses. See:</p>
+<ul>
+<li><code>help(AirCrash)</code></li>
+<li><code>help(Glass)</code></li>
+<li><code>help(HouseTasks)</code></li>
+</ul>
+<p>The <a href="https://CRAN.R-project.org/package=seriation">seriate</a> package
+now contains a general method to permute the row and column variables in
+a table according to the result of a correspondence analysis, using
+scores on the first CA dimension.</p>
+<div id="re-ordering-dimensions" class="section level3">
+<h3>Re-ordering dimensions</h3>
 <p>Finally, there are situations where, particularly for display
 purposes, you want to re-order the <em>dimensions</em> of an <span class="math inline">\(n\)</span>-way table, or change the labels for the
 variables or levels. This is easy when the data are in table form:
@@ -602,6 +615,7 @@ level labels respectively. We will use the following version of
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">##        No                313 207 205 279 138 351</span></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Female Yes                89  17 202 131  94  24</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">##        No                 19   8 391 244 299 317</span></span></code></pre></div>
+</div>
 </div>
 <div id="sec:structable" class="section level2">
 <h2><code>structable()</code></h2>
@@ -649,40 +663,37 @@ may be plotted with <code>mosaic()</code> (not shown here).</p>
 <p>These lines illustrate <code>table</code>-related functions:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-Way Frequency Table</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(mydata)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## The following objects are masked _by_ .GlobalEnv:</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     A, B, C</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>mytable <span class="ot">&lt;-</span> <span class="fu">table</span>(A,B)   <span class="co"># A will be rows, B will be columns</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>mytable                 <span class="co"># print table</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## A     b1  b2</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 116 114</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 138 132</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">1</span>) <span class="co"># A frequencies (summed over B)</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## A</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  a1  a2 </span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 230 270</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">2</span>) <span class="co"># B frequencies (summed over A)</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## B</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  b1  b2 </span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 254 246</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable)    <span class="co"># cell percentages</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">## A       b1    b2</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.232 0.228</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.276 0.264</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">1</span>) <span class="co"># row percentages</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.5043478 0.4956522</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5111111 0.4888889</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">2</span>) <span class="co"># column percentages</span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.4566929 0.4634146</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5433071 0.5365854</span></span></code></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>mytable <span class="ot">&lt;-</span> <span class="fu">table</span>(A,B)   <span class="co"># A will be rows, B will be columns</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mytable                 <span class="co"># print table</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## A     b1  b2</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 116 114</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 138 132</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">1</span>) <span class="co"># A frequencies (summed over B)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">## A</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  a1  a2 </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 230 270</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(mytable, <span class="dv">2</span>) <span class="co"># B frequencies (summed over A)</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">## B</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  b1  b2 </span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 254 246</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable)    <span class="co"># cell percentages</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="do">## A       b1    b2</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.232 0.228</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.276 0.264</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">1</span>) <span class="co"># row percentages</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.5043478 0.4956522</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5111111 0.4888889</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(mytable, <span class="dv">2</span>) <span class="co"># column percentages</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">##     B</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">## A           b1        b2</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="do">##   a1 0.4566929 0.4634146</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">##   a2 0.5433071 0.5365854</span></span></code></pre></div>
 <p><code>table()</code> can also generate multidimensional tables based
 on 3 or more categorical variables. In this case, you can use the
 <code>ftable()</code> or <code>structable()</code> function to print the
@@ -838,8 +849,8 @@ above.</p>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Yes                 911   3  44   2</span></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="do">## No                  538  43 456 279</span></span></code></pre></div>
 <p>Many of these operations can be performed using the
-<code>**ply()</code> functions in the <code>plyr</code> package. For
-example, with the data in a frequency form data frame, use
+<code>**ply()</code> functions in the <a href="https://CRAN.R-project.org/package=plyr"><code>plyr</code></a>
+package. For example, with the data in a frequency form data frame, use
 <code>ddply()</code> to collapse over unmentioned factors, and
 <code>plyr::summarise()</code> as the function to be applied to each
 piece. <!-- \footnote{ -->
@@ -847,25 +858,20 @@ piece. <!-- \footnote{ -->
 <!-- In this document I will use the explicit double-colon notation to keep them -->
 <!-- separate. --> <!-- } --></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plyr)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Attaching package: &#39;plyr&#39;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The following object is masked from &#39;package:vcdExtra&#39;:</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     summarise</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ddply</span>(DaytonSurvey, </span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                             .(cigarette, alcohol, marijuana), </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                             plyr<span class="sc">::</span>summarise, <span class="at">Freq=</span><span class="fu">sum</span>(Freq))</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   cigarette alcohol marijuana Freq</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       Yes     Yes       Yes  911</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2       Yes     Yes        No  538</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       Yes      No       Yes    3</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 4       Yes      No        No   43</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 5        No     Yes       Yes   44</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 6        No     Yes        No  456</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 7        No      No       Yes    2</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 8        No      No        No  279</span></span></code></pre></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ddply</span>(DaytonSurvey, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                             .(cigarette, alcohol, marijuana), </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                             plyr<span class="sc">::</span>summarise, <span class="at">Freq=</span><span class="fu">sum</span>(Freq))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>Dayton.ACM.df</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   cigarette alcohol marijuana Freq</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       Yes     Yes       Yes  911</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2       Yes     Yes        No  538</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       Yes      No       Yes    3</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 4       Yes      No        No   43</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 5        No     Yes       Yes   44</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 6        No     Yes        No  456</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 7        No      No       Yes    2</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 8        No      No        No  279</span></span></code></pre></div>
 </div>
 <div id="collapsing-table-levels-collapse.table" class="section level2">
 <h2>Collapsing table levels: <code>collapse.table()</code></h2>
@@ -913,6 +919,68 @@ summed in the resulting smaller table.</p>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="do">##        high            200   197   195</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Female &lt;high           409   414   379</span></span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="do">##        high            202   212   209</span></span></code></pre></div>
+</div>
+<div id="collapsing-table-levels-dplyr" class="section level2">
+<h2>Collapsing table levels: <code>dplyr</code></h2>
+<p>For data sets in frequency form or case form, factor levels can be
+collapsed by recoding the levels to some grouping. One handy function
+for this is <code>dplyr::case_match()</code></p>
+<p><strong><em>Example</em></strong>:</p>
+<p>The <code>vcdExtra::Titanicp</code> data set contains information on
+1309 passengers on the <em>RMS Titanic</em>, including
+<code>sibsp</code>, the number of (0:8) siblings or spouses aboard, and
+<code>parch</code> (0:6), the number of parents or children aboard, but
+the table is quite sparse.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(Titanicp<span class="sc">$</span>sibsp, Titanicp<span class="sc">$</span>parch)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="do">##    </span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">##       0   1   2   3   4   5   6   9</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   0 790  52  43   2   2   2   0   0</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   1 183  90  29   5   4   4   2   2</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   2  26   9   6   1   0   0   0   0</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   3   3   9   8   0   0   0   0   0</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   4   0  10  12   0   0   0   0   0</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   5   0   0   6   0   0   0   0   0</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   8   0   0   9   0   0   0   0   0</span></span></code></pre></div>
+<p>For purposes of analysis, we might want to collapse both of these to
+the levels <code>0, 1, 2+</code>. Here’s how:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>Titanicp <span class="ot">&lt;-</span> Titanicp <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sibspF =</span> <span class="fu">case_match</span>(sibsp,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                            <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;0&quot;</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                            <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                            <span class="dv">2</span><span class="sc">:</span><span class="fu">max</span>(sibsp) <span class="sc">~</span> <span class="st">&quot;2+&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sibspF =</span> <span class="fu">ordered</span>(sibspF)) <span class="sc">|&gt;</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">parchF =</span> <span class="fu">case_match</span>(parch,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                             <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;0&quot;</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                             <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                             <span class="dv">2</span><span class="sc">:</span><span class="fu">max</span>(parch) <span class="sc">~</span> <span class="st">&quot;2+&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">parchF =</span> <span class="fu">ordered</span>(parchF)) </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(Titanicp<span class="sc">$</span>sibspF, Titanicp<span class="sc">$</span>parchF)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">##     </span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">##        0   1  2+</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   0  790  52  49</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   1  183  90  46</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="do">##   2+  29  28  42</span></span></code></pre></div>
+<p><code>car::recode()</code> is a similar function, but with a less
+convenient interface.</p>
+<p>The <a href="https://CRAN.R-project.org/package=forcats"><code>forcats</code></a>
+package provides a collection of functions for reordering the levels of
+a factor or grouping categories acording to their frequency:</p>
+<ul>
+<li><code>forcats::fct_reorder()</code>: Reorder a factor by another
+variable.</li>
+<li><code>forcats::fct_infreq()</code>: Reorder a factor by the
+frequency of values.</li>
+<li><code>forcats::fct_relevel()</code>: Change the order of a factor by
+hand.</li>
+<li><code>forcats::fct_lump()</code>: Collapse the least/most frequent
+values of a factor into “other”.</li>
+<li><code>forcats::fct_collapse()</code>: Collapse factor levels into
+manually defined groups.</li>
+<li><code>forcats::fct_recode()</code>: Change factor levels by
+hand.</li>
+</ul>
 </div>
 <div id="converting-among-frequency-tables-and-data-frames" class="section level2">
 <h2>Converting among frequency tables and data frames</h2>
@@ -983,34 +1051,34 @@ defaulting to <code>Freq</code>. This is the inverse of
 <code>xtabs()</code>.</p>
 <p><strong><em>Example</em></strong>: Convert the <code>GSStab</code> in
 table form to a data.frame in frequency form.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(GSStab)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="do">##      sex party Freq</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 female   dem  279</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   male   dem  165</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 female indep   73</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   male indep   47</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 female   rep  225</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   male   rep  191</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(GSStab)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="do">##      sex party Freq</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 female   dem  279</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   male   dem  165</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 female indep   73</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   male indep   47</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 female   rep  225</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   male   rep  191</span></span></code></pre></div>
 <p><strong><em>Example</em></strong>: Convert the <code>Arthritis</code>
 data in case form to a 3-way table of <code>Treatment</code> <span class="math inline">\(\times\)</span> <code>Sex</code> <span class="math inline">\(\times\)</span> <code>Improved</code>. Note the
 use of <code>with()</code> to avoid having to use
 <code>Arthritis\$Treatment</code> etc. within the call to
 <code>table()</code>.% <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Art.tab <span class="ot">&lt;-</span> <span class="fu">with</span>(Arthritis, <span class="fu">table</span>(Treatment, Sex, Improved))</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.tab)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; int [1:2, 1:2, 1:3] 19 6 10 7 7 5 0 2 6 16 ...</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 3</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Treatment: chr [1:2] &quot;Placebo&quot; &quot;Treated&quot;</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Sex      : chr [1:2] &quot;Female&quot; &quot;Male&quot;</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Improved : chr [1:3] &quot;None&quot; &quot;Some&quot; &quot;Marked&quot;</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(Art.tab)</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="do">##                  Improved None Some Marked</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Treatment Sex                             </span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Placebo   Female            19    7      6</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male              10    0      1</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Treated   Female             6    5     16</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male               7    2      5</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Art.tab <span class="ot">&lt;-</span> <span class="fu">with</span>(Arthritis, <span class="fu">table</span>(Treatment, Sex, Improved))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.tab)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  &#39;table&#39; int [1:2, 1:2, 1:3] 19 6 10 7 7 5 0 2 6 16 ...</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  - attr(*, &quot;dimnames&quot;)=List of 3</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Treatment: chr [1:2] &quot;Placebo&quot; &quot;Treated&quot;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Sex      : chr [1:2] &quot;Female&quot; &quot;Male&quot;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   ..$ Improved : chr [1:3] &quot;None&quot; &quot;Some&quot; &quot;Marked&quot;</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(Art.tab)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="do">##                  Improved None Some Marked</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Treatment Sex                             </span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Placebo   Female            19    7      6</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male              10    0      1</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Treated   Female             6    5     16</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="do">##           Male               7    2      5</span></span></code></pre></div>
 <p>There may also be times that you will need an equivalent case form
 <code>data.frame</code> with factors representing the table variables
 rather than the frequency table. For example, the <code>mca()</code>
@@ -1023,12 +1091,12 @@ included in <code>vcdExtra</code>.</p>
 data in table form (<code>Art.tab</code>) back to a
 <code>data.frame</code> in case form, with factors
 <code>Treatment</code>, <code>Sex</code> and <code>Improved</code>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Art.df <span class="ot">&lt;-</span> <span class="fu">expand.dft</span>(Art.tab)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.df)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    84 obs. of  3 variables:</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Treatment: chr  &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; ...</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Sex      : chr  &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; ...</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Improved : chr  &quot;None&quot; &quot;None&quot; &quot;None&quot; &quot;None&quot; ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Art.df <span class="ot">&lt;-</span> <span class="fu">expand.dft</span>(Art.tab)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Art.df)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    84 obs. of  3 variables:</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Treatment: chr  &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; &quot;Placebo&quot; ...</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Sex      : chr  &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; &quot;Female&quot; ...</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ Improved : chr  &quot;None&quot; &quot;None&quot; &quot;None&quot; &quot;None&quot; ...</span></span></code></pre></div>
 </div>
 <div id="sec:complex" class="section level2">
 <h2>A complex example</h2>
@@ -1039,17 +1107,17 @@ where the table variables (unnamed in the file) are read as
 <code>V1</code> – <code>V4</code>, and the cell frequency is read as
 <code>V5</code>. The file, stored in the <code>doc/extdata</code>
 directory of <code>vcdExtra</code>, can be read as follows:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;tv.dat&quot;</span>, <span class="at">package=</span><span class="st">&quot;vcdExtra&quot;</span>))</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tv.data,<span class="dv">5</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   V1 V2 V3 V4 V5</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  1  1  1  1  6</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  2  1  1  1 18</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  3  1  1  1  6</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  4  1  1  1  2</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5  1  1  1 11</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;tv.dat&quot;</span>, <span class="at">package=</span><span class="st">&quot;vcdExtra&quot;</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tv.data,<span class="dv">5</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   V1 V2 V3 V4 V5</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  1  1  1  1  6</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  2  1  1  1 18</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  3  1  1  1  6</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  4  1  1  1  2</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5  1  1  1 11</span></span></code></pre></div>
 <p>For a local file, just use <code>read.table()</code> in this
 form:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;C:/R/data/tv.dat&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tv.data<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;C:/R/data/tv.dat&quot;</span>)</span></code></pre></div>
 <p>The data <code>tv.dat</code> came from the initial implementation of
 mosaic displays in R by Jay Emerson. In turn, they came from the initial
 development of mosaic displays <span class="citation">(Hartigan &amp;
@@ -1079,94 +1147,94 @@ rapidly and <code>V4</code> most slowly. From this, we can just extract
 the frequency column and reshape it into an array. [That would be
 dangerous if any observations were out of order.]</li>
 </ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">array</span>(tv.data[,<span class="dv">5</span>], <span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">3</span>))                                        </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">dimnames</span>(TV))<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Network&quot;</span>, <span class="st">&quot;State&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">array</span>(tv.data[,<span class="dv">5</span>], <span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">3</span>))                                        </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">dimnames</span>(TV))<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Network&quot;</span>, <span class="st">&quot;State&quot;</span>)</span></code></pre></div>
 <p>More generally (even if there are missing cells), we can use
 <code>xtabs()</code> (or <code>plyr::daply()</code>) to do the
 cross-tabulation, using <code>V5</code> as the frequency variable.
 Here’s how to do this same operation with <code>xtabs()</code>:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(V5 <span class="sc">~</span> ., <span class="at">data=</span>tv.data)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Time =</span> <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                              <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Network =</span> <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">State =</span> <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># table dimensions</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(TV)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>TV <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(V5 <span class="sc">~</span> ., <span class="at">data=</span>tv.data)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(TV) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>,<span class="st">&quot;Tuesday&quot;</span>,<span class="st">&quot;Wednesday&quot;</span>,<span class="st">&quot;Thursday&quot;</span>,<span class="st">&quot;Friday&quot;</span>), </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Time =</span> <span class="fu">c</span>(<span class="st">&quot;8:00&quot;</span>,<span class="st">&quot;8:15&quot;</span>,<span class="st">&quot;8:30&quot;</span>,<span class="st">&quot;8:45&quot;</span>,<span class="st">&quot;9:00&quot;</span>,<span class="st">&quot;9:15&quot;</span>,<span class="st">&quot;9:30&quot;</span>,         </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                              <span class="st">&quot;9:45&quot;</span>,<span class="st">&quot;10:00&quot;</span>,<span class="st">&quot;10:15&quot;</span>,<span class="st">&quot;10:30&quot;</span>),                            </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Network =</span> <span class="fu">c</span>(<span class="st">&quot;ABC&quot;</span>,<span class="st">&quot;CBS&quot;</span>,<span class="st">&quot;NBC&quot;</span>,<span class="st">&quot;Fox&quot;</span>,<span class="st">&quot;Other&quot;</span>), </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">State =</span> <span class="fu">c</span>(<span class="st">&quot;Off&quot;</span>,<span class="st">&quot;Switch&quot;</span>,<span class="st">&quot;Persist&quot;</span>))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># table dimensions</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(TV)</span></code></pre></div>
 <p>But this 4-way table is too large and awkward to work with. Among the
 networks, Fox and Other occur infrequently. We can also cut it down to a
 3-way table by considering only viewers who persist with the current
 station. <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV[,,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,]      <span class="co"># keep only ABC, CBS, NBC</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV2[,,,<span class="dv">3</span>]       <span class="co"># keep only Persist -- now a 3 way table</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(TV2)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Time 8:00 8:15 8:30 8:45 9:00 9:15 9:30 9:45 10:00 10:15 10:30</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Day       Network                                                               </span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Monday    ABC           146  151  156   83  325  350  386  340   352   280   278</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           337  293  304  233  311  251  241  164   252   265   272</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           263  219  236  140  226  235  239  246   279   263   283</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Tuesday   ABC           244  181  231  205  385  283  345  192   329   351   364</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           173  180  184  109  218  235  256  250   274   263   261</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           315  254  280  241  370  214  195  111   188   190   210</span></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Wednesday ABC           233  161  194  156  339  264  279  140   237   228   203</span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           158  126  207   59   98  103  122   86   109   105   110</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           134  146  166   66  194  230  264  143   274   289   306</span></span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Thursday  ABC           174  183  197  181  187  198  211   86   110   122   117</span></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           196  185  195  104  106  116  116   47   102    84    84</span></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           515  463  472  477  590  473  446  349   649   705   747</span></span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Friday    ABC           294  281  305  239  278  246  245  138   246   232   233</span></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           130  144  154   81  129  153  136  126   138   136   152</span></span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           195  220  248  160  172  164  169   85   183   198   204</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV[,,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,]      <span class="co"># keep only ABC, CBS, NBC</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>TV2 <span class="ot">&lt;-</span> TV2[,,,<span class="dv">3</span>]       <span class="co"># keep only Persist -- now a 3 way table</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(TV2)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Time 8:00 8:15 8:30 8:45 9:00 9:15 9:30 9:45 10:00 10:15 10:30</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Day       Network                                                               </span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Monday    ABC           146  151  156   83  325  350  386  340   352   280   278</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           337  293  304  233  311  251  241  164   252   265   272</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           263  219  236  140  226  235  239  246   279   263   283</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Tuesday   ABC           244  181  231  205  385  283  345  192   329   351   364</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           173  180  184  109  218  235  256  250   274   263   261</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           315  254  280  241  370  214  195  111   188   190   210</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Wednesday ABC           233  161  194  156  339  264  279  140   237   228   203</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           158  126  207   59   98  103  122   86   109   105   110</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           134  146  166   66  194  230  264  143   274   289   306</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Thursday  ABC           174  183  197  181  187  198  211   86   110   122   117</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           196  185  195  104  106  116  116   47   102    84    84</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           515  463  472  477  590  473  446  349   649   705   747</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Friday    ABC           294  281  305  239  278  246  245  138   246   232   233</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="do">##           CBS           130  144  154   81  129  153  136  126   138   136   152</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="do">##           NBC           195  220  248  160  172  164  169   85   183   198   204</span></span></code></pre></div>
 <p>Finally, for some purposes, we might want to collapse the 11 times
 into a smaller number. Half-hour time slots make more sense. Here, we
 use <code>as.data.frame.table()</code> to convert the table back to a
 data frame, <code>levels()</code> to re-assign the values of
 <code>Time</code>, and finally, <code>xtabs()</code> to give a new,
 collapsed frequency table.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>TV.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame.table</span>(TV2)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(TV.df<span class="sc">$</span>Time) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;8:00&quot;</span>, <span class="dv">2</span>),</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;8:30&quot;</span>, <span class="dv">2</span>),</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:00&quot;</span>, <span class="dv">2</span>), </span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:30&quot;</span>, <span class="dv">2</span>), </span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;10:00&quot;</span>,<span class="dv">2</span>),</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;10:30&quot;</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                        )</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>TV3 <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(Freq <span class="sc">~</span> Day <span class="sc">+</span> Time <span class="sc">+</span> Network, TV.df)</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(Day <span class="sc">~</span> Time<span class="sc">+</span>Network, TV3)</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="do">##               Day Monday Tuesday Wednesday Thursday Friday</span></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Time  Network                                             </span></span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:00  ABC            297     425       394      357    575</span></span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            630     353       284      381    274</span></span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            482     569       280      978    415</span></span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:30  ABC            239     436       350      378    544</span></span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            537     293       266      299    235</span></span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            376     521       232      949    408</span></span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:00  ABC            675     668       603      385    524</span></span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            562     453       201      222    282</span></span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            461     584       424     1063    336</span></span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:30  ABC            726     537       419      297    383</span></span>
-<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            405     506       208      163    262</span></span>
-<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            485     306       407      795    254</span></span>
-<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:00 ABC            632     680       465      232    478</span></span>
-<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            517     537       214      186    274</span></span>
-<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            542     378       563     1354    381</span></span>
-<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:30 ABC            278     364       203      117    233</span></span>
-<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            272     261       110       84    152</span></span>
-<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            283     210       306      747    204</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>TV.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame.table</span>(TV2)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(TV.df<span class="sc">$</span>Time) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;8:00&quot;</span>, <span class="dv">2</span>),</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;8:30&quot;</span>, <span class="dv">2</span>),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:00&quot;</span>, <span class="dv">2</span>), </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;9:30&quot;</span>, <span class="dv">2</span>), </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">rep</span>(<span class="st">&quot;10:00&quot;</span>,<span class="dv">2</span>),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;10:30&quot;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>TV3 <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(Freq <span class="sc">~</span> Day <span class="sc">+</span> Time <span class="sc">+</span> Network, TV.df)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="fu">structable</span>(Day <span class="sc">~</span> Time<span class="sc">+</span>Network, TV3)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="do">##               Day Monday Tuesday Wednesday Thursday Friday</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Time  Network                                             </span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:00  ABC            297     425       394      357    575</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            630     353       284      381    274</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            482     569       280      978    415</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:30  ABC            239     436       350      378    544</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            537     293       266      299    235</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            376     521       232      949    408</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:00  ABC            675     668       603      385    524</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            562     453       201      222    282</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            461     584       424     1063    336</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 9:30  ABC            726     537       419      297    383</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            405     506       208      163    262</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            485     306       407      795    254</span></span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:00 ABC            632     680       465      232    478</span></span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            517     537       214      186    274</span></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            542     378       563     1354    381</span></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 10:30 ABC            278     364       203      117    233</span></span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a><span class="do">##       CBS            272     261       110       84    152</span></span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="do">##       NBC            283     210       306      747    204</span></span></code></pre></div>
 <p>We’ve come this far, so we might as well show a mosaic display. This
 is analogous to that used by <span class="citation">Hartigan &amp;
 Kleiner (1984)</span>.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(TV3, <span class="at">shade =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">labeling =</span> <span class="fu">labeling_border</span>(<span class="at">rot_labels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">90</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(TV3, <span class="at">shade =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">labeling =</span> <span class="fu">labeling_border</span>(<span class="at">rot_labels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">90</span>)))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>This mosaic displays can be read at several levels, corresponding to
 the successive splits of the tiles and the residual shading. Several
@@ -1205,17 +1273,6 @@ with slightly more on Thursday.</li>
 <!-- ```{r tv-mosaic2, fig.height=7, fig.width=7} -->
 <!-- mosaic(TV[,,1:4,], shade=TRUE,  -->
 <!--        labeling_args = list(abbreviate_labs = c(8,5,1,1))) -->
-<!-- ``` -->
-<!-- ## Styles -->
-<!-- The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows: -->
-<!--     output:  -->
-<!--       rmarkdown::html_vignette: -->
-<!--         css: mystyles.css -->
-<!-- ## Figures -->
-<!-- The figure sizes have been customised so that you can easily put two images side-by-side.  -->
-<!-- ```{r, fig.show='hold'} -->
-<!-- plot(1:10) -->
-<!-- plot(10:1) -->
 <!-- ``` -->
 </div>
 <div id="references" class="section level1 unnumbered">
