@@ -1,3 +1,11 @@
+## Version 0.8-5 (2023-08-19)
+
+- Fix CRAN nit re vcdExtra-package.Rd
+- Fix moved URL - http: -> https:
+- Fix xrefs in vignettes
+- More spellcheck
+- Fixed one more NOTE re: AirCrash.Rd for a URL
+
 ## Version 0.8-4 (2023-04-12)
 
 - Imports: tidyr must depend on (>= 1.3.0) for one use in a vignette.

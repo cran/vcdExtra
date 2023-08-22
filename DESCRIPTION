@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.8-4
-Date: 2023-04-12
+Version: 0.8-5
+Date: 2023-08-19
 Language: en-US
 Authors@R: c(
             person(given = "Michael", 
@@ -47,7 +47,7 @@ VignetteBuilder: knitr, rmarkdown
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2023-04-16 14:44:35 UTC; friendly
+Packaged: 2023-08-21 20:10:59 UTC; friendly
 Author: Michael Friendly [aut, cre] (<https://orcid.org/0000-0002-3237-0941>),
   Heather Turner [ctb],
   David Meyer [ctb],
@@ -57,4 +57,4 @@ Author: Michael Friendly [aut, cre] (<https://orcid.org/0000-0002-3237-0941>),
   Matt Kumar [ctb],
   Shuguang Sun [ctb]
 Repository: CRAN
-Date/Publication: 2023-04-16 15:10:02 UTC
+Date/Publication: 2023-08-22 03:10:02 UTC

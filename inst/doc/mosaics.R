@@ -45,7 +45,7 @@ mosaic(art, gp = shading_Friendly,
             main="Arthritis: gp = shading_Friendly")
 
 ## ----glass--------------------------------------------------------------------
-data(Glass)
+data(Glass, package="vcdExtra")
 (glass.tab <- xtabs(Freq ~ father + son, data=Glass))
 
 ## ----glass-mosaic1------------------------------------------------------------

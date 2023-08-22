@@ -46,6 +46,7 @@ hec.3
 anova(hec.1, hec.2, hec.3)
 
 ## ---- mental1-----------------------------------------------------------------
+data(Mental, package = "vcdExtra")
 str(Mental)
 xtabs(Freq ~ mental + ses, data=Mental)   # display the frequency table
 

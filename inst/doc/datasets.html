@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2023-04-16" />
+<meta name="date" content="2023-08-21" />
 
 <title>Datasets for categorical data analysis</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Datasets for categorical data analysis</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2023-04-16</h4>
+<h4 class="date">2023-08-21</h4>
 
 
 
@@ -353,85 +353,85 @@ the datasets in <code>vcdExtra</code> have been classified using method
 tags. This vignette creates an “inverse table”, listing the datasets
 that apply to each method. It also illustrates a general method for
 classifying datasets in R packages.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
 <div id="processing-tags" class="section level2">
 <h2>Processing tags</h2>
 <p>Using the result of
 <code>vcdExtra::datasets(package=&quot;vcdExtra&quot;)</code> I created a
 spreadsheet, <code>vcdExtra-datasets.xlsx</code>, and then added method
 tags.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dsets_tagged <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;vcdExtra-datasets.xlsx&quot;</span>), </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sheet=</span><span class="st">&quot;vcdExtra-datasets&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dsets_tagged <span class="ot">&lt;-</span> dsets_tagged <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Title, <span class="sc">-</span>dim) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">dataset =</span> Item)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dsets_tagged)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 3</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   dataset   class      tags                                </span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;                               </span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Abortion  table      loglinear;logit;2x2                 </span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Accident  data.frame loglinear; glm; logistic            </span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 AirCrash  data.frame reorder; ca                         </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Alligator data.frame loglinear;multinomial;zeros         </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Bartlett  table      2x2;loglinear; homogeneity;oddsratio</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Burt      data.frame ca</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dsets_tagged <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;vcdExtra-datasets.xlsx&quot;</span>), </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>                           <span class="at">sheet=</span><span class="st">&quot;vcdExtra-datasets&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>dsets_tagged <span class="ot">&lt;-</span> dsets_tagged <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Title, <span class="sc">-</span>dim) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">dataset =</span> Item)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">head</span>(dsets_tagged)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="do">## # A tibble: 6 × 3</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="do">##   dataset   class      tags                                </span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="do">##   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;                               </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="do">## 1 Abortion  table      loglinear;logit;2x2                 </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="do">## 2 Accident  data.frame loglinear; glm; logistic            </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="do">## 3 AirCrash  data.frame reorder; ca                         </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="do">## 4 Alligator data.frame loglinear;multinomial;zeros         </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="do">## 5 Bartlett  table      2x2;loglinear; homogeneity;oddsratio</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="do">## 6 Burt      data.frame ca</span></span></code></pre></div>
 <p>To invert the table, need to split tags into separate observations,
 then collapse the rows for the same tag.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dset_split <span class="ot">&lt;-</span> dsets_tagged <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate_longer_delim</span>(tags, <span class="at">delim =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tag =</span> stringr<span class="sc">::</span><span class="fu">str_trim</span>(tags)) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tags)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; ## collapse the rows for the same tag</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>tag_dset <span class="ot">&lt;-</span> dset_split <span class="sc">|&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(tag) <span class="sc">|&gt;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(tag) <span class="sc">|&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">datasets =</span> <span class="fu">paste</span>(dataset, <span class="at">collapse =</span> <span class="st">&quot;; &quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># get a list of the unique tags</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(tag_dset<span class="sc">$</span>tag)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] &quot;2x2&quot;         &quot;agree&quot;       &quot;binomial&quot;    &quot;ca&quot;          &quot;glm&quot;        </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  [6] &quot;homogeneity&quot; &quot;lm&quot;          &quot;logistic&quot;    &quot;logit&quot;       &quot;loglinear&quot;  </span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [11] &quot;mobility&quot;    &quot;multinomial&quot; &quot;oddsratio&quot;   &quot;one-way&quot;     &quot;ordinal&quot;    </span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [16] &quot;poisson&quot;     &quot;reorder&quot;     &quot;square&quot;      &quot;zeros&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>dset_split <span class="ot">&lt;-</span> dsets_tagged <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate_longer_delim</span>(tags, <span class="at">delim =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tag =</span> stringr<span class="sc">::</span><span class="fu">str_trim</span>(tags)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tags)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&#39; ## collapse the rows for the same tag</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>tag_dset <span class="ot">&lt;-</span> dset_split <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">arrange</span>(tag) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(tag) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">datasets =</span> <span class="fu">paste</span>(dataset, <span class="at">collapse =</span> <span class="st">&quot;; &quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co"># get a list of the unique tags</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">unique</span>(tag_dset<span class="sc">$</span>tag)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="do">##  [1] &quot;2x2&quot;         &quot;agree&quot;       &quot;binomial&quot;    &quot;ca&quot;          &quot;glm&quot;        </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="do">##  [6] &quot;homogeneity&quot; &quot;lm&quot;          &quot;logistic&quot;    &quot;logit&quot;       &quot;loglinear&quot;  </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="do">## [11] &quot;mobility&quot;    &quot;multinomial&quot; &quot;oddsratio&quot;   &quot;one-way&quot;     &quot;ordinal&quot;    </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="do">## [16] &quot;poisson&quot;     &quot;reorder&quot;     &quot;square&quot;      &quot;zeros&quot;</span></span></code></pre></div>
 </div>
 <div id="make-this-into-a-nice-table" class="section level2">
 <h2>Make this into a nice table</h2>
 <p>Another sheet in the spreadsheet gives a more descriptive
 <code>topic</code> for corresponding to each tag.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tags <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;vcdExtra-datasets.xlsx&quot;</span>), </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheet=</span><span class="st">&quot;tags&quot;</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tags)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   tag         topic                     </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;                     </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2x2         2 by 2 tables             </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 agree       observer agreement        </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 binomial    binomial distributions    </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 ca          correspondence analysis   </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 glm         generalized linear models </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 homogeneity homogeneity of association</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>tags <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;vcdExtra-datasets.xlsx&quot;</span>), </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                   <span class="at">sheet=</span><span class="st">&quot;tags&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">head</span>(tags)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="do">##   tag         topic                     </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;                     </span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="do">## 1 2x2         2 by 2 tables             </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="do">## 2 agree       observer agreement        </span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="do">## 3 binomial    binomial distributions    </span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="do">## 4 ca          correspondence analysis   </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="do">## 5 glm         generalized linear models </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="do">## 6 homogeneity homogeneity of association</span></span></code></pre></div>
 <p>Now, join this with the <code>tag_dset</code> created above.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tag_dset <span class="ot">&lt;-</span> tag_dset <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(tags, <span class="at">by =</span> <span class="st">&quot;tag&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(topic, <span class="at">.after =</span> tag)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>tag_dset <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tag) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   topic                      datasets                                           </span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                      &lt;chr&gt;                                              </span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2 by 2 tables              Abortion; Bartlett; Heart                          </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 observer agreement         Mammograms                                         </span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 binomial distributions     Geissler                                           </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 correspondence analysis    AirCrash; Burt; Draft1970table; Gilby; HospVisits;…</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 generalized linear models  Accident; Cormorants; DaytonSurvey; Donner; Draft1…</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 homogeneity of association Bartlett</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>tag_dset <span class="ot">&lt;-</span> tag_dset <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(tags, <span class="at">by =</span> <span class="st">&quot;tag&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(topic, <span class="at">.after =</span> tag)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>tag_dset <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tag) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">head</span>()</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="do">##   topic                      datasets                                           </span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                      &lt;chr&gt;                                              </span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="do">## 1 2 by 2 tables              Abortion; Bartlett; Heart                          </span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="do">## 2 observer agreement         Mammograms                                         </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="do">## 3 binomial distributions     Geissler                                           </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="do">## 4 correspondence analysis    AirCrash; Burt; Draft1970table; Gilby; HospVisits;…</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="do">## 5 generalized linear models  Accident; Cormorants; DaytonSurvey; Donner; Draft1…</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="do">## 6 homogeneity of association Bartlett</span></span></code></pre></div>
 <div id="add-links-to-help" class="section level3">
 <h3>Add links to <code>help()</code></h3>
 <p>We’re almost there. It would be nice if the dataset names could be
@@ -440,20 +440,20 @@ the <code>pkgdown</code> site. There are different ways this can be
 done, but what seems to work is a link to
 <code>../reference/{dataset}.html</code> Unfortunately, this won’t work
 in the actual vignette.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>add_links <span class="ot">&lt;-</span> <span class="cf">function</span>(dsets, </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">style =</span> <span class="fu">c</span>(<span class="st">&quot;reference&quot;</span>, <span class="st">&quot;help&quot;</span>, <span class="st">&quot;rdrr.io&quot;</span>),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sep =</span> <span class="st">&quot;; &quot;</span>) {</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  style <span class="ot">&lt;-</span> <span class="fu">match.arg</span>(style)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split_1</span>(dsets, sep)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;help&quot;</span>      <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](help({names}))&quot;</span>),</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;reference&quot;</span> <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](../reference/{names}.html)&quot;</span>),</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;rdrr.io&quot;</span>   <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](https://rdrr.io/cran/vcdExtra/man/{names}.html)&quot;</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  )  </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue_collapse</span>(names, <span class="at">sep =</span> sep)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>add_links <span class="ot">&lt;-</span> <span class="cf">function</span>(dsets, </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                      <span class="at">style =</span> <span class="fu">c</span>(<span class="st">&quot;reference&quot;</span>, <span class="st">&quot;help&quot;</span>, <span class="st">&quot;rdrr.io&quot;</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                      <span class="at">sep =</span> <span class="st">&quot;; &quot;</span>) {</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  style <span class="ot">&lt;-</span> <span class="fu">match.arg</span>(style)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  names <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split_1</span>(dsets, sep)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  names <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;help&quot;</span>      <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](help({names}))&quot;</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;reference&quot;</span> <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](../reference/{names}.html)&quot;</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    style <span class="sc">==</span> <span class="st">&quot;rdrr.io&quot;</span>   <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;[{names}](https://rdrr.io/cran/vcdExtra/man/{names}.html)&quot;</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  )  </span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue_collapse</span>(names, <span class="at">sep =</span> sep)</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="table" class="section level2">
@@ -462,10 +462,10 @@ in the actual vignette.</p>
 all the datasets for each tag.
 (<code>mutate(datasets = add_links(datasets))</code> by itself doesn’t
 work.)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tag_dset <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tag) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">datasets =</span> purrr<span class="sc">::</span><span class="fu">map</span>(datasets, add_links)) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>tag_dset <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tag) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">datasets =</span> purrr<span class="sc">::</span><span class="fu">map</span>(datasets, add_links)) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="14%" />

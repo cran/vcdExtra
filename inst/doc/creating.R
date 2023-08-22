@@ -154,6 +154,7 @@ summary(mytable)   # chi-square test of indepedence
 summary(GSStab)
 
 ## ---- dayton1-----------------------------------------------------------------
+data("DaytonSurvey", package="vcdExtra")
 str(DaytonSurvey)
 head(DaytonSurvey)
 
