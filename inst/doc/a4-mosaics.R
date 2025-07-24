@@ -4,7 +4,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.height = 6,
   fig.width = 7,
-  fig.path = "fig/tut04-",
+#  fig.path = "fig/tut04-",
   dev = "png",
   comment = "##"
 )
@@ -26,8 +26,7 @@ data(HairEyeColor)
 data(PreSex)
 data(Arthritis, package="vcd")
 art <- xtabs(~Treatment + Improved, data = Arthritis)
-if(!file.exists("fig")) dir.create("fig")
-
+#if(!file.exists("fig")) dir.create("fig")
 
 ## -----------------------------------------------------------------------------
 data(Arthritis, package="vcd")
@@ -36,7 +35,7 @@ mosaic(art, gp = shading_max,
             split_vertical = TRUE, 
             main="Arthritis: [Treatment] [Improved]")
 
-## ---- art1--------------------------------------------------------------------
+## ----art1---------------------------------------------------------------------
 summary(art)
 
 ## -----------------------------------------------------------------------------

@@ -1,3 +1,13 @@
+## Version 0.8-6 (2025-07-23)
+
+This is a minor release to satisfy the CRAN gods who like all crossref links to be correct.
+
+o Fixed CRAN nits re crossrefs
+o Update issues link
+o Update README
+o Fixed Winbuilder notes re: Rd links to data sources
+
+
 ## Version 0.8-5 (2023-08-19)
 
 - Fix CRAN nit re vcdExtra-package.Rd

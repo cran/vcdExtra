@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.height = 6,
   fig.width = 7,
-  fig.path = "fig/demo-housing-",
+#  fig.path = "fig/demo-housing-",
   dev = "png",
   comment = "##"
 )

@@ -1,5 +1,5 @@
 ---
-title: "Tests of Independence"
+title: "2. Tests of Independence"
 author: "Michael Friendly"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
   fig_caption: yes
 bibliography: ["vcd.bib", "vcdExtra.bib"]
 vignette: >
-  %\VignetteIndexEntry{Tests of Independence}
+  %\VignetteIndexEntry{2. Tests of Independence}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.height = 6,
   fig.width = 7,
-  fig.path = "fig/tut02-",
+#  fig.path = "fig/tut02-",
   dev = "png",
   comment = "##"
 )
@@ -44,7 +44,7 @@ data(HairEyeColor)
 data(PreSex)
 data(Arthritis, package="vcd")
 art <- xtabs(~Treatment + Improved, data = Arthritis)
-if(!file.exists("fig")) dir.create("fig")
+#if(!file.exists("fig")) dir.create("fig")
 
 ```
 
@@ -315,9 +315,9 @@ and discordant pairs of observations in the case-form equivalent of a two-way ta
 GKgamma(JobSat)
 ```
 
-A web article by Richard Darlington,
-[http://node101.psych.cornell.edu/Darlington/crosstab/TABLE0.HTM]
-gives further description of these and other measures of association.
+<!-- A web article by Richard Darlington, -->
+<!-- [http://node101.psych.cornell.edu/Darlington/crosstab/TABLE0.HTM] -->
+<!-- gives further description of these and other measures of association. -->
 
 ## Measures of Agreement
 The

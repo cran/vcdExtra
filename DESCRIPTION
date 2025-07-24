@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.8-5
-Date: 2023-08-19
+Version: 0.8-6
+Date: 2025-07-23
 Language: en-US
 Authors@R: c(
             person(given = "Michael", 
@@ -41,20 +41,22 @@ Description: Provides additional data sets, methods and documentation to complem
 	'glm' and 'loglm' objects. This package is now a support package for the book, "Discrete Data Analysis with R" by
   Michael Friendly and David Meyer.
 License: GPL (>= 2)
-URL: https://friendly.github.io/vcdExtra/
-BugReports: https://github.com/friendly/vcdExtra
+URL: https://friendly.github.io/vcdExtra/,
+        https://github.com/friendly/vcdExtra
+BugReports: https://github.com/friendly/vcdExtra/issues
 VignetteBuilder: knitr, rmarkdown
 LazyLoad: yes
 LazyData: yes
 NeedsCompilation: no
-Packaged: 2023-08-21 20:10:59 UTC; friendly
-Author: Michael Friendly [aut, cre] (<https://orcid.org/0000-0002-3237-0941>),
+Packaged: 2025-07-24 19:43:57 UTC; friendly
+Author: Michael Friendly [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-3237-0941>),
   Heather Turner [ctb],
   David Meyer [ctb],
-  Achim Zeileis [ctb] (<https://orcid.org/0000-0003-0918-3766>),
+  Achim Zeileis [ctb] (ORCID: <https://orcid.org/0000-0003-0918-3766>),
   Duncan Murdoch [ctb],
   David Firth [ctb],
   Matt Kumar [ctb],
   Shuguang Sun [ctb]
 Repository: CRAN
-Date/Publication: 2023-08-22 03:10:02 UTC
+Date/Publication: 2025-07-24 20:10:02 UTC

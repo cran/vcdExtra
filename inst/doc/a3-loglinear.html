@@ -12,9 +12,9 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2023-08-21" />
+<meta name="date" content="2025-07-24" />
 
-<title>Loglinear Models</title>
+<title>3. Loglinear Models</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -150,6 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -360,9 +361,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Loglinear Models</h1>
+<h1 class="title toc-ignore">3. Loglinear Models</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2023-08-21</h4>
+<h4 class="date">2025-07-24</h4>
 
 
 
@@ -470,16 +471,21 @@ the one common to all terms, so this example has the interpretation
 <p>For example, we can fit the model of mutual independence among hair
 color, eye color and sex in <code>HairEyeColor</code> as</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="do">## Independence model of hair and eye color and sex.  </span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>hec<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">loglm</span>(<span class="sc">~</span>Hair<span class="sc">+</span>Eye<span class="sc">+</span>Sex, <span class="at">data=</span>HairEyeColor)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>hec<span class="fl">.1</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="do">## loglm(formula = ~Hair + Eye + Sex, data = HairEyeColor)</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="do">## Statistics:</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="do">##                       X^2 df P(&gt; X^2)</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="do">## Likelihood Ratio 166.3001 24        0</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="do">## Pearson          164.9247 24        0</span></span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="do">## Attaching package: &#39;MASS&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="do">## The following object is masked from &#39;package:dplyr&#39;:</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="do">##     select</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="do">## Independence model of hair and eye color and sex.  </span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>hec<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">loglm</span>(<span class="sc">~</span>Hair<span class="sc">+</span>Eye<span class="sc">+</span>Sex, <span class="at">data=</span>HairEyeColor)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>hec<span class="fl">.1</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="do">## loglm(formula = ~Hair + Eye + Sex, data = HairEyeColor)</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="do">## Statistics:</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="do">##                       X^2 df P(&gt; X^2)</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="do">## Likelihood Ratio 166.3001 24        0</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="do">## Pearson          164.9247 24        0</span></span></code></pre></div>
 <p>Similarly, the models of conditional independence and joint
 independence are specified as</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Conditional independence</span></span>
@@ -662,16 +668,16 @@ independence model.</p>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="do">## Model 2: Freq ~ mental + ses + Mult(mental, ses)</span></span>
 <span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="do">## Model 3: Freq ~ mental + ses + Mult(mental, ses, inst = 1) + Mult(mental, </span></span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="do">##     ses, inst = 2)</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="do">##   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)    </span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="do">## 1        15     47.418                         </span></span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="do">## 2         9     40.230  6    7.188   0.3038    </span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="do">## 3         3      0.523  6   39.707  5.2e-07 ***</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="do">##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    </span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="do">## 1        15     47.418                          </span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="do">## 2         8      3.571  7   43.847 2.288e-07 ***</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="do">## 3         3      0.523  5    3.048    0.6926    </span></span>
 <span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="do">## ---</span></span>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
 <div id="ref-Goodman:79" class="csl-entry">
 Goodman, L. A. (1979). Simple models for the analysis of association in
 cross-classifications having ordered categories. <em>Journal of the

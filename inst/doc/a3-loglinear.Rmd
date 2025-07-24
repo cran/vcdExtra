@@ -1,5 +1,5 @@
 ---
-title: "Loglinear Models"
+title: "3. Loglinear Models"
 author: "Michael Friendly"
 date: "`r Sys.Date()`"
 package: vcdExtra
@@ -9,7 +9,7 @@ output:
 bibliography: ["vcd.bib", "vcdExtra.bib"]
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Loglinear Models}
+  %\VignetteIndexEntry{3. Loglinear Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.height = 6,
   fig.width = 7,
-  fig.path = "fig/tut03-",
+#  fig.path = "fig/tut03-",
   dev = "png",
   comment = "##"
 )
@@ -39,7 +39,7 @@ data(HairEyeColor)
 data(PreSex)
 data(Arthritis, package="vcd")
 art <- xtabs(~Treatment + Improved, data = Arthritis)
-if(!file.exists("fig")) dir.create("fig")
+#if(!file.exists("fig")) dir.create("fig")
 
 ```
 
