@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2025-07-24" />
+<meta name="date" content="2025-12-10" />
 
 <title>2. Tests of Independence</title>
 
@@ -363,7 +363,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">2. Tests of Independence</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2025-07-24</h4>
+<h4 class="date">2025-12-10</h4>
 
 
 
@@ -714,9 +714,9 @@ two-way table with the same row and column categories <span class="citation">(Co
 provides confidence intervals.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">data</span>(SexualFun, <span class="at">package =</span> <span class="st">&quot;vcd&quot;</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>(K <span class="ot">&lt;-</span> <span class="fu">Kappa</span>(SexualFun))</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="do">##             value     ASE     z Pr(&gt;|z|)</span></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="do">## Unweighted 0.1293 0.06860 1.885 0.059387</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="do">## Weighted   0.2374 0.07832 3.031 0.002437</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="do">##             value     ASE     z</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="do">## Unweighted 0.1293 0.06860 1.885</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="do">## Weighted   0.2374 0.07832 3.031</span></span>
 <span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="fu">confint</span>(K)</span>
 <span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="do">##             </span></span>
 <span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="do">## Kappa                 lwr       upr</span></span>

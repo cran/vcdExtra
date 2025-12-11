@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.8-6
-Date: 2025-07-23
+Version: 0.8.7
+Date: 2025-12-10
 Language: en-US
 Authors@R: c(
             person(given = "Michael", 
@@ -25,15 +25,16 @@ Authors@R: c(
                    family = "Firth", 
                    role="ctb"),
             person(given = "Matt", family = "Kumar", role="ctb"),
-            person(given = "Shuguang", family = "Sun", role="ctb")
+            person(given = "Shuguang", family = "Sun", role="ctb"),
+            person(given = "Daniel", family = "Sabanes Bove", role="ctb")
             )
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Depends: R (>= 3.5.0), vcd, gnm (>= 1.0-3), grid
+Depends: R (>= 3.5.0), vcd, gnm (>= 1.0-3)
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
-        ggplot2, Sleuth2, car, lattice, stats4, rgl, AER, coin, Hmisc,
-        knitr, rmarkdown, seriation,
-Imports: MASS, grDevices, stats, utils, ca, dplyr, glue, here, purrr,
-        readxl, stringr, tidyr (>= 1.3.0)
+        ggplot2, Sleuth2, car, lattice, stats4, AER, coin, Hmisc,
+        knitr, rmarkdown, seriation, testthat (>= 3.0.0), tibble,
+        dplyr, glue, here, purrr, readxl, stringr, tidyr (>= 1.3.0)
+Imports: MASS, grDevices, grid, stats, utils, ca, rgl
 Description: Provides additional data sets, methods and documentation to complement the 'vcd' package for Visualizing Categorical Data
     and the 'gnm' package for Generalized Nonlinear Models.
 	In particular, 'vcdExtra' extends mosaic, assoc and sieve plots from 'vcd' to handle 'glm()' and 'gnm()' models and
@@ -47,8 +48,11 @@ BugReports: https://github.com/friendly/vcdExtra/issues
 VignetteBuilder: knitr, rmarkdown
 LazyLoad: yes
 LazyData: yes
+Encoding: UTF-8
+Config/testthat/edition: 3
+RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2025-07-24 19:43:57 UTC; friendly
+Packaged: 2025-12-11 02:05:21 UTC; friendly
 Author: Michael Friendly [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3237-0941>),
   Heather Turner [ctb],
@@ -57,6 +61,7 @@ Author: Michael Friendly [aut, cre] (ORCID:
   Duncan Murdoch [ctb],
   David Firth [ctb],
   Matt Kumar [ctb],
-  Shuguang Sun [ctb]
+  Shuguang Sun [ctb],
+  Daniel Sabanes Bove [ctb]
 Repository: CRAN
-Date/Publication: 2025-07-24 20:10:02 UTC
+Date/Publication: 2025-12-11 06:10:02 UTC
