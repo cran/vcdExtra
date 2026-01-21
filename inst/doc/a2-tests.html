@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2025-12-10" />
+<meta name="date" content="2026-01-20" />
 
 <title>2. Tests of Independence</title>
 
@@ -50,8 +50,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +63,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -363,7 +364,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">2. Tests of Independence</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2025-12-10</h4>
+<h4 class="date">2026-01-20</h4>
 
 
 
@@ -473,8 +474,9 @@ frequencies are not small.</p>
 <p>Fisher’s test is meant for tables with small total sample size. It
 generates an error for the <code>HairEye</code> data with <span class="math inline">\(n\)</span>=592 total frequency.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">fisher.test</span>(HairEye)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## Error in fisher.test(HairEye): FEXACT error 6 (f5xact).  LDKEY=618 is too small for this problem: kval=238045028.</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## Try increasing the size of the workspace.</span></span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## Error in `fisher.test()`:</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## ! FEXACT error 6 (f5xact).  LDKEY=618 is too small for this problem: kval=238045028.</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## Try increasing the size of the workspace.</span></span></code></pre></div>
 </div>
 <div id="sec:mantel" class="section level2">
 <h2>Mantel-Haenszel test and conditional association</h2>
@@ -531,10 +533,13 @@ k\)</span> tables, this can be examined from the odds ratios for each
 <span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a></span>
 <span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="fu">woolf_test</span>(UCBAdmissions) </span>
 <span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="do">##  Woolf-test on Homogeneity of Odds Ratios (no 3-Way assoc.)</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="do">## Woolf-test on Homogeneity of Odds Ratios (no 3-way association) </span></span>
 <span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="do">## data:  UCBAdmissions</span></span>
-<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="do">## X-squared = 17.902, df = 5, p-value = 0.003072</span></span></code></pre></div>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="do">## Data:          UCBAdmissions </span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="do">## OR variables:  Admit, Gender </span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="do">## Strata:        Dept </span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="do">## X-squared = 17.9017, df = 5, p-value = 0.003072</span></span></code></pre></div>
 </div>
 <div id="some-plot-methods" class="section level2">
 <h2>Some plot methods</h2>
