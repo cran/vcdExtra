@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2026-01-20" />
+<meta name="date" content="2026-02-08" />
 
 <title>tidyCat: Tidy Methods For Categorical Data Analysis</title>
 
@@ -50,9 +50,8 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -63,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -365,7 +364,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">tidyCat: Tidy Methods For Categorical Data
 Analysis</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2026-01-20</h4>
+<h4 class="date">2026-02-08</h4>
 
 
 
@@ -663,6 +662,24 @@ patterns of association.</p>
 <p>However, they are based on a <a href="https://github.com/hadley/productplots">productplots</a> package
 by Hadley, which seems to provide some basic structure for constructing
 such displays of nested rectangles.</p>
+</div>
+<div id="some-tidy-stuff" class="section level2">
+<h2>Some tidy stuff</h2>
+<ul>
+<li>The <a href="https://infer.netlify.app/">infer package</a> has some
+interesting stuff for CDA. The vignette <a href="https://infer.netlify.app/articles/chi_squared">Tidy Chi-Squared
+Tests with infer</a> expresses do a Chisq test of independences as:</li>
+</ul>
+<pre><code>observed_indep_statistic &lt;- gss |&gt;
+  specify(college ~ finrela) |&gt;
+  hypothesize(null = &quot;independence&quot;) |&gt;
+  calculate(stat = &quot;Chisq&quot;)</code></pre>
+<p>You can do simulation tests like this:</p>
+<pre><code>null_dist_sim &lt;- gss |&gt;
+  specify(college ~ finrela) |&gt;
+  hypothesize(null = &quot;independence&quot;) |&gt;
+  generate(reps = 1000, type = &quot;permute&quot;) |&gt;
+  calculate(stat = &quot;Chisq&quot;)</code></pre>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>

@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.9.0
-Date: 2026-01-17
+Version: 0.9.1
+Date: 2026-02-08
 Language: en-US
 Authors@R: c(
             person(given = "Michael", family = "Friendly", 
@@ -37,9 +37,10 @@ Maintainer: Michael Friendly <friendly@yorku.ca>
 Depends: R (>= 4.1.0), vcd, gnm (>= 1.0-3)
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
         ggplot2, Sleuth2, car, lattice, stats4, AER, coin, Hmisc,
-        knitr, rmarkdown, seriation, testthat (>= 3.0.0), tibble,
-        dplyr, glue, here, purrr, readxl, stringr, tidyr (>= 1.3.0)
-Imports: MASS, grDevices, grid, stats, utils, ca, rgl
+        knitr, rmarkdown, seriation, testthat (>= 3.0.0), tibble, glue,
+        here, purrr, readxl, stringr, tidyr (>= 1.3.0)
+Imports: MASS, grDevices, grid, stats, utils, dplyr, ca, rgl,
+        colorspace, gt, scales
 Description: Provides additional data sets, methods and documentation to complement the 'vcd' package for Visualizing Categorical Data
     and the 'gnm' package for Generalized Nonlinear Models.
 	In particular, 'vcdExtra' extends mosaic, assoc and sieve plots from 'vcd' to handle 'glm()' and 'gnm()' models and
@@ -57,7 +58,7 @@ Encoding: UTF-8
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2026-01-20 18:20:17 UTC; friendly
+Packaged: 2026-02-09 02:58:58 UTC; friendly
 Author: Michael Friendly [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3237-0941>),
   David Meyer [ctb],
@@ -69,4 +70,4 @@ Author: Michael Friendly [aut, cre] (ORCID:
   Matt Kumar [ctb],
   Shuguang Sun [ctb]
 Repository: CRAN
-Date/Publication: 2026-01-21 08:10:02 UTC
+Date/Publication: 2026-02-09 09:00:02 UTC

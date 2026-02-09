@@ -126,7 +126,7 @@ frequencies are calculated from the model object.
 \examples{
 
 # 2 x 2 x 2
-if(requireNamespace("rgl")){
+if (!rgl::rgl.useNULL() && interactive()){
 mosaic3d(Bartlett, box=TRUE)
 # compare with expected frequencies under model of mutual independence
 mosaic3d(Bartlett, type="expected", box=TRUE)
@@ -135,13 +135,19 @@ mosaic3d(Bartlett, type="expected", box=TRUE)
 mosaic3d(Heart, box=TRUE)
 }
 
+# Make a dynamic display
+\dontrun{
+  mosaic3d(Heart, box=TRUE, alpha = 0.3, interpolate = c(1, 2, 4))
+  play3d(spin3d(axis = c(0, 1, 0), rpm = 10), duration = 5)
+}
+
 \dontrun{
 # 2 x 2 x 2 x 3
 # illustrates a 4D table
 mosaic3d(Detergent)
 
 # compare 2D and 3D mosaics
-demo("mosaic-hec")
+#demo("mosaic-hec")
 }
 
 
@@ -158,10 +164,12 @@ Theus, M. & Lauer, S. R. W. (1999) Visualizing Loglinear Models.
 }
 \seealso{
 \code{\link[vcd]{strucplot}}, \code{\link[vcd]{mosaic}},
-\code{\link[graphics]{mosaicplot}}
+\code{\link[graphics]{mosaicplot}} for aspects of mosaic plots.
 
 \code{\link[stats]{loglin}}, \code{\link[MASS]{loglm}} for details on
 fitting loglinear models
+
+\code{\link[rgl]{play3d}}, \code{\link[rgl]{movie3d}} for what you can do with a 3D mosaic plot
 
 Other mosaic plots: 
 \code{\link{mosaic.glm}()},
@@ -170,5 +178,6 @@ Other mosaic plots:
 \author{
 Michael Friendly, with the help of Duncan Murdoch and Achim Zeileis
 }
+\concept{3D}
 \concept{mosaic plots}
 \keyword{hplot}
