@@ -197,7 +197,7 @@ NULL
 #' @references Rick Wicklin,
 #' <http://blogs.sas.com/content/iml/2015/03/30/visualizing-airline-crashes.html>
 #' @source Originally from David McCandless,
-#' <https://informationisbeautiful.net/visualizations/plane-truth-every-single-commercial-plane-crash-visualized/>,
+#' <https://web.archive.org/web/2024/https://informationisbeautiful.net/visualizations/plane-truth-every-single-commercial-plane-crash-visualized/>,
 #' with the data at
 #' <https://docs.google.com/spreadsheets/d/1OvDq4_BtbR6nSnnHnjD5hVC3HQ-ulZPGbo0RDGbzM3Q/edit?usp=drive_web>,
 #' downloaded April 14, 2015.
@@ -1286,11 +1286,9 @@ NULL
 #'
 #' data(Fungicide)
 #' # loddsratio was moved to vcd; requires vcd_1.3-3+
-#' \dontrun{
 #' fung.lor <- loddsratio(Fungicide, correct=TRUE)
 #' fung.lor
 #' confint(fung.lor)
-#' }
 #'
 #' # visualize odds ratios in fourfold plots
 #' cotabplot(Fungicide, panel=cotab_fourfold)
@@ -2850,10 +2848,8 @@ NULL
 #' mosaic(~hyper + urea, data=tox.tab, shade=TRUE)
 #'
 #' # log odds ratios for urea and hypertension, by class and smoke
-#' \dontrun{
 #' LOR <-loddsratio(aperm(tox.tab))
 #' LOR
-#' }
 #'
 #'
 NULL

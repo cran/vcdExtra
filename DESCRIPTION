@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.9.3
-Date: 2026-03-06
+Version: 0.9.6
+Date: 2026-06-05
 Language: en-US
 Authors@R: c(
             person(given = "Michael", family = "Friendly", 
@@ -32,16 +32,17 @@ Authors@R: c(
                    email = "daniel.sabanesbove@gmail.com"),
             person(given = "Matt", family = "Kumar", role="ctb"),
             person(given = "Shuguang", family = "Sun", role="ctb"),
-            person(given = "Gavin", family = "Klorfine", role = "ctb")
+            person(given = "Gavin", family = "Klorfine", role = "aut")
             )
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Depends: R (>= 4.1.0), vcd, gnm (>= 1.0-3)
 Suggests: gmodels, Fahrmeir, effects, VGAM, plyr, lmtest, nnet,
         ggplot2, Sleuth2, car, lattice, stats4, AER, coin, Hmisc,
         rmarkdown, seriation, testthat (>= 3.0.0), tibble, glue, here,
-        purrr, readxl, stringr, tidyr (>= 1.3.0), rgl
+        purrr, readxl, stringr, tidyr (>= 1.3.0), factoextra, rgl
 Imports: MASS, grDevices, grid, stats, utils, dplyr, ca, igraph,
-        colorspace, gt, scales, methods, knitr, htmlwidgets, webshot2
+        colorspace, gt, scales, methods, knitr, htmlwidgets, webshot2,
+        forcats, rlang
 Description: Provides additional data sets, methods and documentation to complement the 'vcd' package for Visualizing Categorical Data
     and the 'gnm' package for Generalized Nonlinear Models.
 	In particular, 'vcdExtra' extends mosaic, assoc and sieve plots from 'vcd' to handle 'glm()' and 'gnm()' models and
@@ -57,9 +58,9 @@ LazyLoad: yes
 LazyData: yes
 Encoding: UTF-8
 Config/testthat/edition: 3
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-03-17 17:55:03 UTC; friendly
+Packaged: 2026-06-07 15:54:49 UTC; friendly
 Author: Michael Friendly [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3237-0941>),
   David Meyer [ctb],
@@ -70,6 +71,6 @@ Author: Michael Friendly [aut, cre] (ORCID:
   Daniel Sabanes Bove [ctb],
   Matt Kumar [ctb],
   Shuguang Sun [ctb],
-  Gavin Klorfine [ctb]
+  Gavin Klorfine [aut]
 Repository: CRAN
-Date/Publication: 2026-03-18 06:10:15 UTC
+Date/Publication: 2026-06-07 16:30:02 UTC

@@ -208,6 +208,10 @@ t2 <- collapse.table(t1,
          education=c("<high", "<high", "high"))
 structable(t2)
 
+## ----titanicSAVE, include=FALSE, echo=FALSE-----------------------------------
+# Save unmodified Titanicp data for collapse_levels() example
+saveDat <- Titanicp
+
 ## ----titanicp1----------------------------------------------------------------
 table(Titanicp$sibsp, Titanicp$parch)
 
@@ -227,6 +231,30 @@ Titanicp <- Titanicp |>
 
 table(Titanicp$sibspF, Titanicp$parchF)
 
+## ----titanicLOAD, include=FALSE, echo=FALSE-----------------------------------
+# Load unmodified Titanicp data for collapse_levels() example
+Titanicp <- saveDat
+
+## ----collapse_level-ex1-------------------------------------------------------
+str(Titanicp) # The original dataset
+
+Titanicp <- within(Titanicp, {
+  parchF <- factor(parch)
+  sibspF <- factor(sibsp)
+})
+
+Titanicp <- collapse_levels(
+  Titanicp,
+  parchF = list(
+    "2+" = c("2", "3", "4", "5", "6", "9")
+  ),
+  sibspF = list(
+    "2+" = c("2", "3", "4", "5", "8")
+  )
+)
+
+table(Titanicp$sibspF, Titanicp$parchF)
+
 ## ----convert-ex1--------------------------------------------------------------
 as.data.frame(GSStab)
 
@@ -239,6 +267,24 @@ ftable(Art.tab)
 ## ----convert-ex3--------------------------------------------------------------
 Art.df <- expand.dft(Art.tab)
 str(Art.df)
+
+## ----tidyconvert-ex1----------------------------------------------------------
+# tidy = TRUE (default) returns a tibble
+GSS.ff <- as_freqform(GSStab, tidy = FALSE)
+GSS.ff
+
+## ----tidyconvert-ex2----------------------------------------------------------
+as_table(GSS.ff, freq = "Freq") # When present, freq column must be specified
+
+## ----tidyconvert-ex3----------------------------------------------------------
+tidy_Art.tab <- as_table(Arthritis, dims = c("Treatment", "Sex", "Improved"))
+str(tidy_Art.tab)
+
+ftable(tidy_Art.tab)
+
+## ----tidyconvert-ex4----------------------------------------------------------
+tidy_Art.df <- as_caseform(tidy_Art.tab, tidy = FALSE)
+str(tidy_Art.df)
 
 ## ----tv1----------------------------------------------------------------------
 tv.data<-read.table(system.file("extdata","tv.dat", package="vcdExtra"))
