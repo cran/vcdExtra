@@ -36,15 +36,27 @@
 #         abbreviated) to all the values displayed in the table to be the cell
 #         frequencies (as now, and default), or to be the residuals for the `model` fit.
 #
-# 🚩TODO: [HARD] When there are two (or more) variables for the row, these should appear as a nested
+# ✔️DONE: When there are two (or more) variables for the row, these now appear as a nested
 #         hierarchy similar to what is shown in the table for the Titanic data in
-#         `dev/color-tab-figs/Titanic-residual-shading.png`. That is, the
-#         Hair-Sex combinations that appear like "Black_Male" should be two
-#         columns for Hair and Sex, and the rows for the other cases of black
-#         hair should have Sex empty. Not sure whether nested row groups can be
-#         shown to look nested otherwise. One solution would be to make the variables
-#         that define the rows into multiple columns, e.g., labeled "Hair", "Sex" for this
-#         example.
+#         `dev/color-tab-figs/Titanic-residual-shading.png`. Row-variable combinations
+#         that used to appear concatenated as "Black_Male" now become separate stub
+#         columns, "Hair" and "Sex", with repeated values left blank. Uses gt's
+#         multi-column stub support (`rowname_col` accepting a character vector of column
+#         names, gt >= 0.11) -- see dev/color_table/multi-col-stubs.md and
+#         dev/color_table/test-multi-col-stubs.R. Mirrors the has_multi_col_vars spanner
+#         logic below, using the `row_vars` attribute (attached by the S3 methods but
+#         previously unused).
+#
+# ✔️DONE: Resolved the apparent `formula` row/col inconsistency flagged earlier. The convention
+#         is `col_vars ~ row_vars` (LHS = columns, RHS = rows) -- the opposite of what was
+#         originally documented. Systematically compared `vcd::structable()` vs `stats::ftable()`
+#         across every 2-vs-1 split of `HairEyeColor` and every 2-vs-2 and 3-vs-1 split of
+#         `Titanic` (see dev/color_table/formula-row-col-comparison.R): when both are called the
+#         same way `color_table()` calls them (`formula` first, `data =` named), they agree in
+#         every case on `col_vars ~ row_vars`. The earlier-seen disagreement (in
+#         dev/color_table/test-multi-col-stubs.R) came from an ad-hoc comparison call with `data`
+#         positional before `formula` -- not a real inconsistency between the two functions.
+#         Roxygen docs (`@param formula`, `@details`, `@examples`) updated to match.
 #
 # ✔️TODO: Column spanner headings: When two or more variables are in the columns, the output
 #         is confusing and ugly. Examples:
@@ -54,7 +66,7 @@
 #
 
 
-#' Smart Display of Frequency Table with Colored Cell Backgrounds
+#' Smart Display of Frequency Tables with Colored Cell Backgrounds
 #'
 #' `color_table()` creates a formatted, semi-graphic "heatmap" table display of frequency data with cell backgrounds
 #' colored according to observed frequencies or their residuals from a loglinear model. The goal is to provide a
@@ -80,6 +92,22 @@
 #' by `mosaic.glm()`.
 #' A message is printed showing the chi-squared statistic, degrees of freedom,
 #' and p-value for this test.
+#'
+#' **Multi-variable row and column labels**
+#'
+#' `formula` follows the `col_vars ~ row_vars` convention used by
+#' [vcd::structable()] and [stats::ftable()] (confirmed to agree between the
+#' two across many row/col splits of `HairEyeColor` and `Titanic` -- see
+#' `dev/color_table/formula-row-col-comparison.R`). When `formula` specifies
+#' more than one variable on either side, `color_table()` avoids concatenated
+#' labels like `"Black_Male"`. Multiple column variables (on the left of `~`,
+#' e.g. `formula = Class + Sex + Age ~ Survived`) are shown using
+#' [gt::tab_spanner()] headings that group columns under their outer
+#' variable(s). Multiple row variables (on the right of `~`, e.g.
+#' `formula = Survived ~ Class + Sex`) are shown as separate stub columns, one
+#' per row variable, using `gt`'s multi-column stub support (`rowname_col`
+#' accepting a vector of column names), with repeated values left blank. The
+#' two can be combined in the same table.
 #'
 #' **Contrast shading**
 #'
@@ -141,11 +169,22 @@
 #' # Shade by frequencies instead (no message printed)
 #' color_table(HEC, shade = "freq")
 #'
-#' # 3-way table - using a formula to specify layout
+#' # 3-way table - using a formula to specify layout (col_vars ~ row_vars):
+#' # Eye is the single column variable, Hair and Sex are row variables shown
+#' # as separate stub columns
 #' color_table(HairEyeColor, formula = Eye ~ Hair + Sex)
 #'
 #' # Display residual values in cells instead of frequencies
 #' color_table(HEC, values = "residuals")
+#'
+#' # Multiple column variables - shown using nested spanner headings instead
+#' # of concatenated column labels
+#' data(Titanic)
+#' color_table(Titanic, formula = Class + Sex ~ Survived)
+#'
+#' # Multiple row AND column variables together: column spanners (Class, Sex)
+#' # combined with row-variable stub columns (Age, Survived)
+#' color_table(Titanic, formula = Class + Sex ~ Age + Survived, legend = TRUE)
 #'
 #' \dontrun{
 #' # From a data.frame in frequency form (2-way)
@@ -165,7 +204,7 @@ color_table <- function(x, ...) {
 }
 
 #' @describeIn color_table Method for table objects (including result of xtabs)
-#' @param formula Formula specifying a `row_vars ~ col_vars` layout (for multi-way tables) to
+#' @param formula Formula specifying a `col_vars ~ row_vars` layout (for multi-way tables) to
 #'        make them "flat" as defined for `vcd::structable()` and `stats::ftable()`.
 #' @param values What values to display in cells: `"freq"` for observed frequencies (default),
 #'   or `"residuals"` to display the residual values. When `values = "residuals"`, margins
@@ -681,13 +720,33 @@ color_table.default <- function(x, ...) {
     }
   }
 
-  # Add row names as first column
-  df_display <- cbind(data.frame(row_var = rownames(df)), df_display)
-  names(df_display)[1] <- rvar
+  # Check for multi-variable row structure (from structable attributes)
+  row_vars <- attr(x, "row_vars")
+  has_multi_row_vars <- !is.null(row_vars) && length(row_vars) > 1
+
+  if (has_multi_row_vars) {
+    # Multi-column stub: one column per row variable, using gt's support for
+    # rowname_col = <character vector> (gt >= 0.11) instead of a single column
+    # of concatenated labels like "Black_Male".
+    row_var_names <- names(row_vars)
+    n_row_vars <- length(row_var_names)
+
+    # Split composite row names (e.g., "Black_Male" -> c("Black", "Male"))
+    split_rnames <- strsplit(rownames(df), "_", fixed = TRUE)
+    row_var_df <- as.data.frame(do.call(rbind, split_rnames), stringsAsFactors = FALSE)
+    names(row_var_df) <- row_var_names
+
+    df_display <- cbind(row_var_df, df_display)
+  } else {
+    # Add row names as first column
+    df_display <- cbind(data.frame(row_var = rownames(df)), df_display)
+    names(df_display)[1] <- rvar
+  }
 
   # Add column totals row if margins requested (only for frequencies)
   if (show_margins) {
-    col_totals <- c("Total", as.character(colSums(x)),
+    total_label <- if (has_multi_row_vars) c("Total", rep("", n_row_vars - 1)) else "Total"
+    col_totals <- c(total_label, as.character(colSums(x)),
                     as.character(sum(x)))
     df_display <- rbind(df_display, col_totals)
   }
@@ -710,7 +769,8 @@ color_table.default <- function(x, ...) {
   }
 
   # Build gt table
-  gt_tbl <- gt::gt(df_display, rowname_col = rvar)
+  stub_cols <- if (has_multi_row_vars) row_var_names else rvar
+  gt_tbl <- gt::gt(df_display, rowname_col = stub_cols)
 
   # Apply colors to data cells (not totals)
   n_row <- nrow(shade_values)

@@ -1,8 +1,8 @@
 Package: vcdExtra
 Type: Package
 Title: 'vcd' Extensions and Additions
-Version: 0.9.6
-Date: 2026-06-05
+Version: 0.9.7
+Date: 2026-07-31
 Language: en-US
 Authors@R: c(
             person(given = "Michael", family = "Friendly", 
@@ -32,7 +32,10 @@ Authors@R: c(
                    email = "daniel.sabanesbove@gmail.com"),
             person(given = "Matt", family = "Kumar", role="ctb"),
             person(given = "Shuguang", family = "Sun", role="ctb"),
-            person(given = "Gavin", family = "Klorfine", role = "aut")
+            person(given = "Gavin", family = "Klorfine", 
+                   role = "aut",
+                   email = "gklorfin@yorku.ca",
+                   comment = c(ORCID = "0009-0003-0395-4512"))
             )
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Depends: R (>= 4.1.0), vcd, gnm (>= 1.0-3)
@@ -60,7 +63,7 @@ Encoding: UTF-8
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-06-07 15:54:49 UTC; friendly
+Packaged: 2026-08-02 00:43:05 UTC; friendly
 Author: Michael Friendly [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3237-0941>),
   David Meyer [ctb],
@@ -71,6 +74,6 @@ Author: Michael Friendly [aut, cre] (ORCID:
   Daniel Sabanes Bove [ctb],
   Matt Kumar [ctb],
   Shuguang Sun [ctb],
-  Gavin Klorfine [aut]
+  Gavin Klorfine [aut] (ORCID: <https://orcid.org/0009-0003-0395-4512>)
 Repository: CRAN
-Date/Publication: 2026-06-07 16:30:02 UTC
+Date/Publication: 2026-08-03 19:00:03 UTC

@@ -8,7 +8,7 @@
 \alias{color_table.data.frame}
 \alias{color_table.matrix}
 \alias{color_table.default}
-\title{Smart Display of Frequency Table with Colored Cell Backgrounds}
+\title{Smart Display of Frequency Tables with Colored Cell Backgrounds}
 \usage{
 color_table(x, ...)
 
@@ -97,7 +97,7 @@ color_table(x, ...)
 
 \item{...}{Additional arguments passed to methods}
 
-\item{formula}{Formula specifying a \code{row_vars ~ col_vars} layout (for multi-way tables) to
+\item{formula}{Formula specifying a \code{col_vars ~ row_vars} layout (for multi-way tables) to
 make them "flat" as defined for \code{vcd::structable()} and \code{stats::ftable()}.}
 
 \item{values}{What values to display in cells: \code{"freq"} for observed frequencies (default),
@@ -162,6 +162,22 @@ But you can specify a model using the \code{model} or \code{expected} arguments,
 by \code{mosaic.glm()}.
 A message is printed showing the chi-squared statistic, degrees of freedom,
 and p-value for this test.
+
+\strong{Multi-variable row and column labels}
+
+\code{formula} follows the \code{col_vars ~ row_vars} convention used by
+\code{\link[vcd:structable]{vcd::structable()}} and \code{\link[stats:ftable]{stats::ftable()}} (confirmed to agree between the
+two across many row/col splits of \code{HairEyeColor} and \code{Titanic} -- see
+\code{dev/color_table/formula-row-col-comparison.R}). When \code{formula} specifies
+more than one variable on either side, \code{color_table()} avoids concatenated
+labels like \code{"Black_Male"}. Multiple column variables (on the left of \code{~},
+e.g. \code{formula = Class + Sex + Age ~ Survived}) are shown using
+\code{\link[gt:tab_spanner]{gt::tab_spanner()}} headings that group columns under their outer
+variable(s). Multiple row variables (on the right of \code{~}, e.g.
+\code{formula = Survived ~ Class + Sex}) are shown as separate stub columns, one
+per row variable, using \code{gt}'s multi-column stub support (\code{rowname_col}
+accepting a vector of column names), with repeated values left blank. The
+two can be combined in the same table.
 
 \strong{Contrast shading}
 
@@ -236,11 +252,22 @@ color_table(HEC)
 # Shade by frequencies instead (no message printed)
 color_table(HEC, shade = "freq")
 
-# 3-way table - using a formula to specify layout
+# 3-way table - using a formula to specify layout (col_vars ~ row_vars):
+# Eye is the single column variable, Hair and Sex are row variables shown
+# as separate stub columns
 color_table(HairEyeColor, formula = Eye ~ Hair + Sex)
 
 # Display residual values in cells instead of frequencies
 color_table(HEC, values = "residuals")
+
+# Multiple column variables - shown using nested spanner headings instead
+# of concatenated column labels
+data(Titanic)
+color_table(Titanic, formula = Class + Sex ~ Survived)
+
+# Multiple row AND column variables together: column spanners (Class, Sex)
+# combined with row-variable stub columns (Age, Survived)
+color_table(Titanic, formula = Class + Sex ~ Age + Survived, legend = TRUE)
 
 \dontrun{
 # From a data.frame in frequency form (2-way)
