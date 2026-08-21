@@ -988,29 +988,29 @@ NULL
 #'
 #' # plot fitted probabilities from mod2 and mod3
 #' # idea from: http://www.ling.upenn.edu/~joseff/rstudy/summer2010_ggplot2_intro.html
-#' library(ggplot2)
+#' if (require("ggplot2")) {
 #'
 #' # separate linear fits on age for M/F
-#' ggplot(Donner, aes(age, survived, color = sex)) +
+#' print(ggplot(Donner, aes(age, survived, color = sex)) +
 #'   geom_point(position = position_jitter(height = 0.02, width = 0)) +
 #'   stat_smooth(method = "glm",
 #'               method.args = list(family = binomial),
 #'               formula = y ~ x,
 #'               alpha = 0.2,
 #'               size=2,
-#'               aes(fill = sex))
+#'               aes(fill = sex)))
 #'
 #' # separate quadratics
-#' ggplot(Donner, aes(age, survived, color = sex)) +
+#' print(ggplot(Donner, aes(age, survived, color = sex)) +
 #'   geom_point(position = position_jitter(height = 0.02, width = 0)) +
 #'   stat_smooth(method = "glm",
 #'               method.args = list(family = binomial),
 #'               formula = y ~ poly(x,2),
 #'               alpha = 0.2,
 #'               size=2,
-#'               aes(fill = sex))
+#'               aes(fill = sex)))
 #'
-#'
+#' }
 #'
 NULL
 
@@ -1051,6 +1051,9 @@ NULL
 #' 1970 Draft Lottery," *Science*, 171, 255-261.
 #'
 #' <https://en.wikipedia.org/wiki/Draft_lottery_(1969)>
+#'
+#' Hanley, J. A., "US Selective Service Lotteries 1917-1975: Datasets,"
+#' <https://jhanley.biostat.mcgill.ca/DraftLotteries/>
 #' @source Starr, N. (1997). Nonrandom Risk: The 1970 Draft Lottery,
 #' *Journal of Statistics Education*, v.5, n.2
 #' \doi{10.1080/10691898.1997.11910534}
@@ -2183,11 +2186,12 @@ NULL
 #' risks[risks==""] <- "(none)"
 #' icu.fit$risks <- risks
 #'
-#' library(ggplot2)
-#' ggplot(icu.fit, aes(x=age, y=prob, color=risks)) +
+#' if (require("ggplot2")) {
+#' print(ggplot(icu.fit, aes(x=age, y=prob, color=risks)) +
 #' 	geom_point(size=2) +
 #' 	geom_line(size=1.25, alpha=0.5) +
-#' 	theme_bw() + ylab("Probability of death")
+#' 	theme_bw() + ylab("Probability of death"))
+#' }
 #'
 #'
 NULL

@@ -9,6 +9,12 @@
 
 #' Brief Summary of Model Fit for glm and loglm Models
 #'
+#' **Deprecated**: use [LRstats()] instead, which provides the same brief
+#' model-fit comparison. `Summarise()` predates `LRstats()` and its capitalized
+#' name reads as an easy-to-mistype near-collision with `dplyr::summarise()`
+#' (which this package also imports internally) -- `LRstats()` avoids the
+#' naming clash entirely and is otherwise a drop-in replacement.
+#'
 #' For `glm` objects, the `print` and `summary` methods give too
 #' much information if all one wants to see is a brief summary of model
 #' goodness of fit, and there is no easy way to display a compact comparison of
@@ -47,7 +53,6 @@
 #' data(Mental)
 #' indep <- glm(Freq ~ mental+ses,
 #'                 family = poisson, data = Mental)
-#' Summarise(indep)
 #' Cscore <- as.numeric(Mental$ses)
 #' Rscore <- as.numeric(Mental$mental)
 #'
@@ -58,14 +63,19 @@
 #' linlin <- glm(Freq ~ mental + ses + Rscore:Cscore,
 #'                 family = poisson, data = Mental)
 #'
+#' # Summarise() is deprecated; see LRstats() for the same comparison
+#' \dontrun{
+#' Summarise(indep)
+#'
 #' # compare models
 #' Summarise(indep, coleff, roweff, linlin)
+#' }
 #'
 #'
 #' @export
 
 Summarise <- function(object, ...) {
-#  .Deprecated("LRstats")
+  .Deprecated("LRstats", package = "vcdExtra")
 	UseMethod("Summarise")
 }
 
