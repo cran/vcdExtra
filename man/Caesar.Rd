@@ -17,7 +17,6 @@ dim \tab Name \tab Levels \cr
 }
 }
 \source{
-\% \cite{Fahrmeir:94}
 Fahrmeir, L. & Tutz, G. (1994). Multivariate
 Statistical Modelling Based on Generalized Linear Models New York: Springer
 Verlag, Table 1.1.
@@ -79,7 +78,7 @@ mosaic(Caesar.mod1,
 
 }
 \seealso{
-\code{\link[Fahrmeir]{caesar}} for the same data recorded as a
-frequency data frame with other variables.
+\code{caesar} in the Fahrmeir package (archived on CRAN, 2026-10-12) for the same
+data recorded as a frequency data frame with other variables.
 }
 \keyword{datasets}

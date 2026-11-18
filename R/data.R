@@ -399,7 +399,7 @@ NULL
 #' MASS::loglm(formula = ~(Alive + Time + Length)^2, data = Bartlett)
 #'
 #' # Use woolf_test() for a formal test of homogeneity of odds ratios
-#' vcd::woolf_test(Bartlett)
+#' woolf_test(Bartlett)
 #'
 #'
 #' # Plots
@@ -490,11 +490,10 @@ NULL
 #'}
 #'
 #'
-#' @seealso \code{\link[Fahrmeir]{caesar}} for the same data recorded as a
-#' frequency data frame with other variables.
+#' @seealso `caesar` in the Fahrmeir package (archived on CRAN, 2026-10-12) for the same
+#' data recorded as a frequency data frame with other variables.
 #' @source
 #'
-#' % \cite{Fahrmeir:94}
 #' Fahrmeir, L. & Tutz, G. (1994). Multivariate
 #' Statistical Modelling Based on Generalized Linear Models New York: Springer
 #' Verlag, Table 1.1.
@@ -2275,7 +2274,7 @@ NULL
 # @seealso \code{\link[stats]{loglin}}, \code{\link[MASS]{loglm}}
 # @references These functions were inspired by the original SAS implementation
 # of mosaic displays, described in the \emph{User's Guide},
-# \url{http://www.datavis.ca/mosaics/mosaics.pdf}
+# \url{https://friendly.github.io/papers/mosaics/mosaics.pdf}
 # @keywords models
 # EXAMPLES NOT COPIED
 # @examples
